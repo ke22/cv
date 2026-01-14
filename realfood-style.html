@@ -329,7 +329,7 @@
 
         /* 長跑道：決定滾動距離 */
         .intro-scroll-container {
-            height: 100vh; /* 進一步縮短高度，讓三元素與三卡滾動更緊湊 */
+            height: 200vh; /* 增加高度，讓三元素 sticky 效果更長 */
             position: relative;
             width: 100%;
         }
@@ -438,7 +438,7 @@
            ============================================ */
         /* Flip Cards Scroll Container（長跑道） */
         .flip-cards-scroll-container {
-            height: 500vh; /* 增加高度，讓 sticky stage 更長，滾動距離更長 */
+            height: 600vh; /* 進一步增加高度，讓三卡 sticky 效果更長 */
             position: relative;
             width: 100%;
         }
@@ -640,9 +640,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 24px;
+            padding: 20px; /* 減少 padding，給同心圓更多空間 */
             background: var(--bg-cream);
-            overflow: hidden;
+            overflow: visible; /* 改為 visible，允許同心圓完整顯示 */
         }
 
         .dga_percentage__fxOGZ {
@@ -653,7 +653,7 @@
             justify-content: center;
             opacity: 0;
             /* Position at bottom-right, showing only 1/4 of the circle */
-            bottom: 0;
+            bottom: -100px; /* 向下移動 100px */
             right: 0;
             transform: translate(25%, 25%); /* Initial position - show only 1/4 */
             /* No transition - controlled by JavaScript for smooth scroll-based animation */
@@ -661,24 +661,24 @@
 
         /* Large circle (95%) - Bottom layer - Outer ring */
         .dga_percentage__fxOGZ:nth-child(3) {
-            width: 800px;
-            height: 800px;
+            width: 800px;  /* 調整為 800x800 */
+            height: 800px; /* 調整為 800x800 */
             background: #9F3030; /* Outer ring */
             z-index: 1; /* Lowest - on bottom */
         }
 
         /* Medium circle (70%) - Middle layer */
         .dga_percentage__fxOGZ:nth-child(2) {
-            width: 600px;
-            height: 600px;
+            width: 600px;  /* 調整以保持間距 */
+            height: 600px; /* 調整以保持間距 */
             background: #C44646; /* Middle ring */
             z-index: 2; /* Middle layer */
         }
 
         /* Small circle (50%) - Top layer - Inner ring */
         .dga_percentage__fxOGZ:nth-child(1) {
-            width: 400px;
-            height: 400px;
+            width: 400px;  /* 調整以保持間距 */
+            height: 400px; /* 調整以保持間距 */
             background: #D65D5D; /* Inner ring */
             z-index: 3; /* Highest - on top */
         }
@@ -691,7 +691,7 @@
             position: absolute;
             font-family: var(--font-primary);
             font-weight: 700;
-            font-size: 120px; /* Doubled from 60px */
+            font-size: 60px; /* 從 80px 進一步縮小，避免被圓形遮擋 */
             color: var(--text-dark);
             z-index: 10;
             pointer-events: none;
@@ -700,22 +700,22 @@
         /* Position text in the visible area of circles */
         .dga_percentage__fxOGZ:nth-child(1) .dga_percentage_text__new {
             /* Inner circle (50%) - position in visible 1/4 area */
-            top: 20px;
-            right: 20px;
+            top: 30px;  /* 稍微向下移動，避免被圓形邊緣遮擋 */
+            right: 30px; /* 稍微向左移動，避免被圓形邊緣遮擋 */
             transform: none;
         }
 
         .dga_percentage__fxOGZ:nth-child(2) .dga_percentage_text__new {
             /* Middle circle (70%) - position in visible 1/4 area */
-            top: 20px;
-            right: 20px;
+            top: 30px;  /* 稍微向下移動，避免被圓形邊緣遮擋 */
+            right: 30px; /* 稍微向左移動，避免被圓形邊緣遮擋 */
             transform: none;
         }
 
         .dga_percentage__fxOGZ:nth-child(3) .dga_percentage_text__new {
             /* Outer circle (95%) - position in visible 1/4 area */
-            top: 20px;
-            right: 20px;
+            top: 30px;  /* 稍微向下移動，避免被圓形邊緣遮擋 */
+            right: 30px; /* 稍微向左移動，避免被圓形邊緣遮擋 */
             transform: none;
         }
 
@@ -761,7 +761,170 @@
         /* State of Health Animation Section */
         .dga_stateOfHealth__5YmNX {
             position: relative;
-            min-height: 300vh; /* Increased height for scroll triggers */
+        }
+
+        /* Frame 17: First Sticky Stage */
+        .problem-frame17-scroll-container {
+            height: 400vh; /* 滾動空間，決定 frame17 sticky 持續時間 */
+            position: relative;
+            width: 100%;
+        }
+
+        .problem-frame17-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh; /* 永遠填滿畫面 */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Frame 20: Second Sticky Stage */
+        .problem-frame20-scroll-container {
+            height: 400vh; /* 滾動空間，決定 frame20 sticky 持續時間 */
+            position: relative;
+            width: 100%;
+        }
+
+        .problem-frame20-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh; /* 永遠填滿畫面 */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 移除 overflow: hidden，讓圓形完整顯示 */
+            z-index: 1;
+        }
+
+        /* Frame 20 Content - 調整為左右布局 */
+        .frame20-content {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            padding: 40px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+
+        /* 左側：標題區域 */
+        .frame20-titles {
+            flex: 1;
+            position: relative;
+            min-height: 400px;
+            max-width: 50%; /* 限制最大寬度，確保不與圓形重疊 */
+            padding-right: 60px; /* 增加右側內距，與圓形保持安全距離 */
+            transition: max-width 0.8s ease, padding-right 0.8s ease;
+        }
+
+        .frame20-title-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
+        }
+
+        .frame20-title-item.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .frame20-title-item.exiting {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        .frame20-title {
+            color: #848484;
+            font-family: "Helvetica Neue", var(--font-primary);
+            font-size: 32px;
+            font-weight: 700;
+            line-height: normal;
+            margin-bottom: 24px;
+        }
+
+        .frame20-percentage {
+            color: #FFF;
+            font-family: "Helvetica Neue", var(--font-primary);
+            font-size: 50px;
+            font-weight: 700;
+            line-height: normal;
+            margin-bottom: 16px;
+        }
+
+        .frame20-subtitle {
+            color: #C7C7C7;
+            font-family: "YuGothic", "Yu Gothic", "游ゴシック", "游ゴシック体", var(--font-primary);
+            font-size: 28px;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        /* 右下角：圓形疊加區域 - 只顯示右下角 1/4 */
+        .frame20-circles-stack {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            flex-shrink: 0;
+            /* 移除 overflow: hidden 和寬高限制，讓圓形完整顯示 */
+        }
+
+        .frame20-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(150%, 150%);
+            transform-origin: center;
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            /* 初始位置在右下角外部，從右下滑入 */
+        }
+
+        .frame20-circle.visible {
+            opacity: 1;
+            transform: translate(50%, 50%);
+            /* 最終位置：圓形的中心點在 container 的右下角端點 */
+        }
+
+        /* 小圈：先出現，顏色 #D65D5D，最上層 */
+        .frame20-circle.circle-small {
+            width: 350px;  /* 從 280px 增大 */
+            height: 350px; /* 從 280px 增大 */
+            background: #D65D5D;
+            bottom: 0;
+            right: 0;
+            z-index: 3;
+        }
+
+        /* 中圈：第二個出現，顏色 #C44646 */
+        .frame20-circle.circle-medium {
+            width: 500px;  /* 從 420px 增大 */
+            height: 500px; /* 從 420px 增大 */
+            background: #C44646;
+            bottom: 0;
+            right: 0;
+            z-index: 2;
+        }
+
+        /* 大圈：最後出現，顏色 #9F3030，最底層 */
+        .frame20-circle.circle-large {
+            width: 650px;  /* 從 540px 增大 */
+            height: 650px; /* 從 540px 增大 */
+            background: #9F3030;
+            bottom: 0;
+            right: 0;
+            z-index: 1;
         }
 
         .dga_soh_animation__Zmouz {
@@ -819,6 +982,15 @@
             pointer-events: none;
             transform: translateY(-12px);
             transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* Frame 17 data-stat="3" 特殊樣式：左上對齊 */
+        .dga_soh_content_text__FzD8r[data-stat="3"] {
+            top: 40px;
+            left: 40px;
+            text-align: left;
+            max-width: none;
+            width: auto;
         }
 
         .dga_soh_content_text__FzD8r.active {
@@ -1080,6 +1252,395 @@
         .dga_dark__E4iDO {
             /* background removed */
             color: var(--text-white);
+        }
+
+        /* ============================================
+           Solution Section - Sticky Stages
+           ============================================ */
+        /* #solution selector already defined at line 1065, using existing definition */
+
+        /* Sticky Stage 1: 兩個文字依序 slide in */
+        .solution-stage1-scroll-container {
+            height: 300vh;
+            position: relative;
+            width: 100%;
+        }
+
+        .solution-stage1-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .solution-stage1-content {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .solution-text-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateX(-50px);
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
+        }
+
+        .solution-text-item.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateX(0);
+            pointer-events: auto;
+        }
+
+        /* 第一個文字退出動畫 - 向上滑出 */
+        .solution-text-item.exiting {
+            opacity: 0;
+            transform: translate(-50%, -50%) translateY(-30px);
+            pointer-events: none;
+        }
+
+        /* 第二個文字從下方滑入 */
+        .solution-text-item[data-text="2"] {
+            transform: translate(-50%, -50%) translateY(50px);
+        }
+
+        .solution-text-item[data-text="2"].visible {
+            transform: translate(-50%, -50%) translateY(0);
+        }
+
+        .solution-stage1-quote {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text-white, #fff);
+        }
+
+        .solution-stage1-quote-subtitle {
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: 400;
+            color: var(--text-white, #fff);
+            opacity: 0.9;
+        }
+
+        .solution-stage1-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text-white, #fff);
+        }
+
+        .solution-stage1-subtitle {
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: 400;
+            color: var(--text-white, #fff);
+            opacity: 0.9;
+        }
+
+        /* Sticky Stage 2: Frame 26 - Know What You Own First */
+        .solution-stage2-scroll-container {
+            height: 500vh; /* 需要更多空間來 highlight H1, H2, H3 */
+            position: relative;
+            width: 100%;
+        }
+
+        .solution-stage2-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .solution-frame26-content {
+            width: 100%;
+            max-width: 1400px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        /* Title 先出現 */
+        .frame26-title-container {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .frame26-title-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .frame26-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text-white, #fff);
+        }
+
+        .frame26-subtitle {
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: 400;
+            color: var(--text-white, #fff);
+            opacity: 0.9;
+        }
+
+        /* Matrix 後出現 */
+        .frame26-matrix-wrapper {
+            position: relative; /* For overlay positioning */
+            width: 100%;
+            max-width: 800px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .frame26-matrix-wrapper.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .frame26-matrix-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Overlay circles for highlight effect */
+        .frame26-overlay-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .frame26-overlay-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+
+        /* H1: bottom-left, x=116, y=418, size=79.8568 */
+        .frame26-h1-overlay {
+            width: 14.6%; /* 79.8568 / 548 */
+            height: 13.0%; /* 79.8568 / 615 */
+            left: 21.2%; /* 116 / 548 */
+            top: 68.0%; /* 418 / 615 */
+            background: #631515;
+        }
+
+        /* H2: middle-left, x=116, y=260, size=79.8568 */
+        .frame26-h2-overlay {
+            width: 14.6%;
+            height: 13.0%;
+            left: 21.2%;
+            top: 42.3%; /* 260 / 615 */
+            background: #923F3F;
+        }
+
+        /* H3: top-left, x=116, y=102, size=79.8568 */
+        .frame26-h3-overlay {
+            width: 14.6%;
+            height: 13.0%;
+            left: 21.2%;
+            top: 16.6%; /* 102 / 615 */
+            background: #C44646;
+        }
+
+        .frame26-overlay-circle.highlighted {
+            opacity: 1;
+        }
+
+        /* Sticky Stage 3: Frame 27, 28 */
+        .solution-stage3-scroll-container {
+            height: 600vh;
+            position: relative;
+            width: 100%;
+        }
+
+        .solution-stage3-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .solution-frame27-content,
+        .solution-frame28-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 1400px;
+            padding: 40px;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+
+        .solution-frame27-content.visible,
+        .solution-frame28-content.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Frame 27: Title 在左，Matrix 在右 */
+        .frame27-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+
+        .frame27-title-container {
+            flex: 1;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .frame27-title-container.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .frame27-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text-white, #fff);
+        }
+
+        .frame27-subtitle {
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: 400;
+            color: var(--text-white, #fff);
+            opacity: 0.9;
+        }
+
+        .frame27-matrix-container {
+            flex: 1;
+            position: relative;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .frame27-matrix-container.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .frame27-matrix-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Circle 2 highlight overlay */
+        .frame27-circle-highlight {
+            position: absolute;
+            top: 13%; /* 約 75.6992 / 585 */
+            right: 30%; /* 約 379.32 / 537 */
+            width: 13.6%; /* 73.2021 / 537 */
+            height: 12.5%; /* 73.2021 / 585 */
+            border-radius: 50%;
+            border: 3px solid #ff0000;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+
+        .frame27-circle-highlight.visible {
+            opacity: 1;
+        }
+
+        /* Frame 28: Title 在右，Matrix 在左 */
+        .frame28-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+
+        .frame28-title-container {
+            flex: 1;
+            order: 2; /* Title 在右 */
+            text-align: right;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .frame28-title-container.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .frame28-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text-white, #fff);
+        }
+
+        .frame28-subtitle {
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: 400;
+            color: var(--text-white, #fff);
+            opacity: 0.9;
+        }
+
+        .frame28-matrix-container {
+            flex: 1;
+            order: 1; /* Matrix 在左 */
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .frame28-matrix-container.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .frame28-matrix-image {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* ============================================
@@ -2076,63 +2637,76 @@
 
         <!-- State of Health Section -->
         <section id="problem" class="dga_stateOfHealth__5YmNX" aria-labelledby="soh-heading">
-            <div class="dga_soh_animation__Zmouz">
-                <div class="dga_soh_heading_container__luWcl" id="soh-heading-container">
-                    <h2 id="soh-heading" class="dga_soh_heading__IlLyl">The State of Our Health</h2>
-                </div>
-                <div class="dga_soh_container__rovjd">
-                    <div class="dga_soh_content_sticky__6xgEe" id="soh-content-sticky">
-                        <div class="dga_soh_content_text__FzD8r" data-stat="0">
-                            <div class="dga_text__nmeK_">
-                                <h3 class="dga_soh_title__16573">America is sick.<br>The data is clear.</h3>
-                            </div>
+            <!-- Frame 17: First Sticky Stage -->
+            <div class="problem-frame17-scroll-container">
+                <div class="problem-frame17-sticky-stage">
+                    <div class="dga_soh_animation__Zmouz">
+                        <div class="dga_soh_heading_container__luWcl" id="soh-heading-container">
+                            <h2 id="soh-heading" class="dga_soh_heading__IlLyl">The State of Our Health</h2>
                         </div>
-                        <div class="dga_soh_content_text__FzD8r" data-stat="1">
-                            <div class="dga_text__nmeK_">
-                                <h3>50% of Americans have <span style="color: var(--red4);">prediabetes or diabetes</span></h3>
+                        <div class="dga_soh_container__rovjd">
+                            <div class="dga_soh_content_sticky__6xgEe" id="soh-content-sticky">
+                                <div class="dga_soh_content_text__FzD8r" data-stat="0">
+                                    <div class="dga_text__nmeK_">
+                                        <h3 class="dga_soh_title__16573">America is sick.<br>The data is clear.</h3>
+                                    </div>
+                                </div>
+                                <div class="dga_soh_content_text__FzD8r" data-stat="1">
+                                    <div class="dga_text__nmeK_">
+                                        <h3>50% of Americans have <span style="color: var(--red4);">prediabetes or diabetes</span></h3>
+                                    </div>
+                                </div>
+                                <div class="dga_soh_content_text__FzD8r" data-stat="2">
+                                    <div class="dga_text__nmeK_">
+                                        <h3>75% of adults report having at least one <span style="color: var(--red4);">chronic condition</span></h3>
+                                    </div>
+                                </div>
+                                <div class="dga_soh_content_text__FzD8r" data-stat="3" style="text-align: left; align-items: flex-start; justify-content: flex-start; padding: 40px;">
+                                    <div class="dga_text__nmeK_">
+                                        <h3 style="margin-bottom: 16px; font-size: clamp(64px, 12vw, 160px); font-weight: 700; line-height: 1.1;">I'm so panic！</h3>
+                                        <h4 style="font-size: clamp(20px, 3vw, 32px); font-weight: 400; margin: 0;">我很驚恐</h4>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="dga_soh_content_text__FzD8r" data-stat="2">
-                            <div class="dga_text__nmeK_">
-                                <h3>75% of adults report having at least one <span style="color: var(--red4);">chronic condition</span></h3>
-                            </div>
-                        </div>
-                        <div class="dga_soh_content_text__FzD8r" data-stat="3">
-                            <div class="dga_text__nmeK_">
-                                <h3>90% of U.S. healthcare spending goes to treating <span style="color: var(--white);">chronic disease</span>—much of which is linked to diet and lifestyle</h3>
-                            </div>
+                            <div class="dga_soh_content__Gla00" data-stat="0"></div>
+                            <div class="dga_soh_content__Gla00" data-stat="1"></div>
+                            <div class="dga_soh_content__Gla00" data-stat="2"></div>
+                            <div class="dga_soh_content__Gla00" data-stat="3"></div>
+                            <div class="dga_soh_content__Gla00" data-stat="4"></div>
                         </div>
                     </div>
-                    <div class="dga_soh_content__Gla00" data-stat="0"></div>
-                    <div class="dga_soh_content__Gla00" data-stat="1"></div>
-                    <div class="dga_soh_content__Gla00" data-stat="2"></div>
-                    <div class="dga_soh_content__Gla00" data-stat="3"></div>
-                    <div class="dga_soh_content__Gla00" data-stat="4"></div>
                 </div>
             </div>
-            <!-- Concentric Circles Section -->
-            <div class="dga_percentages__MnbPB" id="percentages-section">
-                <div class="dga_percentages_sticky__FIFjs">
-                    <!-- Small circle (50%) - Top layer - Inner ring -->
-                    <div class="dga_percentage__fxOGZ">
-                        <span class="dga_percentage_text__new">
-                            <span>50</span>
-                            <span class="font-regular">%</span>
-                        </span>
-                    </div>
-                    <!-- Medium circle (70%) - Middle layer -->
-                    <div class="dga_percentage__fxOGZ">
-                        <span class="dga_percentage_text__new">
-                            <span>70</span>
-                            <span class="font-regular">%</span>
-                        </span>
-                    </div>
-                    <!-- Large circle (95%) - Bottom layer - Outer ring -->
-                    <div class="dga_percentage__fxOGZ">
-                        <span class="dga_percentage_text__new">
-                            <span>95</span>
-                            <span class="font-regular">%</span>
-                        </span>
+            
+            <!-- Frame 20: Second Sticky Stage -->
+            <div class="problem-frame20-scroll-container">
+                <div class="problem-frame20-sticky-stage">
+                    <div class="frame20-content">
+                        <!-- 左側：標題區域（會依序切換） -->
+                        <div class="frame20-titles">
+                            <div class="frame20-title-item" data-title="1">
+                                <div class="frame20-title">Low Salary Levels</div>
+                                <div class="frame20-percentage">36.5% with an annual salary of less than 600,000.</div>
+                                <div class="frame20-subtitle">薪資偏低：36.5% 年薪 < 60萬</div>
+                            </div>
+                            <div class="frame20-title-item" data-title="2">
+                                <div class="frame20-title">Insufficient</div>
+                                <div class="frame20-percentage">Career satisfaction rating of 2.99/ 5</div>
+                                <div class="frame20-subtitle">職涯發展不足</div>
+                            </div>
+                            <div class="frame20-title-item" data-title="3">
+                                <div class="frame20-title">Future Outlook</div>
+                                <div class="frame20-percentage">60.5% intend to remain in their current roles.</div>
+                                <div class="frame20-subtitle">60.5% 會繼續目前工作</div>
+                            </div>
+                        </div>
+
+                        <!-- 右下角：圓形疊加區域（會累積顯示，只顯示右下角1/4圓） -->
+                        <div class="frame20-circles-stack">
+                            <div class="frame20-circle circle-small"></div>
+                            <div class="frame20-circle circle-medium"></div>
+                            <div class="frame20-circle circle-large"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2141,6 +2715,24 @@
         <!-- Solution Section -->
         <div class="dga_dark__E4iDO">
             <section id="solution" class="dga_lineInTheSand__MYFnR">
+                <!-- Sticky Stage 1: 兩個文字依序 slide in -->
+                <div class="solution-stage1-scroll-container">
+                    <div class="solution-stage1-sticky-stage">
+                        <div class="solution-stage1-content">
+                            <!-- Text 1: God helps those... -->
+                            <div class="solution-text-item" data-text="1">
+                                <h2 class="solution-stage1-quote">God helps those<br>who help themselves.</h2>
+                                <p class="solution-stage1-quote-subtitle">天助自助者</p>
+                            </div>
+                            <!-- Text 2: Know What You Own First -->
+                            <div class="solution-text-item" data-text="2">
+                                <h2 class="solution-stage1-title">Know What You Own First</h2>
+                                <p class="solution-stage1-subtitle">了解自己</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="dga_broken_system_wrapper__OOvVj">
                     <div class="dga_broken_system_sticky__K1eSK">
                         <div class="dga_broken_system_image_container__H9d4u">
@@ -2182,6 +2774,31 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- Sticky Stage 2: Frame 26 - Know What You Own First -->
+                <div class="solution-stage2-scroll-container">
+                    <div class="solution-stage2-sticky-stage">
+                        <div class="solution-frame26-content">
+                            <!-- Title 先出現 -->
+                            <div class="frame26-title-container">
+                                <h2 class="frame26-title">Know What You Own First</h2>
+                                <p class="frame26-subtitle">資源適配矩陣</p>
+                            </div>
+                            
+                            <!-- Matrix 後出現 -->
+                            <div class="frame26-matrix-wrapper">
+                                <img src="img/Know What You Own First.svg" alt="Know What You Own First Matrix" class="frame26-matrix-svg" />
+                                <!-- Overlay circles for highlight effect -->
+                                <div class="frame26-overlay-circles">
+                                    <div class="frame26-overlay-circle frame26-h1-overlay" data-circle="h1"></div>
+                                    <div class="frame26-overlay-circle frame26-h2-overlay" data-circle="h2"></div>
+                                    <div class="frame26-overlay-circle frame26-h3-overlay" data-circle="h3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="solution-solvable-unique" class="dga_solvable_problem__52Str">
                     <div class="container">
                         <h2 class="dga_disintegrating_text__mGtdY">
@@ -2225,6 +2842,43 @@
                                 <span class="dga_nowrap_desktop__Ye_Pj"><span data-word-id="line-word-26" class="dga_line_highlighted__jONEG">common</span> <span data-word-id="line-word-27" class="dga_line_highlighted__jONEG">sense.</span></span>
                             </span>
                         </p>
+                    </div>
+                </div>
+
+                <!-- Sticky Stage 3: Frame 27, 28 -->
+                <div class="solution-stage3-scroll-container">
+                    <div class="solution-stage3-sticky-stage">
+                        <!-- Frame 27: Resource Fit Matrix -->
+                        <div class="solution-frame27-content">
+                            <div class="frame27-layout">
+                                <!-- Title 在左，先出 -->
+                                <div class="frame27-title-container">
+                                    <h2 class="frame27-title">Resource Fit Matrix</h2>
+                                    <p class="frame27-subtitle">機會選擇矩陣</p>
+                                </div>
+                                <!-- Matrix 在右，後出 -->
+                                <div class="frame27-matrix-container">
+                                    <img src="img/Opportunity Matrix .svg" alt="Resource Fit Matrix" class="frame27-matrix-image" />
+                                    <!-- Circle 2 highlight overlay -->
+                                    <div class="frame27-circle-highlight" data-circle="2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Frame 28: Opportunity Matrix -->
+                        <div class="solution-frame28-content">
+                            <div class="frame28-layout">
+                                <!-- Title 在右，先出 -->
+                                <div class="frame28-title-container">
+                                    <h2 class="frame28-title">Opportunity Matrix</h2>
+                                    <p class="frame28-subtitle">資源適配矩陣</p>
+                                </div>
+                                <!-- Matrix 在左，後出 -->
+                                <div class="frame28-matrix-container">
+                                    <img src="img/Resource Fit Matrix.svg" alt="Opportunity Matrix" class="frame28-matrix-image" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -3285,6 +3939,485 @@
 
                 // 初始檢查
                 handleFlipCards();
+            })();
+
+            // ============================================
+            // Frame 20 Cumulative Building Animation (疊加式敘事)
+            // ============================================
+            (function() {
+                const frame20Container = document.querySelector('.problem-frame20-scroll-container');
+                const frame20Stage = document.querySelector('.problem-frame20-sticky-stage');
+                if (!frame20Container || !frame20Stage) return;
+
+                const titleItems = document.querySelectorAll('.frame20-title-item');
+                const circles = document.querySelectorAll('.frame20-circle');
+                
+                if (titleItems.length === 0 || circles.length === 0) return;
+
+                function handleFrame20Animation() {
+                    const windowHeight = globalThis.innerHeight;
+                    const scrollY = globalThis.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // 計算 frame20-scroll-container 的滾動進度
+                    const containerRect = frame20Container.getBoundingClientRect();
+                    const containerTop = frame20Container.offsetTop;
+                    const containerHeight = frame20Container.offsetHeight;
+                    const scrollableDistance = Math.max(1, containerHeight - windowHeight);
+                    
+                    let scrollProgress = 0;
+                    
+                    // 使用 containerRect 計算滾動進度（基於 viewport 位置，更準確）
+                    // containerRect.top: 從 windowHeight（剛進入）到 -containerHeight + windowHeight（即將離開）
+                    const containerTopInViewport = containerRect.top;
+                    const containerBottomInViewport = containerRect.bottom;
+                    
+                    // 當 container 在 viewport 內時計算進度
+                    if (containerTopInViewport <= windowHeight && containerBottomInViewport >= 0) {
+                        // 進度計算：從 container 頂部進入 viewport（top = windowHeight）到完全離開（top = -containerHeight + windowHeight）
+                        // 當 containerTopInViewport = windowHeight 時，progress = 0
+                        // 當 containerTopInViewport = -containerHeight + windowHeight 時，progress = 1
+                        const progressStart = windowHeight;
+                        const progressEnd = windowHeight - containerHeight;
+                        const totalProgressRange = progressStart - progressEnd;
+                        
+                        if (totalProgressRange > 0) {
+                            scrollProgress = Math.max(0, Math.min(1, (progressStart - containerTopInViewport) / totalProgressRange));
+                        } else {
+                            scrollProgress = 0;
+                        }
+                    } else if (containerTopInViewport < windowHeight - containerHeight) {
+                        // container 已經完全滾過（頂部在 viewport 上方）
+                        scrollProgress = 1;
+                    } else if (containerBottomInViewport < 0) {
+                        // container 還沒有進入 viewport（底部在 viewport 下方）
+                        scrollProgress = 0;
+                    }
+                    // 其他情況保持 scrollProgress = 0
+
+                    // 將滾動進度分成 3 個階段（每個階段約 33%）
+                    const stage1End = 0.33;  // 0-33%: Title 1 + 小圓（同時觸發）
+                    const stage2End = 0.66;  // 33-66%: Title 2 + 中圓（小圓保持）
+                    const stage3Start = 0.66; // 66-100%: Title 3 + 大圓（小圓、中圓保持）
+                    
+                    // 調試信息
+                    console.log('🔍 Frame 20 Debug:', {
+                        scrollY: Math.round(scrollY),
+                        containerTop: Math.round(containerTop),
+                        containerHeight: Math.round(containerHeight),
+                        windowHeight: Math.round(windowHeight),
+                        scrollableDistance: Math.round(scrollableDistance),
+                        scrollProgress: Math.round(scrollProgress * 100) + '%',
+                        containerRectTop: Math.round(containerRect.top),
+                        containerRectBottom: Math.round(containerRect.bottom),
+                        isContainerInView: containerRect.top <= windowHeight && containerRect.bottom >= 0,
+                        condition: containerRect.top > windowHeight ? 'before' : 
+                                  (containerRect.top < windowHeight - containerHeight ? 'after' : 'inside')
+                    });
+
+                    // 標題切換邏輯（進入 -> 停留 -> 離開）
+                    titleItems.forEach((item, index) => {
+                        const itemIndex = index + 1;
+                        
+                        if (itemIndex === 1) {
+                            // Title 1: 0% - 33%
+                            if (scrollProgress >= 0 && scrollProgress < stage1End) {
+                                item.classList.add('active');
+                                item.classList.remove('exiting');
+                            } else {
+                                item.classList.remove('active');
+                                if (scrollProgress >= stage1End) {
+                                    item.classList.add('exiting');
+                                } else {
+                                    item.classList.remove('exiting');
+                                }
+                            }
+                        } else if (itemIndex === 2) {
+                            // Title 2: 33% - 66%
+                            if (scrollProgress >= stage1End && scrollProgress < stage2End) {
+                                item.classList.add('active');
+                                item.classList.remove('exiting');
+                            } else {
+                                item.classList.remove('active');
+                                if (scrollProgress >= stage2End) {
+                                    item.classList.add('exiting');
+                                } else {
+                                    item.classList.remove('exiting');
+                                }
+                            }
+                        } else if (itemIndex === 3) {
+                            // Title 3: 66% - 100%
+                            if (scrollProgress >= stage3Start) {
+                                item.classList.add('active');
+                                item.classList.remove('exiting');
+                            } else {
+                                item.classList.remove('active', 'exiting');
+                            }
+                        }
+                    });
+                    
+                    // 調試：標題狀態
+                    const titleStates = {
+                        title1: titleItems[0]?.classList.contains('active') ? 'active' : 
+                               (titleItems[0]?.classList.contains('exiting') ? 'exiting' : 'hidden'),
+                        title2: titleItems[1]?.classList.contains('active') ? 'active' : 
+                               (titleItems[1]?.classList.contains('exiting') ? 'exiting' : 'hidden'),
+                        title3: titleItems[2]?.classList.contains('active') ? 'active' : 
+                               (titleItems[2]?.classList.contains('exiting') ? 'exiting' : 'hidden')
+                    };
+                    console.log('📝 Title States:', titleStates);
+
+                    // 圓形疊加邏輯（進入 -> 停留，不會消失）
+                    // 出現順序：小圓與 Title 1 同時 (0%)，中圓與 Title 2 同時 (33%)，大圓與 Title 3 同時 (66%)
+                    const circleSmall = document.querySelector('.circle-small');
+                    const circleMedium = document.querySelector('.circle-medium');
+                    const circleLarge = document.querySelector('.circle-large');
+                    
+                    // 確保只有在 container 進入視窗範圍內才顯示圓形
+                    const isContainerInView = containerRect.top <= windowHeight && containerRect.bottom >= 0;
+                    
+                    // 小圓：0% 時與 Title 1 同時出現（但需要 container 在視窗內）
+                    if (circleSmall) {
+                        if (isContainerInView && scrollProgress >= 0) {
+                            circleSmall.classList.add('visible');
+                        } else {
+                            circleSmall.classList.remove('visible');
+                        }
+                    }
+                    
+                    // 中圓：33% 時與 Title 2 同時出現（小圓保持）
+                    if (circleMedium) {
+                        if (isContainerInView && scrollProgress >= stage1End) {
+                            circleMedium.classList.add('visible');
+                        } else {
+                            circleMedium.classList.remove('visible');
+                        }
+                    }
+                    
+                    // 大圓：66% 時與 Title 3 同時出現（小圓、中圓保持）
+                    if (circleLarge) {
+                        if (isContainerInView && scrollProgress >= stage3Start) {
+                            circleLarge.classList.add('visible');
+                        } else {
+                            circleLarge.classList.remove('visible');
+                        }
+                    }
+                    
+                    // 調試：圓形狀態
+                    const circleStates = {
+                        small: circleSmall?.classList.contains('visible') ? 'visible' : 'hidden',
+                        medium: circleMedium?.classList.contains('visible') ? 'visible' : 'hidden',
+                        large: circleLarge?.classList.contains('visible') ? 'visible' : 'hidden'
+                    };
+                    console.log('⭕ Circle States:', circleStates);
+                    console.log('---');
+                }
+
+                // 使用 requestAnimationFrame 優化滾動性能
+                let ticking = false;
+                globalThis.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        globalThis.requestAnimationFrame(() => {
+                            handleFrame20Animation();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                // 初始檢查
+                handleFrame20Animation();
+            })();
+
+            // ============================================
+            // Solution Section - Sticky Stage 1 Animation
+            // ============================================
+            (function() {
+                const stage1Container = document.querySelector('.solution-stage1-scroll-container');
+                const stage1Stage = document.querySelector('.solution-stage1-sticky-stage');
+                if (!stage1Container || !stage1Stage) return;
+
+                const textItem1 = document.querySelector('.solution-text-item[data-text="1"]');
+                const textItem2 = document.querySelector('.solution-text-item[data-text="2"]');
+                
+                if (!textItem1 || !textItem2) return;
+
+                function handleStage1Animation() {
+                    const windowHeight = globalThis.innerHeight;
+                    
+                    // 計算 scroll-container 的滾動進度
+                    const containerRect = stage1Container.getBoundingClientRect();
+                    const containerHeight = stage1Container.offsetHeight;
+                    
+                    let scrollProgress = 0;
+                    
+                    // 使用 containerRect 計算滾動進度（基於 viewport 位置，更準確）
+                    // containerRect.top: 從 windowHeight（剛進入）到 -containerHeight + windowHeight（即將離開）
+                    const containerTopInViewport = containerRect.top;
+                    const containerBottomInViewport = containerRect.bottom;
+                    
+                    // 當 container 在 viewport 內時計算進度
+                    if (containerTopInViewport <= windowHeight && containerBottomInViewport >= 0) {
+                        // 進度計算：從 container 頂部進入 viewport（top = windowHeight）到完全離開（top = -containerHeight + windowHeight）
+                        // 當 containerTopInViewport = windowHeight 時，progress = 0
+                        // 當 containerTopInViewport = -containerHeight + windowHeight 時，progress = 1
+                        const progressStart = windowHeight;
+                        const progressEnd = windowHeight - containerHeight;
+                        const totalProgressRange = progressStart - progressEnd;
+                        
+                        if (totalProgressRange > 0) {
+                            scrollProgress = Math.max(0, Math.min(1, (progressStart - containerTopInViewport) / totalProgressRange));
+                        } else {
+                            scrollProgress = 0;
+                        }
+                    } else if (containerTopInViewport < windowHeight - containerHeight) {
+                        // container 已經完全滾過（頂部在 viewport 上方）
+                        scrollProgress = 1;
+                    } else if (containerBottomInViewport < 0) {
+                        // container 還沒有進入 viewport（底部在 viewport 下方）
+                        scrollProgress = 0;
+                    }
+
+                    // Text 1: 0% - 50% 顯示，50% 時開始退出
+                    if (scrollProgress >= 0 && scrollProgress < 0.5) {
+                        textItem1.classList.add('visible');
+                        textItem1.classList.remove('exiting');
+                        textItem2.classList.remove('visible');
+                    } 
+                    // Text 1 退出，Text 2 進入：50% - 100%
+                    else if (scrollProgress >= 0.5) {
+                        // 第一個文字退出（向上滑出）
+                        textItem1.classList.remove('visible');
+                        textItem1.classList.add('exiting');
+                        // 第二個文字進入（從下方滑入）
+                        textItem2.classList.add('visible');
+                    } else {
+                        // 初始狀態：兩個文字都隱藏
+                        textItem1.classList.remove('visible', 'exiting');
+                        textItem2.classList.remove('visible');
+                    }
+                }
+
+                let ticking = false;
+                globalThis.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        globalThis.requestAnimationFrame(() => {
+                            handleStage1Animation();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                handleStage1Animation();
+            })();
+
+            // ============================================
+            // Solution Section - Sticky Stage 2 Animation (Frame 26)
+            // ============================================
+            (function() {
+                const stage2Container = document.querySelector('.solution-stage2-scroll-container');
+                if (!stage2Container) return;
+
+                const titleContainer = document.querySelector('.frame26-title-container');
+                const matrixWrapper = document.querySelector('.frame26-matrix-wrapper');
+                const h1Overlay = document.querySelector('.frame26-h1-overlay');
+                const h2Overlay = document.querySelector('.frame26-h2-overlay');
+                const h3Overlay = document.querySelector('.frame26-h3-overlay');
+                
+                if (!titleContainer || !matrixWrapper) return;
+
+                function handleStage2Animation() {
+                    const windowHeight = globalThis.innerHeight;
+                    const scrollY = globalThis.pageYOffset || document.documentElement.scrollTop;
+                    
+                    const containerRect = stage2Container.getBoundingClientRect();
+                    const containerTop = stage2Container.offsetTop;
+                    const containerHeight = stage2Container.offsetHeight;
+                    const scrollableDistance = Math.max(1, containerHeight - windowHeight);
+                    
+                    let scrollProgress = 0;
+                    
+                    if (containerRect.top <= 0 && containerRect.bottom > windowHeight) {
+                        const scrolled = Math.abs(containerRect.top);
+                        scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+                    } else if (scrollY >= containerTop + scrollableDistance) {
+                        scrollProgress = 1;
+                    } else if (scrollY < containerTop) {
+                        scrollProgress = 0;
+                    } else {
+                        scrollProgress = Math.max(0, Math.min(1, (scrollY - containerTop) / scrollableDistance));
+                    }
+
+                    // Title: 0% - 20%
+                    if (scrollProgress >= 0 && scrollProgress < 0.2) {
+                        titleContainer.classList.add('visible');
+                        matrixWrapper.classList.remove('visible');
+                        // 移除所有 highlight
+                        if (h1Overlay) h1Overlay.classList.remove('highlighted');
+                        if (h2Overlay) h2Overlay.classList.remove('highlighted');
+                        if (h3Overlay) h3Overlay.classList.remove('highlighted');
+                    }
+                    // Matrix: 20% - 40%
+                    else if (scrollProgress >= 0.2 && scrollProgress < 0.4) {
+                        titleContainer.classList.add('visible');
+                        matrixWrapper.classList.add('visible');
+                        // 移除所有 highlight
+                        if (h1Overlay) h1Overlay.classList.remove('highlighted');
+                        if (h2Overlay) h2Overlay.classList.remove('highlighted');
+                        if (h3Overlay) h3Overlay.classList.remove('highlighted');
+                    }
+                    // H1 highlight: 40% - 60%
+                    else if (scrollProgress >= 0.4 && scrollProgress < 0.6) {
+                        titleContainer.classList.add('visible');
+                        matrixWrapper.classList.add('visible');
+                        if (h1Overlay) h1Overlay.classList.add('highlighted');
+                        if (h2Overlay) h2Overlay.classList.remove('highlighted');
+                        if (h3Overlay) h3Overlay.classList.remove('highlighted');
+                    }
+                    // H2 highlight: 60% - 80%
+                    else if (scrollProgress >= 0.6 && scrollProgress < 0.8) {
+                        titleContainer.classList.add('visible');
+                        matrixWrapper.classList.add('visible');
+                        if (h1Overlay) h1Overlay.classList.add('highlighted');
+                        if (h2Overlay) h2Overlay.classList.add('highlighted');
+                        if (h3Overlay) h3Overlay.classList.remove('highlighted');
+                    }
+                    // H3 highlight: 80% - 100%
+                    else if (scrollProgress >= 0.8) {
+                        titleContainer.classList.add('visible');
+                        matrixWrapper.classList.add('visible');
+                        if (h1Overlay) h1Overlay.classList.add('highlighted');
+                        if (h2Overlay) h2Overlay.classList.add('highlighted');
+                        if (h3Overlay) h3Overlay.classList.add('highlighted');
+                    } else {
+                        titleContainer.classList.remove('visible');
+                        matrixWrapper.classList.remove('visible');
+                    }
+                }
+
+                let ticking = false;
+                globalThis.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        globalThis.requestAnimationFrame(() => {
+                            handleStage2Animation();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                handleStage2Animation();
+            })();
+
+            // ============================================
+            // Solution Section - Sticky Stage 3 Animation (Frame 27, 28)
+            // ============================================
+            (function() {
+                const stage3Container = document.querySelector('.solution-stage3-scroll-container');
+                if (!stage3Container) return;
+
+                const frame27Content = document.querySelector('.solution-frame27-content');
+                const frame28Content = document.querySelector('.solution-frame28-content');
+                const frame27Title = document.querySelector('.frame27-title-container');
+                const frame27Matrix = document.querySelector('.frame27-matrix-container');
+                const frame27CircleHighlight = document.querySelector('.frame27-circle-highlight[data-circle="2"]');
+                const frame28Title = document.querySelector('.frame28-title-container');
+                const frame28Matrix = document.querySelector('.frame28-matrix-container');
+                
+                if (!frame27Content || !frame28Content) return;
+
+                function handleStage3Animation() {
+                    const windowHeight = globalThis.innerHeight;
+                    const scrollY = globalThis.pageYOffset || document.documentElement.scrollTop;
+                    
+                    const containerRect = stage3Container.getBoundingClientRect();
+                    const containerTop = stage3Container.offsetTop;
+                    const containerHeight = stage3Container.offsetHeight;
+                    const scrollableDistance = Math.max(1, containerHeight - windowHeight);
+                    
+                    let scrollProgress = 0;
+                    
+                    if (containerRect.top <= 0 && containerRect.bottom > windowHeight) {
+                        const scrolled = Math.abs(containerRect.top);
+                        scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+                    } else if (scrollY >= containerTop + scrollableDistance) {
+                        scrollProgress = 1;
+                    } else if (scrollY < containerTop) {
+                        scrollProgress = 0;
+                    } else {
+                        scrollProgress = Math.max(0, Math.min(1, (scrollY - containerTop) / scrollableDistance));
+                    }
+
+                    // Frame 27: 0% - 50%
+                    if (scrollProgress >= 0 && scrollProgress < 0.5) {
+                        frame27Content.classList.add('visible');
+                        frame28Content.classList.remove('visible');
+                        
+                        const frame27Progress = scrollProgress / 0.5; // 0-1 within frame27
+                        
+                        // Title 先出: 0% - 30%
+                        if (frame27Progress >= 0 && frame27Progress < 0.3) {
+                            if (frame27Title) frame27Title.classList.add('visible');
+                            if (frame27Matrix) frame27Matrix.classList.remove('visible');
+                            if (frame27CircleHighlight) frame27CircleHighlight.classList.remove('visible');
+                        }
+                        // Matrix 後出: 30% - 50%
+                        else if (frame27Progress >= 0.3 && frame27Progress < 0.5) {
+                            if (frame27Title) frame27Title.classList.add('visible');
+                            if (frame27Matrix) frame27Matrix.classList.add('visible');
+                            if (frame27CircleHighlight) frame27CircleHighlight.classList.remove('visible');
+                        }
+                        // Circle 2 highlight: 50% - 70%
+                        else if (frame27Progress >= 0.5 && frame27Progress < 0.7) {
+                            if (frame27Title) frame27Title.classList.add('visible');
+                            if (frame27Matrix) frame27Matrix.classList.add('visible');
+                            if (frame27CircleHighlight) frame27CircleHighlight.classList.add('visible');
+                        }
+                        // Title 和 Matrix 淡出: 70% - 100%
+                        else if (frame27Progress >= 0.7) {
+                            if (frame27Title) frame27Title.classList.remove('visible');
+                            if (frame27Matrix) frame27Matrix.classList.remove('visible');
+                            if (frame27CircleHighlight) frame27CircleHighlight.classList.remove('visible');
+                        }
+                    } 
+                    // Frame 28: 50% - 100%
+                    else if (scrollProgress >= 0.5) {
+                        frame27Content.classList.remove('visible');
+                        frame28Content.classList.add('visible');
+                        
+                        const frame28Progress = (scrollProgress - 0.5) / 0.5; // 0-1 within frame28
+                        
+                        // Title 先出: 0% - 30%
+                        if (frame28Progress >= 0 && frame28Progress < 0.3) {
+                            if (frame28Title) frame28Title.classList.add('visible');
+                            if (frame28Matrix) frame28Matrix.classList.remove('visible');
+                        }
+                        // Matrix 後出: 30% - 100%
+                        else if (frame28Progress >= 0.3) {
+                            if (frame28Title) frame28Title.classList.add('visible');
+                            if (frame28Matrix) frame28Matrix.classList.add('visible');
+                        } else {
+                            if (frame28Title) frame28Title.classList.remove('visible');
+                            if (frame28Matrix) frame28Matrix.classList.remove('visible');
+                        }
+                    } else {
+                        frame27Content.classList.remove('visible');
+                        frame28Content.classList.remove('visible');
+                    }
+                }
+
+                let ticking = false;
+                globalThis.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        globalThis.requestAnimationFrame(() => {
+                            handleStage3Animation();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                handleStage3Animation();
             })();
 
             // ============================================
