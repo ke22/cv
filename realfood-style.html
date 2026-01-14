@@ -1,0 +1,3729 @@
+<!DOCTYPE html>
+<html lang="en" class="lenis">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="version" content="1.0.0">
+    <meta name="last-updated" content="2024-12-19">
+    <title>Eat Real Food</title>
+    <meta name="description" content="The Dietary Guidelines for Americans reset U.S. nutrition policy by restoring science, common sense, and real food as the foundation of national health.">
+    <!-- Version: 1.0.0 | Last Updated: 2024-12-19 -->
+    <style>
+        /* ============================================
+           CSS Variables - realfood.gov Theme
+           ============================================ */
+        :root {
+            --bg-dark: rgb(17, 0, 0);
+            --bg-cream: #fbf7ec;
+            --bg-intro: #fbf7ec;
+            --bg-problem: #232323;
+            --bg-solution: #631515;
+            --bg-pyramid: #fbf7ec;
+            --bg-guidelines: #fbf7ec;
+            --bg-faqs: #631515;
+            --bg-resources: #fbf7ec;
+            --off-white: #f5f5f0;
+            --off-black: #110000;
+            --text-white: #ffffff;
+            --text-dark: #3d3d3d;
+            --nav-pill: #3d3d3d;
+            --gray-light: #e0e0e0;
+            --red2: #d32f2f;
+            --red3: #c62828;
+            --red4: #b71c1c;
+            --white: #ffffff;
+            
+            --font-primary: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background-color: var(--bg-dark);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ============================================
+           Dynamic Text Color Classes
+           ============================================ */
+        body.text-dark {
+            color: var(--text-dark);
+        }
+
+        body.text-dark #problem .soh-heading,
+        body.text-dark #problem .soh-title,
+        body.text-dark #problem .soh-stat-text {
+            color: var(--text-dark);
+        }
+
+        body.text-dark #problem .soh-stat-number {
+            color: var(--red2);
+        }
+
+        /* ============================================
+           Navigation
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-pill {
+            background: var(--nav-pill);
+            border-radius: 50px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-dot-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-label-container {
+            overflow: hidden;
+            transition: width 0.3s ease;
+            white-space: nowrap;
+            width: 0px;
+        }
+
+        .nav-label {
+            color: #ffffff;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav-dot-button.active .nav-label-container {
+            width: auto;
+        }
+
+        .nav-dot-button.active .nav-label {
+            opacity: 1;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            background: #9a9a9a;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .nav-dot-button.active .nav-dot {
+            width: 0px;
+            height: 0px;
+            opacity: 0;
+        }
+
+        .nav-dot-button:hover .nav-dot {
+            background: #ffffff;
+            transform: scale(1.2);
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: none;
+        }
+
+        .mobile-nav-pill {
+            background: rgba(61, 61, 61, 0.95);
+            border-radius: 50px;
+            padding: 10px 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-nav-header {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0;
+            gap: 16px;
+        }
+
+        .mobile-nav-label {
+            color: #ffffff;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .mobile-nav-menu-button {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 24px;
+            height: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-nav-icon-line {
+            width: 20px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-nav-header[aria-expanded="true"] .mobile-nav-icon-line:first-child {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .mobile-nav-header[aria-expanded="true"] .mobile-nav-icon-line:last-child {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .mobile-nav-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-nav-modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-nav-modal-content {
+            position: absolute;
+            top: 100px;
+            right: 24px;
+            background: var(--off-white);
+            border-radius: 12px;
+            min-width: 280px;
+            max-width: 320px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .mobile-nav-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #d0d0d0;
+        }
+
+        .mobile-nav-modal-title {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .mobile-nav-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .mobile-nav-modal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav-modal-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .mobile-nav-modal-item:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav-modal-link {
+            text-decoration: none;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            color: #6b6b6b;
+            transition: color 0.3s ease;
+            display: block;
+        }
+
+        .mobile-nav-modal-link:hover {
+            color: var(--text-dark);
+        }
+
+        .mobile-nav-modal-link.active {
+            color: #000000;
+            font-weight: 700;
+        }
+
+        /* ============================================
+           Container
+           ============================================ */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ============================================
+           Hero Section
+           ============================================ */
+        #intro {
+            position: relative;
+            padding: 0;
+        }
+
+        /* 長跑道：決定滾動距離 */
+        .intro-scroll-container {
+            height: 100vh; /* 進一步縮短高度，讓三元素與三卡滾動更緊湊 */
+            position: relative;
+            width: 100%;
+        }
+
+        /* 固定舞台：100vh 永遠填滿畫面 */
+        .intro-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh; /* 永遠填滿畫面 */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Hero 內容容器 */
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            color: var(--text-white);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            position: relative;
+        }
+
+        .hero-description {
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.6;
+            margin-bottom: 48px;
+            color: rgba(255, 255, 255, 0.9);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            position: relative;
+        }
+
+        .hero-cta-button {
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--text-white);
+            color: var(--bg-dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 18px;
+            transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+        }
+
+        /* Visible states - 使用 !important 確保覆蓋父元素的 transform */
+        .hero-title.visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .hero-description.visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .hero-cta-button.visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        
+        /* Ensure hero-content transform doesn't interfere with child transforms */
+        .hero-content .hero-title,
+        .hero-content .hero-description,
+        .hero-content .hero-cta-button {
+            position: relative;
+            z-index: 1;
+            will-change: opacity, transform; /* 優化性能 */
+        }
+
+        .hero-cta-button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+        
+        .hero-cta-button.visible:hover {
+            transform: translateY(-2px) !important;
+        }
+
+        /* ============================================
+           Flip Cards Section with Sticky Scrollytelling
+           ============================================ */
+        /* Flip Cards Scroll Container（長跑道） */
+        .flip-cards-scroll-container {
+            height: 500vh; /* 增加高度，讓 sticky stage 更長，滾動距離更長 */
+            position: relative;
+            width: 100%;
+        }
+
+        /* Flip Cards Sticky Stage（固定舞台） */
+        .flip-cards-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh; /* 永遠填滿畫面 */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 1;
+            padding: 40px 24px;
+        }
+
+        .flip-cards-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            width: 100%;
+        }
+        
+        /* For smaller screens, reduce gap to fit 3 columns */
+        @media (max-width: 900px) and (min-width: 721px) {
+            .flip-cards-container {
+                gap: 16px;
+                padding: 0 16px;
+            }
+            
+            .flip-card-front,
+            .flip-card-back {
+                padding: 24px 16px;
+            }
+        }
+
+        .flip-card-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            min-height: 400px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        /* Flip Card Wrapper 可見狀態 */
+        .flip-card-wrapper.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .flip-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .flip-card-front {
+            background: linear-gradient(135deg, #631515 0%, #9F3030 100%);
+            color: var(--text-white);
+        }
+
+        .flip-card-back {
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-content {
+            text-align: center;
+            width: 100%;
+        }
+
+        .flip-card-number {
+            font-size: clamp(36px, 4vw, 48px);
+            font-weight: 700;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .flip-card-title {
+            font-size: clamp(22px, 2.5vw, 28px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .flip-card-description {
+            font-size: clamp(14px, 1.5vw, 18px);
+            line-height: 1.6;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .flip-card-description ul {
+            list-style: none;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .flip-card-description li {
+            margin-bottom: 16px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .flip-card-description li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 720px) {
+            .flip-cards-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .flip-card-wrapper {
+                min-height: 350px;
+            }
+            
+            .flip-card {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .flip-card {
+                height: auto;
+                min-height: 300px;
+            }
+
+            .flip-card-front,
+            .flip-card-back {
+                padding: 24px 20px;
+            }
+
+            .flip-cards-container {
+                margin-top: 60px;
+                gap: 30px;
+                padding: 0 16px;
+            }
+            
+            .flip-card-wrapper {
+                min-height: 300px;
+            }
+            
+            .flip-card-title {
+                font-size: clamp(18px, 4vw, 24px);
+            }
+            
+            .flip-card-description {
+                font-size: clamp(13px, 2vw, 16px);
+            }
+        }
+
+        /* ============================================
+           Percentages Sticky Section
+           ============================================ */
+        .dga_percentages__MnbPB {
+            position: relative;
+            min-height: 300vh; /* Increased height for scroll triggers */
+            z-index: 5; /* Above text content */
+        }
+
+        .dga_percentages_sticky__FIFjs {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            background: var(--bg-cream);
+            overflow: hidden;
+        }
+
+        .dga_percentage__fxOGZ {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            /* Position at bottom-right, showing only 1/4 of the circle */
+            bottom: 0;
+            right: 0;
+            transform: translate(25%, 25%); /* Initial position - show only 1/4 */
+            /* No transition - controlled by JavaScript for smooth scroll-based animation */
+        }
+
+        /* Large circle (95%) - Bottom layer - Outer ring */
+        .dga_percentage__fxOGZ:nth-child(3) {
+            width: 800px;
+            height: 800px;
+            background: #9F3030; /* Outer ring */
+            z-index: 1; /* Lowest - on bottom */
+        }
+
+        /* Medium circle (70%) - Middle layer */
+        .dga_percentage__fxOGZ:nth-child(2) {
+            width: 600px;
+            height: 600px;
+            background: #C44646; /* Middle ring */
+            z-index: 2; /* Middle layer */
+        }
+
+        /* Small circle (50%) - Top layer - Inner ring */
+        .dga_percentage__fxOGZ:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: #D65D5D; /* Inner ring */
+            z-index: 3; /* Highest - on top */
+        }
+
+        .dga_percentage__fxOGZ.visible {
+            opacity: 1;
+        }
+
+        .dga_percentage_text__new {
+            position: absolute;
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 120px; /* Doubled from 60px */
+            color: var(--text-dark);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Position text in the visible area of circles */
+        .dga_percentage__fxOGZ:nth-child(1) .dga_percentage_text__new {
+            /* Inner circle (50%) - position in visible 1/4 area */
+            top: 20px;
+            right: 20px;
+            transform: none;
+        }
+
+        .dga_percentage__fxOGZ:nth-child(2) .dga_percentage_text__new {
+            /* Middle circle (70%) - position in visible 1/4 area */
+            top: 20px;
+            right: 20px;
+            transform: none;
+        }
+
+        .dga_percentage__fxOGZ:nth-child(3) .dga_percentage_text__new {
+            /* Outer circle (95%) - position in visible 1/4 area */
+            top: 20px;
+            right: 20px;
+            transform: none;
+        }
+
+        .dga_percentage_text__new .font-regular {
+            font-weight: 400;
+            font-size: 0.6em;
+        }
+
+        @media (max-width: 768px) {
+            .dga_percentages_sticky__FIFjs {
+                padding: 20px 16px;
+            }
+
+            .dga_percentage__fxOGZ:nth-child(3) {
+                width: 600px;
+                height: 600px;
+            }
+
+            .dga_percentage__fxOGZ:nth-child(2) {
+                width: 450px;
+                height: 450px;
+            }
+
+            .dga_percentage__fxOGZ:nth-child(1) {
+                width: 300px;
+                height: 300px;
+            }
+
+            .dga_percentage_text__new {
+                font-size: 40px;
+            }
+        }
+
+        /* ============================================
+           State of Health Section
+           ============================================ */
+        #problem {
+            min-height: 100vh;
+            padding: 120px 0;
+            position: relative;
+        }
+
+        /* State of Health Animation Section */
+        .dga_stateOfHealth__5YmNX {
+            position: relative;
+            min-height: 300vh; /* Increased height for scroll triggers */
+        }
+
+        .dga_soh_animation__Zmouz {
+            position: relative;
+        }
+
+        .dga_soh_heading_container__luWcl {
+            text-align: center;
+            padding: 40px 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .dga_soh_heading_container__luWcl.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .dga_soh_heading__IlLyl {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            color: var(--text-white);
+            margin: 0;
+        }
+
+        .dga_soh_container__rovjd {
+            position: relative;
+            min-height: 200vh;
+        }
+
+        .dga_soh_content_sticky__6xgEe {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .dga_soh_content_sticky__6xgEe.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .dga_soh_content_text__FzD8r {
+            position: absolute;
+            max-width: 800px;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-12px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .dga_soh_content_text__FzD8r.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .dga_text__nmeK_ h3 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-white);
+            margin: 0;
+        }
+
+        .dga_soh_content__Gla00 {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .soh-heading {
+            text-align: center;
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            margin-bottom: 80px;
+            color: var(--text-white);
+        }
+
+        .soh-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .soh-title {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 60px;
+            color: var(--text-white);
+        }
+
+        .soh-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .soh-stat {
+            text-align: center;
+        }
+
+        .soh-stat-number {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            color: var(--red2);
+            margin-bottom: 16px;
+        }
+
+        .soh-stat-text {
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ============================================
+           Solution Section
+           ============================================ */
+        #solution {
+            min-height: 100vh;
+            padding: 120px 0;
+            /* background removed to allow body gradient to show through */
+            position: relative;
+        }
+
+        .solution-title {
+            text-align: center;
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 60px;
+            color: var(--text-white);
+        }
+
+        .solution-text {
+            max-width: 1000px;
+            margin: 0 auto;
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        /* ============================================
+           Broken System Component
+           ============================================ */
+        .dga_lineInTheSand__MYFnR {
+            margin: 80px 0;
+        }
+
+        .dga_broken_system_wrapper__OOvVj {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .dga_broken_system_sticky__K1eSK {
+            position: sticky;
+            top: 120px;
+            z-index: 10;
+        }
+
+        .dga_broken_system_image_container__H9d4u {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            opacity: 0;
+            filter: blur(20px);
+            transition: opacity 0.8s ease, filter 0.8s ease;
+        }
+
+        .dga_broken_system_image_container__H9d4u.visible {
+            opacity: 1;
+            filter: blur(0);
+        }
+
+        .dga_broken_system_image_button__mJSOV {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .dga_broken_system_image__22Ouk {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .dga_broken_system_caption__XeChf {
+            margin-top: 16px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+
+        .dga_broken_system_text__c9msC {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+        }
+
+        .dga_broken_system_text__c9msC.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dga_line_highlighted__jONEG {
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s ease;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .dga_broken_system_text__c9msC .dga_line_highlighted__jONEG {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .dga_broken_system_text__c9msC .dga_line_highlighted__jONEG:hover {
+            color: var(--text-white);
+        }
+
+        .dga_text_line__Z7pRO .dga_line_highlighted__jONEG {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .dga_text_line__Z7pRO .dga_line_highlighted__jONEG:hover {
+            color: var(--text-white);
+        }
+
+        /* ============================================
+           Solvable Problem Component
+           ============================================ */
+        .dga_solvable_problem__52Str {
+            margin-top: 120px;
+            padding: 80px 0;
+        }
+
+        .dga_disintegrating_text__mGtdY {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            line-height: 1.1;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--text-white);
+        }
+
+        .dga_disintegrating_line__DqX41 {
+            display: block;
+            overflow: hidden;
+        }
+
+        .dga_disintegrating_char__Uawaf {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .dga_disintegrating_char__Uawaf.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dga_text_line__Z7pRO {
+            max-width: 1000px;
+            margin: 0 auto;
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+
+        .dga_line_dimmed__BUp_B {
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .dga_line_dimmed__BUp_B:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .dga_nowrap_desktop__Ye_Pj {
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .dga_nowrap_desktop__Ye_Pj {
+                white-space: normal;
+            }
+
+            .dga_broken_system_sticky__K1eSK {
+                top: 80px;
+            }
+        }
+
+        /* ============================================
+           Dark Wrapper
+           ============================================ */
+        .dga_dark__E4iDO {
+            /* background removed */
+            color: var(--text-white);
+        }
+
+        /* ============================================
+           Pyramid Section
+           ============================================ */
+        #pyramid {
+            min-height: 100vh;
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .dga_food_pyramid__ubhSz {
+            min-height: 100vh;
+            position: relative;
+            background: var(--bg-pyramid);
+        }
+
+        .dga_new_food_pyramid__kNv0X {
+            position: relative;
+            min-height: 100vh;
+            padding: 120px 0;
+        }
+
+        .dga_pyramid_bg_light__v81p0 {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-pyramid);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .dga_pyramid_intro_sticky__6kzDE {
+            position: sticky;
+            top: 120px;
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .dga_pyramid_intro_stack__J8eNy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dga_pyramid_intro_kicker__xBrVa {
+            font-size: 18px;
+            color: rgba(0, 0, 0, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease, color 0.3s ease;
+        }
+
+        .dga_pyramid_intro_title__EswmV {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            color: var(--text-dark);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease, color 0.3s ease;
+        }
+
+        .dga_pyramid_content___b2fn {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .dga_pyramid_content___b2fn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dga_new_pyramid__zuspN {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .dga_pt_2__cXr7E {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .dga_pt_2__cXr7E h2 {
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 700;
+            color: var(--text-dark);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .dga_food_container__zSiqe {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .dga_pt_tooltips__CaEru {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .dga_pyramid_tooltip__M0CoS {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 21;
+        }
+
+        .dga_pyramid_tooltip_content__aazCN {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .dga_pyramid_tooltip__M0CoS:hover .dga_pyramid_tooltip_content__aazCN,
+        .dga_pyramid_tooltip__M0CoS.active .dga_pyramid_tooltip_content__aazCN {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dga_pyramid_tooltip_title__Gllnx {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .dga_triangle_wrapper__pzWEM {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .dga_triangle__cRNPd {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(50px) scale(0.8);
+            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.3s ease;
+        }
+
+        .dga_triangle__cRNPd.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .dga_foods__p9Bwb {
+            position: absolute;
+            inset: 0;
+            z-index: 15;
+        }
+
+        .dga_foods_inner__8Km6e {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .dga_proteins_group__zmqve,
+        .dga_fv_group__peGxg,
+        .dga_wg_group__OKjfd {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .dga_proteins_group__zmqve.visible,
+        .dga_fv_group__peGxg.visible,
+        .dga_wg_group__OKjfd.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .dga_food__suy27 {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .dga_food__suy27:hover {
+            transform: scale(1.1);
+        }
+
+        .dga_food__suy27 img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .dga_food_content__JdGdZ {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .dga_food__suy27:hover .dga_food_content__JdGdZ {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dga_servings__kbtTj {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .dga_minimap__uJm_M {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 100;
+            display: none;
+        }
+
+        .dga_minimap_container__wBYbW {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .dga_minimap_triangle__JCQn0 {
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+        }
+
+        .dga_minimap_section__L_Hco {
+            position: absolute;
+            background: rgba(211, 47, 47, 0.3);
+            border: 2px solid var(--red2);
+            pointer-events: none;
+        }
+
+        .dga_end___VNIF {
+            height: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .dga_pyramid_intro_sticky__6kzDE {
+                top: 80px;
+            }
+
+            .dga_food_container__zSiqe {
+                max-width: 100%;
+            }
+
+            .dga_minimap__uJm_M {
+                display: none;
+            }
+        }
+
+        /* ============================================
+           Guidelines Section
+           ============================================ */
+        #guidelines {
+            min-height: 60vh;
+            padding: 120px 0;
+            /* background removed to allow body gradient to show through */
+        }
+
+        .guidelines-text {
+            max-width: 1000px;
+            margin: 0 auto;
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        /* ============================================
+           FAQs Section
+           ============================================ */
+        #faqs {
+            min-height: 100vh;
+            padding: 120px 0;
+            /* background removed to allow body gradient to show through */
+            color: var(--text-dark);
+        }
+
+        .faqs-heading {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            margin-bottom: 60px;
+            color: var(--text-dark);
+        }
+
+        .faqs-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 24px 0;
+        }
+
+        .faq-button {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0;
+        }
+
+        .faq-question {
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-right: 24px;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .faq-item[data-open="true"] .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-text {
+            font-size: clamp(16px, 2vw, 20px);
+            line-height: 1.6;
+            color: #6b6b6b;
+        }
+
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item[data-open="true"] .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* ============================================
+           Resources Section
+           ============================================ */
+        #resources {
+            min-height: 100vh;
+            padding: 120px 0;
+            /* background removed to allow body gradient to show through */
+            color: var(--text-dark);
+        }
+
+        .resources-heading {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+        }
+
+        .resources-description {
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.6;
+            margin-bottom: 60px;
+            color: #6b6b6b;
+        }
+
+        .resources-docs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-bottom: 60px;
+        }
+
+        .resource-doc {
+            background: var(--text-white);
+            border-radius: 8px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+        }
+
+        .resource-doc:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-doc-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .resource-doc-description {
+            font-size: 16px;
+            color: #6b6b6b;
+            line-height: 1.5;
+        }
+
+        /* ============================================
+           Footer
+           ============================================ */
+        #footer {
+            min-height: 40vh;
+            padding: 80px 0;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            text-align: center;
+        }
+
+        .footer-heading {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .footer-text {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ============================================
+           Responsive
+           ============================================ */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            
+            .mobile-nav {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .soh-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav {
+                display: none;
+            }
+        }
+
+        /* ============================================
+           Additional Styles from realfood.gov
+           ============================================ */
+        
+        .lightbox_overlay__RVSIv {
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(0 0 0/.95);
+        }
+
+        .lightbox_background__wOcmL {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .lightbox_background_image_wrapper__QqevL {
+            position: absolute;
+            inset: -50px;
+            pointer-events: none;
+            user-select: none;
+            opacity: .15;
+            filter: blur(100px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox_background__wOcmL:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-color: rgb(0 0 0/.5);
+            pointer-events: none;
+        }
+
+        .lightbox_background_image__9mEfy {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lightbox_controls_wrapper__WNRNP {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            display: flex;
+            height: 100%;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .lightbox_nav_button__oC4Mw {
+            display: flex;
+            height: 100%;
+            width: 33.333%;
+            cursor: pointer;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+            background: none;
+            border: none;
+        }
+
+        .lightbox_nav_button__oC4Mw:focus {
+            outline: none;
+        }
+
+        .lightbox_nav_button_prev__ARRUT {
+            justify-content: flex-start;
+        }
+
+        .lightbox_nav_button_next__M9poX {
+            justify-content: flex-end;
+        }
+
+        .lightbox_close_button__hmMKH {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background: rgba(0,0,0,.4);
+            border-radius: 50%;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            transition: background .2s ease,transform .2s ease;
+        }
+
+        .lightbox_close_button__hmMKH:hover {
+            background: rgba(255,255,255,.2);
+            transform: scale(1.05);
+        }
+
+        .lightbox_close_button__hmMKH:focus-visible {
+            outline: 2px solid white;
+            outline-offset: 2px;
+        }
+
+        .lightbox_close_icon__7SIsf {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .lightbox_button_inner__nPjFy {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            background-color: rgb(115 115 115/.2);
+            padding-left: 20px;
+            padding-right: 20px;
+            color: white;
+            transition: background-color .2s,opacity .3s,backdrop-filter .3s;
+            opacity: 0;
+            backdrop-filter: blur(0);
+        }
+
+        .lightbox_nav_button__oC4Mw:hover .lightbox_button_inner__nPjFy {
+            opacity: 1;
+            backdrop-filter: blur(12px);
+            background-color: rgb(115 115 115/.7);
+        }
+
+        .lightbox_image_container__CeC3a {
+            position: relative;
+            display: flex;
+            height: calc(100vh - 40px);
+            max-width: 90vw;
+            align-items: center;
+            justify-content: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .lightbox_image_wrapper__safB_ {
+            position: relative;
+            height: 100%;
+            width: auto;
+        }
+
+        .lightbox_image__7Qqyi {
+            height: 100%;
+            width: auto;
+            border-radius: 16px;
+            object-fit: contain;
+        }
+
+        .lightbox_caption__U3bX6 {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            font-size: 12px;
+            letter-spacing: .36px;
+            color: rgb(255 255 255/.5);
+        }
+
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+
+        .lenis:not(.lenis-autoToggle).lenis-stopped {
+            overflow: clip;
+        }
+
+        .lenis [data-lenis-prevent-touch], .lenis [data-lenis-prevent-wheel], .lenis [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-smooth iframe {
+            pointer-events: none;
+        }
+
+        .lenis.lenis-autoToggle {
+            transition-property: overflow;
+            transition-duration: 1ms;
+            transition-behavior: allow-discrete;
+        }
+
+        /* Additional component styles from realfood.gov */
+        /* Note: Some styles may already exist above - these are complementary styles */
+
+        /* ============================================
+           Visual Grid Overlay - for element placement
+           ============================================ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+            display: block;
+        }
+
+        /* Optional: Larger grid overlay (8px spacing for finer control) */
+        body.grid-fine::before {
+            background-size: 8px 8px;
+        }
+
+        /* Optional: Medium grid overlay (40px spacing for larger sections) */
+        body.grid-medium::before {
+            background-size: 40px 40px;
+        }
+
+        /* Optional: Large grid overlay (80px spacing for major sections) */
+        body.grid-large::before {
+            background-size: 80px 80px;
+        }
+
+        /* Toggle grid visibility */
+        body.grid-hidden::before {
+            display: none;
+        }
+
+        /* Grid toggle button */
+        .grid-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .grid-toggle:hover {
+            background: rgba(255, 0, 0, 1);
+            transform: scale(1.05);
+        }
+
+        /* Trigger point viewer toggle button */
+        .trigger-viewer-toggle {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(0, 255, 255, 0.8);
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .trigger-viewer-toggle:hover {
+            background: rgba(0, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        .trigger-viewer-toggle.active {
+            background: rgba(0, 255, 0, 0.9);
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+        }
+
+        /* Cursor coordinate display */
+        .cursor-coords {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            background: rgba(0, 0, 0, 0.85);
+            color: #00ff00;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid #00ff00;
+            box-shadow: 0 2px 8px rgba(0, 255, 0, 0.5);
+            transform: translate(-50%, -100%);
+            margin-top: -10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .cursor-coords.visible {
+            opacity: 1;
+        }
+
+        .cursor-coords .coord-label {
+            color: #00ff00;
+            margin-right: 8px;
+        }
+
+        .cursor-coords .coord-value {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Navigation -->
+    <nav class="nav" aria-label="Main navigation">
+        <div class="nav-pill">
+            <button class="nav-dot-button" aria-label="Eat Real Food" data-section="intro">
+                <span class="nav-label-container">
+                    <span class="nav-label">Eat Real Food</span>
+                </span>
+                <span class="nav-dot"></span>
+            </button>
+            <button class="nav-dot-button active" aria-label="State Of Our Health" data-section="problem">
+                <span class="nav-label-container">
+                    <span class="nav-label">State Of Our Health</span>
+                </span>
+                <span class="nav-dot"></span>
+            </button>
+            <button class="nav-dot-button" aria-label="The Solution" data-section="solution">
+                <span class="nav-label-container">
+                    <span class="nav-label">The Solution</span>
+                </span>
+                <span class="nav-dot"></span>
+            </button>
+            <button class="nav-dot-button" aria-label="New Pyramid" data-section="pyramid">
+                <span class="nav-label-container">
+                    <span class="nav-label">New Pyramid</span>
+                </span>
+                <span class="nav-dot"></span>
+            </button>
+            <button class="nav-dot-button" aria-label="FAQs" data-section="faqs">
+                <span class="nav-label-container">
+                    <span class="nav-label">FAQs</span>
+                </span>
+                <span class="nav-dot"></span>
+            </button>
+            <button class="nav-dot-button" aria-label="Resources" data-section="resources">
+                <span class="nav-label-container">
+                    <span class="nav-label">Resources</span>
+                </span>
+                <span class="nav-dot"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+        <div class="mobile-nav-pill">
+            <button class="mobile-nav-header" aria-label="Open menu" aria-expanded="false">
+                <span class="mobile-nav-label">State Of Our Health</span>
+                <div class="mobile-nav-menu-button">
+                    <div class="mobile-nav-icon-line"></div>
+                    <div class="mobile-nav-icon-line"></div>
+                </div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Modal -->
+    <div class="mobile-nav-modal" aria-label="Mobile navigation menu">
+        <div class="mobile-nav-modal-content">
+            <div class="mobile-nav-modal-header">
+                <div class="mobile-nav-modal-title">State Of Our Health</div>
+                <button class="mobile-nav-modal-close" aria-label="Close menu">×</button>
+            </div>
+            <ul class="mobile-nav-modal-list">
+                <li class="mobile-nav-modal-item">
+                    <a href="#intro" class="mobile-nav-modal-link">Eat Real Food</a>
+                </li>
+                <li class="mobile-nav-modal-item">
+                    <a href="#problem" class="mobile-nav-modal-link active">State Of Our Health</a>
+                </li>
+                <li class="mobile-nav-modal-item">
+                    <a href="#solution" class="mobile-nav-modal-link">The Solution</a>
+                </li>
+                <li class="mobile-nav-modal-item">
+                    <a href="#pyramid" class="mobile-nav-modal-link">New Pyramid</a>
+                </li>
+                <li class="mobile-nav-modal-item">
+                    <a href="#faqs" class="mobile-nav-modal-link">FAQs</a>
+                </li>
+                <li class="mobile-nav-modal-item">
+                    <a href="#resources" class="mobile-nav-modal-link">Resources</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section with Flip Cards -->
+        <section id="intro">
+            <!-- 長跑道：scroll-container -->
+            <div class="intro-scroll-container">
+                <!-- 固定舞台：sticky-stage -->
+                <div class="intro-sticky-stage">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Real Food<br>Starts Here</h1>
+                        <p class="hero-description">
+                            Better health begins on your plate—not in your medicine cabinet.<br>
+                            The new Dietary Guidelines for Americans defines real food as whole, nutrient-dense, and naturally occurring, placing them back at the center of our diets.
+                        </p>
+                        <a href="#resources" class="hero-cta-button">
+                            <span>View the Guidelines</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Flip Cards in Three Columns with Sticky Scrollytelling -->
+            <div class="flip-cards-scroll-container">
+                <!-- 固定舞台：sticky-stage -->
+                <div class="flip-cards-sticky-stage">
+                    <div class="flip-cards-container">
+                <!-- Card 1 -->
+                <div class="flip-card-wrapper" data-card="1">
+                    <div class="flip-card">
+                        <div class="flip-card-front">
+                            <div class="flip-card-content">
+                                <div class="flip-card-number">1</div>
+                                <div class="flip-card-title">任務目標</div>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="flip-card-content">
+                                <div class="flip-card-title">任務目標</div>
+                                <div class="flip-card-description">
+                                    <ul>
+                                        <li>優化編輯產出流程與品質</li>
+                                        <li>完成論文與研討會成果</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flip-card-wrapper" data-card="2">
+                    <div class="flip-card">
+                        <div class="flip-card-front">
+                            <div class="flip-card-content">
+                                <div class="flip-card-number">2</div>
+                                <div class="flip-card-title">策略目標</div>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="flip-card-content">
+                                <div class="flip-card-title">策略目標</div>
+                                <div class="flip-card-description">
+                                    <ul>
+                                        <li>以視覺創意組為核心啟動 AI 流程轉型</li>
+                                        <li>置身創新實踐學習場域</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flip-card-wrapper" data-card="3">
+                    <div class="flip-card">
+                        <div class="flip-card-front">
+                            <div class="flip-card-content">
+                                <div class="flip-card-number">3</div>
+                                <div class="flip-card-title">個人目標</div>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="flip-card-content">
+                                <div class="flip-card-title">個人目標</div>
+                                <div class="flip-card-description">
+                                    <ul>
+                                        <li>累積 AI 工作流規劃的實戰經驗</li>
+                                        <li>提升個人思維與心智層次</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- State of Health Section -->
+        <section id="problem" class="dga_stateOfHealth__5YmNX" aria-labelledby="soh-heading">
+            <div class="dga_soh_animation__Zmouz">
+                <div class="dga_soh_heading_container__luWcl" id="soh-heading-container">
+                    <h2 id="soh-heading" class="dga_soh_heading__IlLyl">The State of Our Health</h2>
+                </div>
+                <div class="dga_soh_container__rovjd">
+                    <div class="dga_soh_content_sticky__6xgEe" id="soh-content-sticky">
+                        <div class="dga_soh_content_text__FzD8r" data-stat="0">
+                            <div class="dga_text__nmeK_">
+                                <h3 class="dga_soh_title__16573">America is sick.<br>The data is clear.</h3>
+                            </div>
+                        </div>
+                        <div class="dga_soh_content_text__FzD8r" data-stat="1">
+                            <div class="dga_text__nmeK_">
+                                <h3>50% of Americans have <span style="color: var(--red4);">prediabetes or diabetes</span></h3>
+                            </div>
+                        </div>
+                        <div class="dga_soh_content_text__FzD8r" data-stat="2">
+                            <div class="dga_text__nmeK_">
+                                <h3>75% of adults report having at least one <span style="color: var(--red4);">chronic condition</span></h3>
+                            </div>
+                        </div>
+                        <div class="dga_soh_content_text__FzD8r" data-stat="3">
+                            <div class="dga_text__nmeK_">
+                                <h3>90% of U.S. healthcare spending goes to treating <span style="color: var(--white);">chronic disease</span>—much of which is linked to diet and lifestyle</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dga_soh_content__Gla00" data-stat="0"></div>
+                    <div class="dga_soh_content__Gla00" data-stat="1"></div>
+                    <div class="dga_soh_content__Gla00" data-stat="2"></div>
+                    <div class="dga_soh_content__Gla00" data-stat="3"></div>
+                    <div class="dga_soh_content__Gla00" data-stat="4"></div>
+                </div>
+            </div>
+            <!-- Concentric Circles Section -->
+            <div class="dga_percentages__MnbPB" id="percentages-section">
+                <div class="dga_percentages_sticky__FIFjs">
+                    <!-- Small circle (50%) - Top layer - Inner ring -->
+                    <div class="dga_percentage__fxOGZ">
+                        <span class="dga_percentage_text__new">
+                            <span>50</span>
+                            <span class="font-regular">%</span>
+                        </span>
+                    </div>
+                    <!-- Medium circle (70%) - Middle layer -->
+                    <div class="dga_percentage__fxOGZ">
+                        <span class="dga_percentage_text__new">
+                            <span>70</span>
+                            <span class="font-regular">%</span>
+                        </span>
+                    </div>
+                    <!-- Large circle (95%) - Bottom layer - Outer ring -->
+                    <div class="dga_percentage__fxOGZ">
+                        <span class="dga_percentage_text__new">
+                            <span>95</span>
+                            <span class="font-regular">%</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <div class="dga_dark__E4iDO">
+            <section id="solution" class="dga_lineInTheSand__MYFnR">
+                <div class="dga_broken_system_wrapper__OOvVj">
+                    <div class="dga_broken_system_sticky__K1eSK">
+                        <div class="dga_broken_system_image_container__H9d4u">
+                            <button type="button" class="dga_broken_system_image_button__mJSOV" tabindex="0" aria-label="1992 Food Pyramid">
+                                <img 
+                                    alt="1992 Food Pyramid" 
+                                    loading="lazy" 
+                                    width="440" 
+                                    height="340" 
+                                    decoding="async" 
+                                    class="dga_broken_system_image__22Ouk" 
+                                    src="https://via.placeholder.com/600x400?text=1992+Food+Pyramid"
+                                />
+                            </button>
+                            <span class="dga_broken_system_caption__XeChf">1992 Food Pyramid</span>
+                        </div>
+                        <p class="dga_broken_system_text__c9msC">
+                            <span><span class="dga_line_highlighted__jONEG">For</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">decades</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">we've</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">been</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">misled</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">by</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">guidance</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">that</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">prioritized</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">highly</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">processed</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">food,</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">and</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">are</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">now</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">facing</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">rates</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">of</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">unprecedented</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">chronic</span> </span>
+                            <span><span class="dga_line_highlighted__jONEG">disease.</span></span>
+                        </p>
+                    </div>
+                </div>
+                <div id="solution-solvable-unique" class="dga_solvable_problem__52Str">
+                    <div class="container">
+                        <h2 class="dga_disintegrating_text__mGtdY">
+                            <div class="dga_disintegrating_line__DqX41">
+                                <span style="display:inline-flex"><span class="dga_disintegrating_char__Uawaf">W</span><span class="dga_disintegrating_char__Uawaf" style="margin-left: -0.08em;">e</span></span><span>&nbsp;</span><span style="display:inline-flex"><span class="dga_disintegrating_char__Uawaf">c</span><span class="dga_disintegrating_char__Uawaf">a</span><span class="dga_disintegrating_char__Uawaf">n</span></span><span>&nbsp;</span><span style="display:inline-flex"><span class="dga_disintegrating_char__Uawaf">s</span><span class="dga_disintegrating_char__Uawaf">o</span><span class="dga_disintegrating_char__Uawaf">l</span><span class="dga_disintegrating_char__Uawaf">v</span><span class="dga_disintegrating_char__Uawaf">e</span></span>
+                            </div>
+                            <div class="dga_disintegrating_line__DqX41">
+                                <span style="display:inline-flex"><span class="dga_disintegrating_char__Uawaf">t</span><span class="dga_disintegrating_char__Uawaf">h</span><span class="dga_disintegrating_char__Uawaf">i</span><span class="dga_disintegrating_char__Uawaf">s</span></span><span>&nbsp;</span><span style="display:inline-flex"><span class="dga_disintegrating_char__Uawaf">c</span><span class="dga_disintegrating_char__Uawaf">r</span><span class="dga_disintegrating_char__Uawaf">i</span><span class="dga_disintegrating_char__Uawaf">s</span><span class="dga_disintegrating_char__Uawaf">i</span><span class="dga_disintegrating_char__Uawaf">s</span><span class="dga_disintegrating_char__Uawaf">.</span></span>
+                            </div>
+                        </h2>
+                    </div>
+                    <div class="container">
+                        <p>
+                            <span class="dga_text_line__Z7pRO">
+                                <span><span data-word-id="line-word-0" class="dga_line_highlighted__jONEG">For</span> </span>
+                                <span><span data-word-id="line-word-1" class="dga_line_highlighted__jONEG">the</span> </span>
+                                <span><span data-word-id="line-word-2" class="dga_line_highlighted__jONEG">first</span> </span>
+                                <span><span data-word-id="line-word-3" class="dga_line_highlighted__jONEG">time,</span> </span>
+                                <span><span data-word-id="line-word-4" class="dga_line_highlighted__jONEG">we're</span> </span>
+                                <span><span data-word-id="line-word-5" class="dga_line_highlighted__jONEG">calling</span> </span>
+                                <span><span data-word-id="line-word-6" class="dga_line_highlighted__jONEG">out</span> </span>
+                                <span><span data-word-id="line-word-7" class="dga_line_highlighted__jONEG">the</span> </span>
+                                <span><span data-word-id="line-word-8" class="dga_line_highlighted__jONEG">dangers</span> </span>
+                                <span><span data-word-id="line-word-9" class="dga_line_highlighted__jONEG">of</span> </span>
+                                <span><span data-word-id="line-word-10" class="dga_line_highlighted__jONEG">highly</span> </span>
+                                <span><span data-word-id="line-word-11" class="dga_line_highlighted__jONEG">processed</span> </span>
+                                <span><span data-word-id="line-word-12" class="dga_line_highlighted__jONEG">foods</span> </span>
+                                <span><span data-word-id="line-word-13" class="dga_line_highlighted__jONEG">and</span> </span>
+                                <span><span data-word-id="line-word-14" class="dga_line_highlighted__jONEG">rebuilding</span> </span>
+                                <span><span data-word-id="line-word-15" class="dga_line_highlighted__jONEG">a</span> </span>
+                                <span><span data-word-id="line-word-16" class="dga_line_highlighted__jONEG">broken</span> </span>
+                                <span><span data-word-id="line-word-17" class="dga_line_highlighted__jONEG">system</span> </span>
+                                <span><span data-word-id="line-word-18" class="dga_line_highlighted__jONEG">from</span> </span>
+                                <span><span data-word-id="line-word-19" class="dga_line_highlighted__jONEG">the</span> </span>
+                                <span><span data-word-id="line-word-20" class="dga_line_highlighted__jONEG">ground</span> </span>
+                                <span><span data-word-id="line-word-21" class="dga_line_highlighted__jONEG">up</span> </span>
+                                <span><span data-word-id="line-word-22" class="dga_line_highlighted__jONEG">with</span> </span>
+                                <span><span data-word-id="line-word-23" class="dga_line_highlighted__jONEG">gold-standard</span> </span>
+                                <span><span data-word-id="line-word-24" class="dga_line_highlighted__jONEG">science</span> </span>
+                                <span><span data-word-id="line-word-25" class="dga_line_highlighted__jONEG">and</span> </span>
+                                <span class="dga_nowrap_desktop__Ye_Pj"><span data-word-id="line-word-26" class="dga_line_highlighted__jONEG">common</span> <span data-word-id="line-word-27" class="dga_line_highlighted__jONEG">sense.</span></span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Pyramid Section -->
+        <div id="pyramid" class="dga_food_pyramid__ubhSz">
+            <section class="dga_new_food_pyramid__kNv0X">
+                <div class="dga_pyramid_bg_light__v81p0"></div>
+                <div class="dga_pyramid_intro_sticky__6kzDE">
+                    <div class="dga_pyramid_intro_stack__J8eNy">
+                        <div class="dga_pyramid_intro_kicker__xBrVa">Introducing</div>
+                        <h2 class="dga_pyramid_intro_title__EswmV">The New Pyramid</h2>
+                    </div>
+                </div>
+                <div class="dga_pyramid_content___b2fn">
+                    <div class="dga_new_pyramid__zuspN">
+                        <div class="dga_pt_2__cXr7E">
+                            <h2>Eat Real <br>Food</h2>
+                        </div>
+                        <div class="dga_food_container__zSiqe">
+                            <div class="dga_pt_tooltips__CaEru">
+                                <div class="dga_pyramid_tooltip__M0CoS" style="top:5%">
+                                    <div class="dga_pyramid_tooltip_content__aazCN">
+                                        <span class="dga_pyramid_tooltip_title__Gllnx">Protein, Dairy, &amp; Healthy Fats</span>
+                                    </div>
+                                </div>
+                                <div class="dga_pyramid_tooltip__M0CoS" style="top:40%">
+                                    <div class="dga_pyramid_tooltip_content__aazCN">
+                                        <span class="dga_pyramid_tooltip_title__Gllnx">Vegetables &amp; Fruits</span>
+                                    </div>
+                                </div>
+                                <div class="dga_pyramid_tooltip__M0CoS" style="top:73%">
+                                    <div class="dga_pyramid_tooltip_content__aazCN">
+                                        <span class="dga_pyramid_tooltip_title__Gllnx">Whole Grains</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dga_triangle_wrapper__pzWEM">
+                                <svg class="dga_triangle__cRNPd" viewBox="-10 -5 120 96.6" xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="-0.2" y1="0" x2="100.5" y2="0" stroke="#110000" stroke-width="0.25" stroke-dasharray="100.7" stroke-dashoffset="0"></line>
+                                    <line x1="34.1108545034642" y1="54.75" x2="70.8891454965358" y2="54.75" stroke="#110000" stroke-width="0.25" stroke-dasharray="36.7782909930716" stroke-dashoffset="0"></line>
+                                </svg>
+                            </div>
+                            <div class="dga_foods__p9Bwb">
+                                <div class="dga_foods_inner__8Km6e">
+                                    <div class="dga_proteins_group__zmqve">
+                                        <!-- Protein foods will be added via JavaScript or can be added here statically -->
+                                        <div class="dga_food__suy27" style="top: 20%; left: 45%; width: 8%; height: 12%;">
+                                            <img alt="Protein" src="https://via.placeholder.com/100?text=Protein" loading="lazy" />
+                                            <div class="dga_food_content__JdGdZ">
+                                                <div class="dga_servings__kbtTj">2-3 servings</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dga_fv_group__peGxg">
+                                        <!-- Fruits and vegetables will be added via JavaScript or can be added here statically -->
+                                        <div class="dga_food__suy27" style="top: 50%; left: 45%; width: 8%; height: 12%;">
+                                            <img alt="Vegetables" src="https://via.placeholder.com/100?text=Veg" loading="lazy" />
+                                            <div class="dga_food_content__JdGdZ">
+                                                <div class="dga_servings__kbtTj">4-6 servings</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dga_wg_group__OKjfd">
+                                        <!-- Whole grains will be added via JavaScript or can be added here statically -->
+                                        <div class="dga_food__suy27" style="top: 80%; left: 45%; width: 8%; height: 12%;">
+                                            <img alt="Grains" src="https://via.placeholder.com/100?text=Grains" loading="lazy" />
+                                            <div class="dga_food_content__JdGdZ">
+                                                <div class="dga_servings__kbtTj">2-3 servings</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dga_end___VNIF"></div>
+            </section>
+        </div>
+
+        <!-- Guidelines Section -->
+        <section id="guidelines">
+            <div class="container">
+                <p class="guidelines-text">
+                    Our nation is finding its footing again, moving past decades of unhealthy eating and rebuilding a food culture rooted in health, science, transparency, and personal responsibility.
+                </p>
+            </div>
+        </section>
+
+        <!-- FAQs Section -->
+        <section id="faqs">
+            <div class="container">
+                <h2 class="faqs-heading">Key<br>Guidance</h2>
+                <div class="faqs-list">
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">What is the New Pyramid?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                The New Pyramid is a simple guide designed to help Americans eat real, whole foods more consistently. It prioritizes nutrient-dense foods and reduces reliance on highly processed products, using modern nutrition science to support everyday health.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">What does "Eat Real Food" mean?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                Eating real food means choosing foods that are whole or minimally processed and recognizable as food. These foods are prepared with few ingredients and without added sugars, industrial oils, artificial flavors, or preservatives.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">Why does the New Pyramid emphasize protein and vegetables?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                Protein and vegetables form the foundation of real food meals. Together, they support muscle health, metabolic function, gut health, and stable energy while naturally crowding out highly processed foods.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">Are fats part of eating real foods?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                Yes. Healthy fats are a natural part of real foods such as meat, seafood, dairy, nuts, olives, and avocados. These fats support brain health, hormone function, and nutrient absorption when consumed in their natural forms.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">How does the New Pyramid address added sugars?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                Added sugars are not part of eating real foods and are not recommended. The New Pyramid encourages avoiding added sugars entirely, especially for children, while allowing naturally occurring sugars found in whole fruits and plain dairy.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">Where do grains fit in the New Pyramid?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                Grains can be part of a real food diet when eaten in whole or traditionally prepared forms. Foods like oats, rice, and true sourdough are preferred. Refined and packaged grain products should be limited.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">What about hydration?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                Hydration matters. Choose water or unsweetened beverages to accompany meals and snacks.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item" data-open="false">
+                        <button class="faq-button" aria-expanded="false">
+                            <h3 class="faq-question">Is the New Pyramid a strict diet?</h3>
+                            <svg class="faq-icon" width="14" height="14" viewBox="0 0 12 12" fill="currentColor">
+                                <path fill="currentColor" d="m6.721 9.242 3.24-3.24 1.018 1.02L6 12 1.021 7.021 2.04 6.002l3.24 3.24V0h1.442z"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <p class="faq-answer-text">
+                                No. The New Pyramid is a flexible framework meant to guide better choices, not dictate exact meals. It supports cultural traditions, personal preferences, and different lifestyles while reinforcing one core goal: eat real foods most of the time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources">
+            <div class="container">
+                <h2 class="resources-heading">Resources</h2>
+                <p class="resources-description">
+                    Explore the research, recommendations, and implementation guidance that shape the Dietary Guidelines, including the science, the policy guidance, and the everyday serving framework.
+                </p>
+                <div class="resources-docs">
+                    <a href="#" class="resource-doc">
+                        <div class="resource-doc-title">Scientific Foundation Appendices</div>
+                        <div class="resource-doc-description">Comprehensive research data and appendices</div>
+                    </a>
+                    <a href="#" class="resource-doc">
+                        <div class="resource-doc-title">The Scientific Foundation</div>
+                        <div class="resource-doc-description">Evidence-based nutrition recommendations</div>
+                    </a>
+                    <a href="#" class="resource-doc">
+                        <div class="resource-doc-title">Daily Servings Guide</div>
+                        <div class="resource-doc-description">Practical serving size recommendations</div>
+                    </a>
+                    <a href="#" class="resource-doc">
+                        <div class="resource-doc-title">Dietary Guidelines for Americans</div>
+                        <div class="resource-doc-description">Complete policy document</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <section id="footer">
+        <div class="container">
+            <h2 class="footer-heading">Eat Real</h2>
+            <p class="footer-text">Designed & Engineered in D.C. by National Design Studio</p>
+        </div>
+    </section>
+
+    <script>
+        // ============================================
+        // Helper Functions for Color Interpolation
+        // ============================================
+        function interpolateColor(color1, color2, progress) {
+            return {
+                r: Math.round(color1.r + (color2.r - color1.r) * progress),
+                g: Math.round(color1.g + (color2.g - color1.g) * progress),
+                b: Math.round(color1.b + (color2.b - color1.b) * progress)
+            };
+        }
+        
+        function getSectionAtPosition(sections, viewportCenter) {
+            for (let i = 0; i < sections.length; i++) {
+                const section = sections[i];
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (viewportCenter >= sectionTop && viewportCenter < sectionBottom) {
+                    return { section, index: i, top: sectionTop, bottom: sectionBottom };
+                }
+            }
+            return null;
+        }
+        
+        function calculateTransitionProgress(viewportCenter, transitionStart, transitionEnd) {
+            if (viewportCenter < transitionStart || viewportCenter > transitionEnd) {
+                return null;
+            }
+            return Math.max(0, Math.min(1,
+                (viewportCenter - transitionStart) / (transitionEnd - transitionStart)
+            ));
+        }
+        
+        function calculateTextColor(currentTextType, nextTextType, progress) {
+            if (currentTextType === nextTextType) {
+                return currentTextType === 'dark';
+            }
+            return progress > 0.5 ? nextTextType === 'dark' : currentTextType === 'dark';
+        }
+
+        // ============================================
+        // Scroll Trigger Debug Mode
+        // Press 'D' key to toggle debug visualization
+        // ============================================
+        let debugMode = false;
+        let debugMarkers = [];
+        let debugPanel = null;
+
+        function initDebugMode() {
+            // Create debug panel
+            debugPanel = document.createElement('div');
+            debugPanel.id = 'scroll-debug-panel';
+            debugPanel.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.9);
+                color: #00ff00;
+                padding: 15px;
+                border-radius: 8px;
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+                z-index: 10000;
+                max-width: 300px;
+                display: none;
+                border: 2px solid #00ff00;
+            `;
+            document.body.appendChild(debugPanel);
+
+            // Create visual markers for trigger points
+            function createMarkers() {
+                // Clear existing markers
+                debugMarkers.forEach(marker => marker.remove());
+                debugMarkers = [];
+
+                // Mark all sections
+                document.querySelectorAll('section[id]').forEach(section => {
+                    const marker = document.createElement('div');
+                    marker.className = 'debug-section-marker';
+                    marker.dataset.sectionId = section.id;
+                    marker.style.cssText = `
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                        height: 3px;
+                        background: rgba(255, 0, 0, 0.5);
+                        z-index: 9998;
+                        pointer-events: none;
+                        box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+                    `;
+                    const rect = section.getBoundingClientRect();
+                    marker.style.top = `${rect.top + globalThis.scrollY}px`;
+                    document.body.appendChild(marker);
+                    debugMarkers.push(marker);
+                });
+
+                // Mark percentages section
+                const percentagesSection = document.getElementById('percentages-section');
+                if (percentagesSection) {
+                    const marker = document.createElement('div');
+                    marker.className = 'debug-trigger-marker';
+                    marker.dataset.triggerId = 'percentages';
+                    marker.style.cssText = `
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                        height: 3px;
+                        background: rgba(0, 255, 255, 0.5);
+                        z-index: 9998;
+                        pointer-events: none;
+                        box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+                    `;
+                    const rect = percentagesSection.getBoundingClientRect();
+                    marker.style.top = `${rect.top + globalThis.scrollY}px`;
+                    document.body.appendChild(marker);
+                    debugMarkers.push(marker);
+                }
+
+                // Mark solvable problem section
+                const solvableSection = document.getElementById('solution-solvable-unique');
+                if (solvableSection) {
+                    const marker = document.createElement('div');
+                    marker.className = 'debug-trigger-marker';
+                    marker.dataset.triggerId = 'solvable-text';
+                    marker.style.cssText = `
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                        height: 3px;
+                        background: rgba(255, 255, 0, 0.5);
+                        z-index: 9998;
+                        pointer-events: none;
+                        box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+                    `;
+                    const rect = solvableSection.getBoundingClientRect();
+                    marker.style.top = `${rect.top + globalThis.scrollY}px`;
+                    document.body.appendChild(marker);
+                    debugMarkers.push(marker);
+                }
+            }
+
+            function updateDebugInfo() {
+                if (!debugMode || !debugPanel) return;
+
+                const scrollY = globalThis.scrollY;
+                const viewportHeight = globalThis.innerHeight;
+                const scrollPercent = (scrollY / (document.documentElement.scrollHeight - viewportHeight)) * 100;
+
+                let info = `<div style="margin-bottom: 10px; font-weight: bold; border-bottom: 1px solid #00ff00; padding-bottom: 5px;">🔍 Scroll Debug Mode</div>`;
+                info += `<div>Scroll Y: ${Math.round(scrollY)}px</div>`;
+                info += `<div>Scroll %: ${Math.round(scrollPercent)}%</div>`;
+                info += `<div>Viewport: ${viewportHeight}px</div>`;
+                info += `<div style="margin-top: 10px; border-top: 1px solid #00ff00; padding-top: 5px; margin-bottom: 5px;">Active Sections:</div>`;
+
+                // Check which sections are active
+                document.querySelectorAll('section[id]').forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const isInView = rect.top < viewportHeight && rect.bottom > 0;
+                    const visibility = Math.max(0, Math.min(100, 
+                        ((Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0)) / viewportHeight) * 100
+                    ));
+                    
+                    if (isInView) {
+                        info += `<div style="color: #00ff00;">✓ ${section.id} (${Math.round(visibility)}% visible)</div>`;
+                    }
+                });
+
+                // Check percentages section progress
+                const percentagesSection = document.getElementById('percentages-section');
+                if (percentagesSection) {
+                    const rect = percentagesSection.getBoundingClientRect();
+                    if (rect.top < viewportHeight && rect.top > -rect.height) {
+                        const sectionTop = rect.top;
+                        const sectionHeight = rect.height;
+                        const scrollProgress = Math.max(0, Math.min(1, 
+                            (viewportHeight - sectionTop) / (viewportHeight + sectionHeight)
+                        ));
+                        info += `<div style="margin-top: 10px; border-top: 1px solid #00ff00; padding-top: 5px; margin-bottom: 5px;">Percentages Progress:</div>`;
+                        info += `<div>Progress: ${Math.round(scrollProgress * 100)}%</div>`;
+                        
+                        const ranges = [
+                            { start: 0.1, end: 0.3, label: '50% circle' },
+                            { start: 0.4, end: 0.6, label: '75% circle' },
+                            { start: 0.7, end: 0.9, label: '90% circle' }
+                        ];
+                        ranges.forEach((range, index) => {
+                            const isActive = scrollProgress >= range.start && scrollProgress <= range.end;
+                            let progress = 0;
+                            if (isActive) {
+                                progress = ((scrollProgress - range.start) / (range.end - range.start)) * 100;
+                            } else if (scrollProgress > range.end) {
+                                progress = 100;
+                            }
+                            info += `<div style="color: ${isActive ? '#00ff00' : '#888'};">
+                                ${range.label}: ${Math.round(progress)}%
+                            </div>`;
+                        });
+                    }
+                }
+
+                debugPanel.innerHTML = info;
+            }
+
+            // Toggle debug mode
+            function toggleDebugMode() {
+                debugMode = !debugMode;
+                
+                if (debugMode) {
+                    debugPanel.style.display = 'block';
+                    createMarkers();
+                    updateDebugInfo();
+                    
+                    // Update on scroll
+                    const scrollHandler = () => {
+                        updateDebugInfo();
+                        // Update marker positions
+                        createMarkers();
+                    };
+                    globalThis.addEventListener('scroll', scrollHandler, { passive: true });
+                    globalThis.addEventListener('resize', scrollHandler, { passive: true });
+                    
+                    // Store handler for cleanup
+                    globalThis._debugScrollHandler = scrollHandler;
+                } else {
+                    debugPanel.style.display = 'none';
+                    debugMarkers.forEach(marker => marker.remove());
+                    debugMarkers = [];
+                    if (globalThis._debugScrollHandler) {
+                        globalThis.removeEventListener('scroll', globalThis._debugScrollHandler);
+                        globalThis.removeEventListener('resize', globalThis._debugScrollHandler);
+                    }
+                }
+                
+                // Update trigger viewer button state if it exists
+                const triggerBtn = document.querySelector('.trigger-viewer-toggle');
+                if (triggerBtn) {
+                    if (debugMode) {
+                        triggerBtn.classList.add('active');
+                        triggerBtn.innerHTML = '觸發點: ON<br><small>Trigger Points</small>';
+                    } else {
+                        triggerBtn.classList.remove('active');
+                        triggerBtn.innerHTML = '觸發點: OFF<br><small>Press to toggle</small>';
+                    }
+                }
+                
+                return debugMode;
+            }
+
+            // Expose toggle function globally for button access
+            globalThis.toggleTriggerViewer = toggleDebugMode;
+            globalThis.getTriggerViewerState = () => debugMode;
+
+            // Keyboard shortcut: Press 'D' to toggle
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'd' || e.key === 'D') {
+                    if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                        toggleDebugMode();
+                    }
+                }
+            });
+
+            // Log all IntersectionObserver creations
+            const originalObserve = IntersectionObserver.prototype.observe;
+            IntersectionObserver.prototype.observe = function(element) {
+                if (debugMode) {
+                    console.log('🔍 IntersectionObserver 觀察元素:', {
+                        id: element.id,
+                        className: element.className,
+                        element: element
+                    });
+                }
+                return originalObserve.call(this, element);
+            };
+        }
+
+        // ============================================
+        // Navigation Scroll Sync
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize debug mode
+            initDebugMode();
+            const navButtons = document.querySelectorAll('.nav-dot-button');
+            const sections = document.querySelectorAll('section[id]');
+            const mobileNavHeader = document.querySelector('.mobile-nav-header');
+            const mobileNavModal = document.querySelector('.mobile-nav-modal');
+            const mobileNavClose = document.querySelector('.mobile-nav-modal-close');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-modal-link');
+
+            // Desktop navigation - scroll to section
+            navButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const sectionId = button.dataset.section;
+                    const target = document.getElementById(sectionId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            // Mobile navigation toggle
+            if (mobileNavHeader) {
+                mobileNavHeader.addEventListener('click', () => {
+                    const isExpanded = mobileNavHeader.getAttribute('aria-expanded') === 'true';
+                    mobileNavHeader.setAttribute('aria-expanded', !isExpanded);
+                    mobileNavModal.classList.toggle('active');
+                });
+            }
+
+            if (mobileNavClose) {
+                mobileNavClose.addEventListener('click', () => {
+                    mobileNavHeader.setAttribute('aria-expanded', 'false');
+                    mobileNavModal.classList.remove('active');
+                });
+            }
+
+            // Mobile nav links
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        mobileNavHeader.setAttribute('aria-expanded', 'false');
+                        mobileNavModal.classList.remove('active');
+                    }
+                });
+            });
+
+            // Update active nav on scroll
+            const observerOptions = {
+                threshold: 0.3,
+                rootMargin: '-100px 0px -50% 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        
+                        // Update desktop nav
+                        navButtons.forEach((btn) => {
+                            if (btn.dataset.section === id) {
+                                btn.classList.add('active');
+                            } else {
+                                btn.classList.remove('active');
+                            }
+                        });
+
+                        // Update mobile nav label
+                        const sectionLabels = {
+                            'intro': 'Eat Real Food',
+                            'problem': 'State Of Our Health',
+                            'solution': 'The Solution',
+                            'pyramid': 'New Pyramid',
+                            'faqs': 'FAQs',
+                            'resources': 'Resources'
+                        };
+                        if (sectionLabels[id] && mobileNavHeader) {
+                            mobileNavHeader.querySelector('.mobile-nav-label').textContent = sectionLabels[id];
+                        }
+
+                        // Update mobile nav active link
+                        mobileNavLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+
+            // ============================================
+            // Smooth Background Color Transition on Scroll
+            // ============================================
+            let ticking = false;
+            
+            // 定義每個 section 的顏色 (RGB)
+            const sectionColors = {
+                intro: { r: 251, g: 247, b: 236 },      // #FBF7EC
+                problem: { r: 35, g: 35, b: 35 },       // #232323
+                solution: { r: 99, g: 21, b: 21 },      // #631515
+                pyramid: { r: 251, g: 247, b: 236 },    // #FBF7EC
+                guidelines: { r: 251, g: 247, b: 236 }, // #FBF7EC
+                faqs: { r: 99, g: 21, b: 21 },         // #631515
+                resources: { r: 251, g: 247, b: 236 }   // #FBF7EC
+            };
+            
+            // 定義每個 section 的文字顏色類型
+            const sectionTextTypes = {
+                intro: 'dark',      // 淺色背景用深色文字
+                problem: 'light',   // 深色背景用淺色文字
+                solution: 'light',  // 紅色背景用淺色文字
+                pyramid: 'dark',    // 淺色背景用深色文字
+                guidelines: 'dark', // 淺色背景用深色文字
+                faqs: 'light',      // 紅色背景用淺色文字
+                resources: 'dark'   // 淺色背景用深色文字
+            };
+            
+            function checkNextSectionTransition(sections, currentSectionInfo, viewportCenter) {
+                const nextSectionIndex = currentSectionInfo.index + 1;
+                if (nextSectionIndex >= sections.length || !sections[nextSectionIndex].el) {
+                    return null;
+                }
+                
+                const currentSectionId = sections[currentSectionInfo.index].id;
+                const nextSectionId = sections[nextSectionIndex].id;
+                const currentSectionColor = sectionColors[currentSectionId];
+                const sectionHeight = currentSectionInfo.bottom - currentSectionInfo.top;
+                
+                // 如果是從 intro 到 problem，讓漸變更靠近 problem 才開始（90% 位置）
+                // 其他 section 保持 5% 的過渡
+                const transitionStartRatio = (currentSectionId === 'intro' && nextSectionId === 'problem') ? 0.9 : 0.05;
+                const transitionStart = currentSectionInfo.top + sectionHeight * transitionStartRatio;
+                
+                const nextSection = sections[nextSectionIndex].el;
+                const nextSectionTop = nextSection.offsetTop;
+                const nextSectionHeight = nextSection.offsetHeight;
+                // 縮小漸變範圍：從 5% 改為 2%，讓漸變更集中
+                const transitionEndRatio = (currentSectionId === 'intro' && nextSectionId === 'problem') ? 0.02 : 0.05;
+                const transitionEnd = nextSectionTop + nextSectionHeight * transitionEndRatio;
+                
+                const progress = calculateTransitionProgress(viewportCenter, transitionStart, transitionEnd);
+                if (progress === null) {
+                    return null;
+                }
+                
+                const nextSectionColor = sectionColors[nextSectionId];
+                const color = interpolateColor(currentSectionColor, nextSectionColor, progress);
+                
+                const currentTextType = sectionTextTypes[currentSectionId];
+                const nextTextType = sectionTextTypes[nextSectionId];
+                const useDarkText = calculateTextColor(currentTextType, nextTextType, progress);
+                
+                return { color, useDarkText };
+            }
+            
+            function checkPrevSectionTransition(sections, currentSectionInfo, viewportCenter) {
+                const prevSectionIndex = currentSectionInfo.index - 1;
+                if (prevSectionIndex < 0 || !sections[prevSectionIndex].el) {
+                    return null;
+                }
+                
+                const currentSectionId = sections[currentSectionInfo.index].id;
+                const currentSectionColor = sectionColors[currentSectionId];
+                const sectionHeight = currentSectionInfo.bottom - currentSectionInfo.top;
+                const prevTransitionEnd = currentSectionInfo.top + sectionHeight * 0.05; // Ends at 5% into the current section
+                
+                const prevSection = sections[prevSectionIndex].el;
+                const prevSectionTop = prevSection.offsetTop;
+                const prevSectionHeight = prevSection.offsetHeight;
+                const prevTransitionStart = prevSectionTop + prevSectionHeight * 0.05; // Starts at 5% into the previous section
+                
+                const progress = calculateTransitionProgress(viewportCenter, prevTransitionStart, prevTransitionEnd);
+                if (progress === null) {
+                    return null;
+                }
+                
+                const prevSectionId = sections[prevSectionIndex].id;
+                const prevSectionColor = sectionColors[prevSectionId];
+                const color = interpolateColor(prevSectionColor, currentSectionColor, progress);
+                
+                const prevTextType = sectionTextTypes[prevSectionId];
+                const currentTextType = sectionTextTypes[currentSectionId];
+                const useDarkText = calculateTextColor(prevTextType, currentTextType, progress);
+                
+                return { color, useDarkText };
+            }
+            
+            function calculateColorAndText(sections, viewportCenter) {
+                const currentSectionInfo = getSectionAtPosition(
+                    sections.map(s => s.el).filter(Boolean),
+                    viewportCenter
+                );
+                
+                if (!currentSectionInfo) {
+                    return {
+                        color: sectionColors.intro,
+                        useDarkText: sectionTextTypes.intro === 'dark'
+                    };
+                }
+                
+                const currentSectionId = sections[currentSectionInfo.index].id;
+                
+                // 檢查與下一個 section 的過渡
+                const nextTransition = checkNextSectionTransition(sections, currentSectionInfo, viewportCenter);
+                if (nextTransition) {
+                    return nextTransition;
+                }
+                
+                // 檢查與前一個 section 的過渡
+                const prevTransition = checkPrevSectionTransition(sections, currentSectionInfo, viewportCenter);
+                if (prevTransition) {
+                    return prevTransition;
+                }
+                
+                // 在 section 內部，使用該 section 的顏色
+                return {
+                    color: sectionColors[currentSectionId],
+                    useDarkText: sectionTextTypes[currentSectionId] === 'dark'
+                };
+            }
+            
+            function updateBackgroundColor() {
+                const sections = [
+                    { id: 'intro', el: document.getElementById('intro') },
+                    { id: 'problem', el: document.getElementById('problem') },
+                    { id: 'solution', el: document.getElementById('solution') },
+                    { id: 'pyramid', el: document.getElementById('pyramid') },
+                    { id: 'guidelines', el: document.getElementById('guidelines') },
+                    { id: 'faqs', el: document.getElementById('faqs') },
+                    { id: 'resources', el: document.getElementById('resources') }
+                ];
+                
+                // 檢查必要的 section 是否存在
+                if (!sections[0].el || !sections[1].el) return;
+                
+                const windowScroll = globalThis.pageYOffset || document.documentElement.scrollTop;
+                const windowHeight = globalThis.innerHeight;
+                const viewportCenter = windowScroll + windowHeight / 2;
+                
+                const { color: currentColor, useDarkText } = calculateColorAndText(sections, viewportCenter);
+                
+                // 應用背景顏色和文字顏色
+                const bgColor = `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`;
+                document.body.style.backgroundColor = bgColor;
+                document.documentElement.style.backgroundColor = bgColor;
+                
+                if (useDarkText) {
+                    document.body.classList.add('text-dark');
+                } else {
+                    document.body.classList.remove('text-dark');
+                }
+                
+                ticking = false;
+            }
+            
+            // 使用 requestAnimationFrame 優化滾動性能
+            globalThis.addEventListener('scroll', () => {
+                if (!ticking) {
+                    globalThis.requestAnimationFrame(updateBackgroundColor);
+                    ticking = true;
+                }
+            }, { passive: true });
+            
+            // 初始調用
+            updateBackgroundColor();
+            
+            // 窗口大小改變時重新計算
+            globalThis.addEventListener('resize', () => {
+                updateBackgroundColor();
+            }, { passive: true });
+
+            // ============================================
+            // Section 4: Broken System & Solvable Problem Animations
+            // ============================================
+            const brokenSystemImage = document.querySelector('.dga_broken_system_image_container__H9d4u');
+            const brokenSystemText = document.querySelector('.dga_broken_system_text__c9msC');
+            const disintegratingChars = document.querySelectorAll('.dga_disintegrating_char__Uawaf');
+
+            // Broken System Animation
+            if (brokenSystemImage && brokenSystemText) {
+                const brokenSystemObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setTimeout(() => {
+                                brokenSystemImage.style.opacity = '1';
+                                brokenSystemImage.style.filter = 'blur(0)';
+                                brokenSystemImage.style.transform = 'translateY(0)';
+                            }, 100);
+                            setTimeout(() => {
+                                brokenSystemText.style.opacity = '1';
+                                brokenSystemText.style.filter = 'blur(0)';
+                                brokenSystemText.style.transform = 'translateY(0)';
+                            }, 400);
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -100px 0px'
+                });
+
+                brokenSystemObserver.observe(brokenSystemImage);
+            }
+
+            // Disintegrating Text Animation
+            if (disintegratingChars.length > 0) {
+                const solvableProblemSection = document.getElementById('solution-solvable-unique');
+                if (solvableProblemSection) {
+                    const animateChar = (char, index) => {
+                        setTimeout(() => {
+                            char.style.opacity = '1';
+                            char.style.transform = 'translateY(0) scale(1)';
+                            char.style.color = 'rgba(255, 255, 255, 1)';
+                            char.style.textShadow = 'none';
+                        }, index * 30);
+                    };
+
+                    const handleIntersection = (entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                disintegratingChars.forEach(animateChar);
+                            }
+                        });
+                    };
+
+                    const textObserver = new IntersectionObserver(handleIntersection, {
+                        threshold: 0.3,
+                        rootMargin: '0px 0px -100px 0px'
+                    });
+
+                    textObserver.observe(solvableProblemSection);
+                }
+            }
+
+            // ============================================
+            // Hero Content Sequential Reveal Animation (Sticky Scrollytelling)
+            // ============================================
+            (function() {
+                const scrollContainer = document.querySelector('.intro-scroll-container');
+                const stickyStage = document.querySelector('.intro-sticky-stage');
+                if (!scrollContainer || !stickyStage) return;
+
+                const heroTitle = document.querySelector('#intro .hero-title');
+                const heroDescription = document.querySelector('#intro .hero-description');
+                const heroButton = document.querySelector('#intro .hero-cta-button');
+
+                if (!heroTitle || !heroDescription || !heroButton) return;
+
+                // Title 自動動畫進入（不需要滾動觸發）
+                const showTitle = () => {
+                    heroTitle.classList.add('visible');
+                };
+                
+                // 當 sticky-stage 進入 viewport 時，立即顯示 Title
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            showTitle();
+                        }
+                    });
+                }, {
+                    threshold: 0,
+                    rootMargin: '0px'
+                });
+
+                observer.observe(stickyStage);
+                
+                // 立即檢查並顯示 Title（如果已經在 viewport 中）
+                const checkInitialTitle = () => {
+                    const stickyRect = stickyStage.getBoundingClientRect();
+                    const windowHeight = globalThis.innerHeight;
+                    if (stickyRect.top < windowHeight && stickyRect.bottom > 0) {
+                        showTitle();
+                    }
+                };
+                
+                // 立即執行一次
+                checkInitialTitle();
+                
+                // DOMContentLoaded 後再檢查
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', checkInitialTitle);
+                } else {
+                    setTimeout(checkInitialTitle, 100);
+                }
+
+                function handleHeroReveal() {
+                    const windowHeight = globalThis.innerHeight;
+                    const scrollY = globalThis.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // 計算 scroll-container 的滾動進度
+                    const containerTop = scrollContainer.offsetTop;
+                    const containerHeight = scrollContainer.offsetHeight;
+                    const scrollableDistance = Math.max(1, containerHeight - windowHeight);
+                    
+                    let scrollProgress = 0;
+                    
+                    // 計算滾動進度：從 container 進入 viewport 開始到 container 離開 viewport 結束
+                    if (scrollY >= containerTop && scrollY < containerTop + scrollableDistance) {
+                        // 在 container 範圍內滾動
+                        scrollProgress = Math.max(0, Math.min(1, (scrollY - containerTop) / scrollableDistance));
+                    } else if (scrollY >= containerTop + scrollableDistance) {
+                        // 已經滾過 container
+                        scrollProgress = 1;
+                    }
+                    // scrollY < containerTop 時 scrollProgress 保持為 0（初始值）
+
+                    // 依序顯示元素，縮短滾動間距讓動畫更快完成
+                    // 支援 scroll up 倒退效果
+                    
+                    // Title 自動顯示，但當 scroll up 回到 container 之前時隱藏
+                    if (scrollY < containerTop) {
+                        heroTitle.classList.remove('visible');
+                    } else {
+                        heroTitle.classList.add('visible');
+                    }
+                    
+                    // Description 在 30% 滾動時出現，scroll up 時倒退
+                    if (scrollProgress >= 0.3) {
+                        heroDescription.classList.add('visible');
+                    } else {
+                        heroDescription.classList.remove('visible');
+                    }
+
+                    // Button 在 60% 滾動時出現（30% + 30%），scroll up 時倒退
+                    if (scrollProgress >= 0.6) {
+                        heroButton.classList.add('visible');
+                    } else {
+                        heroButton.classList.remove('visible');
+                    }
+                    
+                    // 在三個元素都出現之前（scrollProgress < 0.16），sticky-stage 固定在畫面上
+                    // 畫面不會真的往下滑動，感覺在同一頁觸發動畫
+                }
+
+                // 使用 requestAnimationFrame 優化滾動性能
+                let ticking = false;
+                globalThis.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        globalThis.requestAnimationFrame(() => {
+                            handleHeroReveal();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                // 初始檢查
+                handleHeroReveal();
+            })();
+
+            // ============================================
+            // Flip Cards Sequential Flip Animation (Sticky Scrollytelling)
+            // ============================================
+            (function() {
+                const flipCardsScrollContainer = document.querySelector('.flip-cards-scroll-container');
+                const flipCardsStickyStage = document.querySelector('.flip-cards-sticky-stage');
+                if (!flipCardsScrollContainer || !flipCardsStickyStage) return;
+
+                const cardWrappers = document.querySelectorAll('.flip-card-wrapper');
+                const flipCards = document.querySelectorAll('.flip-card');
+                
+                if (cardWrappers.length === 0) return;
+
+                function handleFlipCards() {
+                    const windowHeight = globalThis.innerHeight;
+                    const scrollY = globalThis.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // 計算 flip-cards-scroll-container 的滾動進度
+                    const containerTop = flipCardsScrollContainer.offsetTop;
+                    const containerHeight = flipCardsScrollContainer.offsetHeight;
+                    const scrollableDistance = Math.max(1, containerHeight - windowHeight);
+                    
+                    let scrollProgress = 0;
+                    
+                    // 計算滾動進度：調整計算方式，讓 3% 對應到 container 剛進入 viewport 的時機
+                    if (scrollY < containerTop) {
+                        // 在 container 進入 viewport 之前，scrollProgress 保持為 0
+                        scrollProgress = 0;
+                    } else if (scrollY >= containerTop && scrollY < containerTop + scrollableDistance) {
+                        // 在 container 範圍內滾動
+                        // 調整計算：讓前 3% 的進度對應到 container 剛進入 viewport 的瞬間
+                        const rawProgress = (scrollY - containerTop) / scrollableDistance;
+                        // 將 0-1 的進度映射到 0.03-1，這樣當 rawProgress = 0 時，scrollProgress = 0.03
+                        scrollProgress = 0.03 + (rawProgress * 0.97);
+                    } else if (scrollY >= containerTop + scrollableDistance) {
+                        scrollProgress = 1;
+                    }
+
+                    // 三卡 sticky stage 在 container 滾動進度 3% 時開始顯示
+                    const stickyShowThreshold = 0.03;
+
+                    // 依序顯示和翻轉卡片，增加間距讓動畫更慢
+                    cardWrappers.forEach((wrapper, index) => {
+                        const card = flipCards[index];
+                        if (!card) return;
+
+                        // 計算每個卡片的觸發點（相對於 container 內的進度）
+                        // 卡片間距 24%：Card 1: 3%, Card 2: 27%, Card 3: 51%
+                        const showThreshold = stickyShowThreshold + (index * 0.24); // 0.03, 0.27, 0.51
+                        const flipThreshold = showThreshold + 0.08; // 顯示後 8% 開始翻轉 (11%, 35%, 59%)
+
+                        // 顯示卡片（淡入 + 滑上來）
+                        // 只有在 container 滾動進度達到閾值時才顯示
+                        if (scrollProgress >= showThreshold) {
+                            wrapper.classList.add('visible');
+                        } else {
+                            wrapper.classList.remove('visible'); // Scroll up 倒退
+                        }
+
+                        // 翻轉卡片
+                        if (scrollProgress >= flipThreshold) {
+                            card.classList.add('flipped');
+                        } else {
+                            card.classList.remove('flipped'); // Scroll up 倒退
+                        }
+                    });
+                }
+
+                // 使用 requestAnimationFrame 優化滾動性能
+                let ticking = false;
+                globalThis.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        globalThis.requestAnimationFrame(() => {
+                            handleFlipCards();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                // 初始檢查
+                handleFlipCards();
+            })();
+
+            // ============================================
+            // Food Pyramid Interactive Animations
+            // ============================================
+            const pyramidSection = document.getElementById('pyramid');
+            const pyramidIntroKicker = document.querySelector('.dga_pyramid_intro_kicker__xBrVa');
+            const pyramidIntroTitle = document.querySelector('.dga_pyramid_intro_title__EswmV');
+            const pyramidContent = document.querySelector('.dga_pyramid_content___b2fn');
+            const pyramidBgLight = document.querySelector('.dga_pyramid_bg_light__v81p0');
+            const triangle = document.querySelector('.dga_triangle__cRNPd');
+            const proteinsGroup = document.querySelector('.dga_proteins_group__zmqve');
+            const fvGroup = document.querySelector('.dga_fv_group__peGxg');
+            const wgGroup = document.querySelector('.dga_wg_group__OKjfd');
+            const pt2Title = document.querySelector('.dga_pt_2__cXr7E h2');
+
+            if (pyramidSection) {
+                const pyramidObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Animate intro
+                            setTimeout(() => {
+                                if (pyramidIntroKicker) {
+                                    pyramidIntroKicker.style.opacity = '1';
+                                    pyramidIntroKicker.style.transform = 'translateY(0)';
+                                }
+                            }, 200);
+                            setTimeout(() => {
+                                if (pyramidIntroTitle) {
+                                    pyramidIntroTitle.style.opacity = '1';
+                                    pyramidIntroTitle.style.transform = 'translateY(0)';
+                                }
+                            }, 400);
+
+                            // Animate background
+                            if (pyramidBgLight) {
+                                pyramidBgLight.style.opacity = '1';
+                            }
+
+                            // Animate content
+                            setTimeout(() => {
+                                if (pyramidContent) {
+                                    pyramidContent.classList.add('visible');
+                                }
+                            }, 600);
+
+                            // Animate triangle
+                            setTimeout(() => {
+                                if (triangle) {
+                                    triangle.classList.add('visible');
+                                }
+                            }, 800);
+
+                            // Animate food groups
+                            setTimeout(() => {
+                                if (proteinsGroup) {
+                                    proteinsGroup.classList.add('visible');
+                                }
+                            }, 1000);
+                            setTimeout(() => {
+                                if (fvGroup) {
+                                    fvGroup.classList.add('visible');
+                                }
+                            }, 1200);
+                            setTimeout(() => {
+                                if (wgGroup) {
+                                    wgGroup.classList.add('visible');
+                                }
+                            }, 1400);
+
+                            // Animate title
+                            setTimeout(() => {
+                                if (pt2Title) {
+                                    pt2Title.style.opacity = '1';
+                                    pt2Title.style.transform = 'translateY(0)';
+                                }
+                            }, 1600);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -200px 0px'
+                });
+
+                pyramidObserver.observe(pyramidSection);
+            }
+
+            // Tooltip interactions
+            const tooltips = document.querySelectorAll('.dga_pyramid_tooltip__M0CoS');
+            tooltips.forEach(tooltip => {
+                tooltip.addEventListener('mouseenter', () => {
+                    tooltip.classList.add('active');
+                });
+                tooltip.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('active');
+                });
+            });
+
+            // Food item interactions
+            const foodItems = document.querySelectorAll('.dga_food__suy27');
+            foodItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.zIndex = '25';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.zIndex = '';
+                });
+            });
+
+            // Broken system image lightbox
+            const brokenSystemButton = document.querySelector('.dga_broken_system_image_button__mJSOV');
+            if (brokenSystemButton) {
+                brokenSystemButton.addEventListener('click', () => {
+                    // Create lightbox overlay
+                    const lightbox = document.createElement('div');
+                    lightbox.className = 'lightbox_overlay__RVSIv';
+                    lightbox.innerHTML = `
+                        <div class="lightbox_background__wOcmL">
+                            <div class="lightbox_background_image_wrapper__QqevL">
+                                <img class="lightbox_background_image__9mEfy" src="${brokenSystemButton.querySelector('img').src}" alt="" />
+                            </div>
+                        </div>
+                        <div class="lightbox_controls_wrapper__WNRNP">
+                            <button class="lightbox_close_button__hmMKH" aria-label="Close lightbox">
+                                <svg class="lightbox_close_icon__7SIsf" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="lightbox_image_container__CeC3a">
+                            <div class="lightbox_image_wrapper__safB_">
+                                <img class="lightbox_image__7Qqyi" src="${brokenSystemButton.querySelector('img').src}" alt="1992 Food Pyramid" />
+                                <div class="lightbox_caption__U3bX6">1992 Food Pyramid</div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(lightbox);
+                    document.body.style.overflow = 'hidden';
+
+                    // Close lightbox
+                    const closeButton = lightbox.querySelector('.lightbox_close_button__hmMKH');
+                    const closeLightbox = () => {
+                        lightbox.remove();
+                        document.body.style.overflow = '';
+                    };
+                    closeButton.addEventListener('click', closeLightbox);
+                    lightbox.addEventListener('click', (e) => {
+                        if (e.target === lightbox) {
+                            closeLightbox();
+                        }
+                    });
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') {
+                            closeLightbox();
+                        }
+                    });
+                });
+            }
+
+            // ============================================
+            // State of Health Text Animation
+            // ============================================
+            const sohHeadingContainer = document.getElementById('soh-heading-container');
+            const sohContentSticky = document.getElementById('soh-content-sticky');
+            const sohTextItems = document.querySelectorAll('.dga_soh_content_text__FzD8r');
+            const sohContentMarkers = document.querySelectorAll('.dga_soh_content__Gla00');
+
+            // Animate heading on scroll
+            if (sohHeadingContainer) {
+                const headingObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            sohHeadingContainer.classList.add('visible');
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -100px 0px'
+                });
+                headingObserver.observe(sohHeadingContainer);
+            }
+
+            // Animate content sticky container
+            if (sohContentSticky) {
+                const contentObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            sohContentSticky.classList.add('visible');
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -100px 0px'
+                });
+                contentObserver.observe(sohContentSticky);
+            }
+
+            // Animate text items based on scroll position
+            if (sohContentMarkers.length > 0 && sohTextItems.length > 0) {
+                const handleTextScroll = () => {
+                    sohContentMarkers.forEach((marker, index) => {
+                        const rect = marker.getBoundingClientRect();
+                        const viewportHeight = window.innerHeight;
+                        const isVisible = rect.top < viewportHeight * 0.8 && rect.bottom > viewportHeight * 0.2;
+                        
+                        if (isVisible && sohTextItems[index]) {
+                            // Remove active from all items
+                            sohTextItems.forEach(item => item.classList.remove('active'));
+                            // Add active to current item
+                            sohTextItems[index].classList.add('active');
+                        }
+                    });
+                };
+
+                window.addEventListener('scroll', handleTextScroll, { passive: true });
+                handleTextScroll();
+            }
+
+            // ============================================
+            // Percentages Scroll Trigger - Concentric Circles
+            // ============================================
+            const percentagesSection = document.getElementById('percentages-section');
+            const percentageCards = document.querySelectorAll('.dga_percentage__fxOGZ');
+
+            if (percentagesSection && percentageCards.length > 0) {
+                // Initialize cards to starting state (hidden, positioned at bottom-right)
+                percentageCards.forEach((card) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translate(25%, 25%)'; // Initial position - show only 1/4
+                });
+                
+                // Define animation ranges for each circle
+                const animationRanges = [
+                    { start: 0.1, end: 0.3 },  // First circle (50%) - animates from 10% to 30%
+                    { start: 0.4, end: 0.6 },  // Second circle (70%) - animates from 40% to 60%
+                    { start: 0.7, end: 0.9 }   // Third circle (95%) - animates from 70% to 90%
+                ];
+                
+                // Use scroll position to animate each circle smoothly
+                const handleScroll = () => {
+                    const rect = percentagesSection.getBoundingClientRect();
+                    const sectionTop = rect.top;
+                    const sectionHeight = rect.height;
+                    const viewportHeight = window.innerHeight;
+                    
+                    // Calculate scroll progress through the section (0 to 1)
+                    if (sectionTop < viewportHeight && sectionTop > -sectionHeight) {
+                        const scrollProgress = Math.max(0, Math.min(1, (viewportHeight - sectionTop) / (viewportHeight + sectionHeight)));
+                        
+                        // Animate each circle based on its animation range
+                        percentageCards.forEach((card, index) => {
+                            const range = animationRanges[index];
+                            // Calculate progress (0 to 1) based on scroll position
+                            let progress = 0;
+                            if (scrollProgress >= range.start && scrollProgress <= range.end) {
+                                progress = (scrollProgress - range.start) / (range.end - range.start);
+                            } else if (scrollProgress > range.end) {
+                                progress = 1;
+                            }
+                            
+                            // Calculate opacity (0 to 1)
+                            const opacity = progress;
+                            
+                            // Calculate transform - from translate(25%, 25%) to translate(0, 0)
+                            const translateX = 25 * (1 - progress); // 25% to 0%
+                            const translateY = 25 * (1 - progress); // 25% to 0%
+                            
+                            // Apply styles
+                            card.style.opacity = opacity.toString();
+                            card.style.transform = `translate(${translateX}%, ${translateY}%)`;
+                        });
+                    } else {
+                        // Section not in viewport - reset to initial state
+                        percentageCards.forEach((card) => {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translate(25%, 25%)';
+                        });
+                    }
+                };
+                
+                // Listen to scroll events
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                // Check initial state
+                handleScroll();
+            }
+
+            // ============================================
+            // FAQ Accordion
+            // ============================================
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const button = item.querySelector('.faq-button');
+                button.addEventListener('click', () => {
+                    const isOpen = item.dataset.open === 'true';
+                    const allItems = document.querySelectorAll('.faq-item');
+                    
+                    // Close all items
+                    allItems.forEach(i => {
+                        i.dataset.open = 'false';
+                        i.querySelector('.faq-button').setAttribute('aria-expanded', 'false');
+                    });
+                    
+                    // Open clicked item if it was closed
+                    if (!isOpen) {
+                        item.dataset.open = 'true';
+                        button.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+        });
+
+        // Grid overlay toggle functionality
+        (function() {
+            // Create toggle button
+            const gridToggle = document.createElement('button');
+            gridToggle.className = 'grid-toggle';
+            gridToggle.innerHTML = 'Grid: ON<br><small>Click to cycle</small>';
+            gridToggle.setAttribute('aria-label', 'Toggle grid overlay');
+            document.body.appendChild(gridToggle);
+
+            let gridState = 'default'; // 'default', 'fine', 'medium', 'large', 'hidden'
+            
+            gridToggle.addEventListener('click', function() {
+                // Remove all grid classes
+                document.body.classList.remove('grid-fine', 'grid-medium', 'grid-large', 'grid-hidden');
+                
+                // Cycle through grid states
+                switch(gridState) {
+                    case 'default':
+                        gridState = 'fine';
+                        document.body.classList.add('grid-fine');
+                        gridToggle.innerHTML = 'Grid: FINE<br><small>8px</small>';
+                        break;
+                    case 'fine':
+                        gridState = 'medium';
+                        document.body.classList.add('grid-medium');
+                        gridToggle.innerHTML = 'Grid: MEDIUM<br><small>40px</small>';
+                        break;
+                    case 'medium':
+                        gridState = 'large';
+                        document.body.classList.add('grid-large');
+                        gridToggle.innerHTML = 'Grid: LARGE<br><small>80px</small>';
+                        break;
+                    case 'large':
+                        gridState = 'hidden';
+                        document.body.classList.add('grid-hidden');
+                        gridToggle.innerHTML = 'Grid: OFF<br><small>Click to cycle</small>';
+                        break;
+                    case 'hidden':
+                        gridState = 'default';
+                        gridToggle.innerHTML = 'Grid: ON<br><small>20px</small>';
+                        break;
+                }
+            });
+        })();
+
+        // Cursor coordinate tracker
+        (function() {
+            // Create coordinate display element
+            const coordsDisplay = document.createElement('div');
+            coordsDisplay.className = 'cursor-coords';
+            coordsDisplay.innerHTML = '<span class="coord-label">X:</span><span class="coord-value" id="coord-x">0</span> <span class="coord-label">Y:</span><span class="coord-value" id="coord-y">0</span>';
+            document.body.appendChild(coordsDisplay);
+
+            const coordX = document.getElementById('coord-x');
+            const coordY = document.getElementById('coord-y');
+            let mouseX = 0;
+            let mouseY = 0;
+            let isMoving = false;
+
+            // Track mouse movement
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Update coordinate display position
+                coordsDisplay.style.left = mouseX + 'px';
+                coordsDisplay.style.top = mouseY + 'px';
+                
+                // Update coordinate values
+                coordX.textContent = mouseX;
+                coordY.textContent = mouseY;
+                
+                // Show coordinate display
+                if (!isMoving) {
+                    coordsDisplay.classList.add('visible');
+                    isMoving = true;
+                }
+            });
+
+            // Hide coordinate display when mouse leaves window
+            document.addEventListener('mouseleave', function() {
+                coordsDisplay.classList.remove('visible');
+                isMoving = false;
+            });
+
+            // Show coordinate display when mouse enters window
+            document.addEventListener('mouseenter', function() {
+                if (mouseX > 0 || mouseY > 0) {
+                    coordsDisplay.classList.add('visible');
+                    isMoving = true;
+                }
+            });
+        })();
+
+        // Trigger Point Viewer Toggle Button
+        (function() {
+            // Wait for debug mode to be initialized
+            const checkDebugMode = setInterval(() => {
+                if (globalThis.toggleTriggerViewer) {
+                    clearInterval(checkDebugMode);
+                    
+                    // Create toggle button
+                    const triggerToggle = document.createElement('button');
+                    triggerToggle.className = 'trigger-viewer-toggle';
+                    triggerToggle.innerHTML = '觸發點: OFF<br><small>Press to toggle</small>';
+                    triggerToggle.setAttribute('aria-label', 'Toggle trigger point viewer');
+                    
+                    // Update button text based on current state
+                    if (globalThis.getTriggerViewerState && globalThis.getTriggerViewerState()) {
+                        triggerToggle.classList.add('active');
+                        triggerToggle.innerHTML = '觸發點: ON<br><small>Trigger Points</small>';
+                    }
+                    
+                    triggerToggle.addEventListener('click', function() {
+                        globalThis.toggleTriggerViewer();
+                    });
+                    
+                    document.body.appendChild(triggerToggle);
+                }
+            }, 100);
+            
+            // Timeout after 5 seconds
+            setTimeout(() => clearInterval(checkDebugMode), 5000);
+        })();
+    </script>
+    
+    <!-- Grid Toggle Button -->
+    <!-- Button is created dynamically via JavaScript above -->
+</body>
+</html>
