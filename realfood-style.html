@@ -1329,8 +1329,9 @@
             position: absolute;
             top: 50%;
             left: 50%;
+            /* 固定一個寬度，避免 0.5 時因寬度變化而重排斷行 */
+            width: min(1200px, calc(100% - 80px));
             transform: translate(-50%, -50%);
-            width: 100%;
             opacity: 0;
             /* 平滑動畫僅使用 transform + opacity */
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -1354,9 +1355,8 @@
         .solution-text-item[data-text="2"].docked {
             top: 50%; /* 仍以 50% 為基準，位移全部交給 transform 控制 */
             left: 50%;
-            width: min(1200px, calc(100% - 80px));
             /* 從 translate(-50%, -50%) 平滑補間到更高的位置並縮小 */
-            transform: translate(-50%, -110%) scale(0.55);
+            transform: translate(-50%, -120%) scale(0.5);
             transform-origin: top center;
             opacity: 1;
             pointer-events: auto;
@@ -1380,6 +1380,8 @@
 
         /* Inline Frame 26 starts hidden, revealed via .visible class */
         .frame26-two-column-layout--stage1 {
+            position: relative;
+            margin-top: clamp(220px, 35vh, 300px); /* 往下錯開，避免壓到 dock 後的 Text2 */
             pointer-events: none;
         }
 
@@ -1424,6 +1426,8 @@
             line-height: 1.2;
             margin-bottom: 24px;
             color: #232323 !important;
+            /* 讓 Text2 標題維持一行，不自動換行 */
+            white-space: nowrap;
         }
 
         .solution-stage1-subtitle {
@@ -6866,63 +6870,6 @@
             max-width: 1400px;
             padding: 40px;
             text-align: center;
-        }
-
-        .solution-text-item {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) translateX(-50px);
-            width: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            pointer-events: none;
-        }
-
-        .solution-text-item.visible {
-            opacity: 1;
-            transform: translate(-50%, -50%) translateX(0);
-            pointer-events: auto;
-        }
-
-        /* 第一個文字退出動畫 - 向上滑出 */
-        .solution-text-item.exiting {
-            opacity: 0;
-            transform: translate(-50%, -50%) translateY(-30px);
-            pointer-events: none;
-        }
-
-        /* 第二個文字從下方滑入 */
-        .solution-text-item[data-text="2"] {
-            transform: translate(-50%, -50%) translateY(50px);
-        }
-
-        .solution-text-item[data-text="2"].visible {
-            transform: translate(-50%, -50%) translateY(0);
-        }
-
-        /* Dock (shrink to top-center) for Text 2, and reveal Frame 26 in same sticky stage */
-        .solution-text-item[data-text="2"].docked {
-            top: 0;  /* 改為 0，貼齊 padding 內側 */
-            left: 50%;
-            width: min(1200px, calc(100% - 80px));
-            transform: translateX(-50%) scale(0.55);
-            transform-origin: top center;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Toggle which subtitle line shows when docked */
-        .solution-text-item[data-text="2"] .frame26-docked-subtitle {
-            display: none;
-        }
-
-        .solution-text-item[data-text="2"].docked .solution-stage1-subtitle {
-            display: none;
-        }
-
-        .solution-text-item[data-text="2"].docked .frame26-docked-subtitle {
-            display: block;
         }
 
         /* Inline Frame 26 starts hidden, revealed via .visible class */
