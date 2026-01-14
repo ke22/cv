@@ -8,6 +8,7 @@ import PortfolioChapter from '@/components/story/PortfolioChapter'
 import ExecutionChapter from '@/components/story/ExecutionChapter'
 import LeadershipChapter from '@/components/story/LeadershipChapter'
 import MetricsChapter from '@/components/story/MetricsChapter'
+import DisintegratingTextSection from '@/components/DisintegratingTextSection'
 import { AtmosphericContainer } from '@/components/AtmosphericOverlays'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -36,6 +37,9 @@ export default function StoryPage() {
         
         {/* Chapter 1: Hero - 沉浸式開場 */}
         <StoryHero />
+        
+        {/* Disintegrating Text Section */}
+        <DisintegratingTextSection />
         
         {/* Chapter 2: Mission - 主線 A/B Scrollytelling */}
         <MissionChapter />
