@@ -2735,43 +2735,7 @@
 
                 <div class="dga_broken_system_wrapper__OOvVj">
                     <div class="dga_broken_system_sticky__K1eSK">
-                        <div class="dga_broken_system_image_container__H9d4u">
-                            <button type="button" class="dga_broken_system_image_button__mJSOV" tabindex="0" aria-label="1992 Food Pyramid">
-                                <img 
-                                    alt="1992 Food Pyramid" 
-                                    loading="lazy" 
-                                    width="440" 
-                                    height="340" 
-                                    decoding="async" 
-                                    class="dga_broken_system_image__22Ouk" 
-                                    src="https://via.placeholder.com/600x400?text=1992+Food+Pyramid"
-                                />
-                            </button>
-                            <span class="dga_broken_system_caption__XeChf">1992 Food Pyramid</span>
-                        </div>
-                        <p class="dga_broken_system_text__c9msC">
-                            <span><span class="dga_line_highlighted__jONEG">For</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">decades</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">we've</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">been</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">misled</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">by</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">guidance</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">that</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">prioritized</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">highly</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">processed</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">food,</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">and</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">are</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">now</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">facing</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">rates</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">of</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">unprecedented</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">chronic</span> </span>
-                            <span><span class="dga_line_highlighted__jONEG">disease.</span></span>
-                        </p>
+                        <!-- Removed: broken system image and text -->
                     </div>
                 </div>
 
@@ -3681,34 +3645,10 @@
             // ============================================
             // Section 4: Broken System & Solvable Problem Animations
             // ============================================
-            const brokenSystemImage = document.querySelector('.dga_broken_system_image_container__H9d4u');
-            const brokenSystemText = document.querySelector('.dga_broken_system_text__c9msC');
+            // Removed: brokenSystemImage and brokenSystemText (elements no longer exist)
             const disintegratingChars = document.querySelectorAll('.dga_disintegrating_char__Uawaf');
 
-            // Broken System Animation
-            if (brokenSystemImage && brokenSystemText) {
-                const brokenSystemObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            setTimeout(() => {
-                                brokenSystemImage.style.opacity = '1';
-                                brokenSystemImage.style.filter = 'blur(0)';
-                                brokenSystemImage.style.transform = 'translateY(0)';
-                            }, 100);
-                            setTimeout(() => {
-                                brokenSystemText.style.opacity = '1';
-                                brokenSystemText.style.filter = 'blur(0)';
-                                brokenSystemText.style.transform = 'translateY(0)';
-                            }, 400);
-                        }
-                    });
-                }, {
-                    threshold: 0.2,
-                    rootMargin: '0px 0px -100px 0px'
-                });
-
-                brokenSystemObserver.observe(brokenSystemImage);
-            }
+            // Broken System Animation - Removed (elements no longer exist)
 
             // Disintegrating Text Animation
             if (disintegratingChars.length > 0) {

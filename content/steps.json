@@ -1,0 +1,149 @@
+{
+  "sections": [
+    {
+      "id": "mission",
+      "anchor": "#mission",
+      "headline": "我設定主線 A/B，不是個人願望，而是為了把「編輯產出流程與品質」推進到「AI 核心流程化」，同時把實作沉澱成「論文/研討會」的可驗證成果。",
+      "body": "",
+      "track": "both"
+    },
+    {
+      "id": "gap",
+      "anchor": "#gap",
+      "headline": "現況與差距",
+      "steps": [
+        {
+          "id": "as-is",
+          "headline": "As-Is",
+          "body": "現況描述（用你自己的描述，不加新數據）",
+          "highlightTarget": "step-as-is"
+        },
+        {
+          "id": "gap",
+          "headline": "Gap",
+          "body": "缺的不是工具，而是「規劃、執行、驗收」結構",
+          "highlightTarget": "step-gap"
+        },
+        {
+          "id": "path",
+          "headline": "Path",
+          "body": "路徑規劃",
+          "highlightTarget": "step-path"
+        },
+        {
+          "id": "to-be",
+          "headline": "To-Be",
+          "body": "AI 核心流程化（可重複、可追溯、可驗收）",
+          "highlightTarget": "step-to-be"
+        }
+      ],
+      "track": "both"
+    },
+    {
+      "id": "portfolio",
+      "anchor": "#portfolio",
+      "headline": "成長布局",
+      "horizons": [
+        {
+          "id": "h1",
+          "headline": "H1：既有核心（維持/優化）",
+          "body": "對應主線 A（工作/組織）",
+          "track": "A"
+        },
+        {
+          "id": "h2",
+          "headline": "H2：新興事業（擴展能力）",
+          "body": "對應主線 A（工作/組織）",
+          "track": "A"
+        },
+        {
+          "id": "h3",
+          "headline": "H3：未來機會（投資學習）",
+          "body": "對應主線 B（研究/成長）",
+          "track": "B"
+        }
+      ],
+      "track": "both"
+    },
+    {
+      "id": "execution",
+      "anchor": "#execution",
+      "headline": "執行方法",
+      "steps": [
+        {
+          "id": "s",
+          "headline": "S（Strategic Choice）",
+          "body": "你為何選擇主線 A/B",
+          "highlightTarget": "sptsi-s"
+        },
+        {
+          "id": "p",
+          "headline": "P（Key Path）",
+          "body": "把 A/B 對準同一路徑",
+          "highlightTarget": "sptsi-p"
+        },
+        {
+          "id": "t",
+          "headline": "T（Tactical Action）",
+          "body": "把策略落成可做的動作",
+          "highlightTarget": "sptsi-t"
+        },
+        {
+          "id": "si",
+          "headline": "Si（Success Indicator）",
+          "body": "每一步必須可驗收",
+          "highlightTarget": "sptsi-si"
+        }
+      ],
+      "track": "both"
+    },
+    {
+      "id": "metrics",
+      "anchor": "#metrics",
+      "headline": "指標與資源",
+      "metrics": [
+        {
+          "id": "mission",
+          "label": "Mission",
+          "title": "任務目標",
+          "body": "優化編輯產出流程與品質"
+        },
+        {
+          "id": "strategy",
+          "label": "Strategy",
+          "title": "策略目標",
+          "body": "視覺創意組為核心 AI 流程轉型"
+        },
+        {
+          "id": "idp",
+          "label": "IDP",
+          "title": "個人發展",
+          "body": "AI 工作流實戰 + 論文/研討會 + 心智提升"
+        }
+      ],
+      "resources": [
+        {
+          "title": "Portfolio PDF",
+          "description": "作品集與案例",
+          "link": "#"
+        },
+        {
+          "title": "Quartz/Obsidian Lab",
+          "description": "知識管理入口",
+          "link": "#"
+        },
+        {
+          "title": "GitHub Repo",
+          "description": "程式碼倉庫",
+          "link": "#"
+        },
+        {
+          "title": "Contact",
+          "description": "聯絡方式",
+          "link": "#"
+        }
+      ],
+      "track": "both"
+    }
+  ]
+}
