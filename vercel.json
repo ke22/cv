@@ -1,7 +1,6 @@
 {
-  "version": 2,
-  "buildCommand": "echo 'Static site - deploying cv.html'",
-  "outputDirectory": "public",
-  "cleanUrls": true,
-  "trailingSlash": false
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install"
 }
