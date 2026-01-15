@@ -762,6 +762,10 @@ body.is-modal-open {
   text-align: left;
 }
 
+.future-outlook__value {
+  color: #ff3b30;
+}
+
 .future-outlook__sub {
   font-size: clamp(20px, 3vw, 32px);
   font-weight: 400;
@@ -876,11 +880,16 @@ body.is-modal-open {
 }
 
 .solution-text__title {
-  font-size: clamp(48px, 8vw, 120px);
+  font-size: clamp(32px, 5vw, 72px);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1;
   margin-bottom: var(--space-md);
   color: var(--text-dark);
+  letter-spacing: -0.02em;
+}
+
+.solution-text__title--disintegrate {
+  letter-spacing: -0.03em;
 }
 
 .solution-text__title--disintegrate .char {
@@ -889,6 +898,7 @@ body.is-modal-open {
   transform: translateY(20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
   will-change: opacity, transform;
+  margin-left: -0.05em;
 }
 
 .solution-text__title--disintegrate.animate .char {
@@ -941,35 +951,23 @@ body.is-modal-open {
   display: block;
 }
 
+/* Gray version: base layer, always visible */
 .solution-matrix__svg--gray {
   position: relative;
   z-index: 1;
 }
 
+/* Colored version: overlay, controlled via opacity and clip-path */
 .solution-matrix__svg--colored {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
   opacity: 0;
+  /* NO transition - instant highlight changes */
+  /* Default: show nothing */
   clip-path: circle(0% at 0% 0%);
-  transition: opacity var(--duration-slow) ease;
-}
-
-/* Highlight states */
-.solution-matrix__svg--colored.highlight-h1 {
-  opacity: 1;
-  clip-path: circle(7.2% at 28.4% 74.4%);
-}
-
-.solution-matrix__svg--colored.highlight-h1-h2 {
-  opacity: 1;
-  clip-path: polygon(0 40%, 40% 40%, 40% 100%, 0 100%);
-}
-
-.solution-matrix__svg--colored.highlight-all {
-  opacity: 1;
-  clip-path: polygon(0 0, 40% 0, 40% 100%, 0 100%);
+  -webkit-clip-path: circle(0% at 0% 0%);
 }
 
 .solution-matrix__items {
@@ -1007,20 +1005,23 @@ body.is-modal-open {
   display: block;
 }
 
+/* Gray version: base layer, always visible */
 .solution-matrix__icon--gray {
   position: relative;
   z-index: 1;
 }
 
+/* Colored version: overlay, controlled via opacity */
 .solution-matrix__icon--colored {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
   opacity: 0;
-  transition: opacity var(--duration-slow) ease;
+  /* NO transition - instant highlight changes */
 }
 
+/* Highlighted state: show colored icon (instant) */
 .solution-matrix__item.highlighted .solution-matrix__icon--colored {
   opacity: 1;
 }
@@ -1029,9 +1030,10 @@ body.is-modal-open {
   font-size: clamp(24px, 3vw, 36px);
   font-weight: 500;
   color: var(--text-muted);
-  transition: color var(--duration-slow) ease;
+  /* NO transition - instant highlight changes */
 }
 
+/* Highlighted state: text color changes to dark (instant) */
 .solution-matrix__item.highlighted .solution-matrix__text {
   color: var(--text-dark);
 }

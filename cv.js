@@ -443,24 +443,24 @@
       const card = flipCards[index];
       const startTime = index * 0.25; // Stagger cards
 
-      // Show card
+      // Show card - once visible, stay visible (no reverse removal)
       tl.to(wrapper, { 
         opacity: 1, 
         y: 0, 
         duration: 0.1,
-        onStart: () => wrapper.classList.add('visible'),
-        onReverseComplete: () => wrapper.classList.remove('visible')
+        onStart: () => wrapper.classList.add('visible')
+        // Removed onReverseComplete - cards stay visible once shown
       }, startTime);
 
       // Breathing hold
       tl.to({}, { duration: CONFIG.breathingHold }, startTime + 0.1);
 
-      // Flip card
+      // Flip card - once flipped, stay flipped (no reverse removal)
       if (card) {
         tl.to(card, { 
           duration: 0.1,
-          onStart: () => card.classList.add('flipped'),
-          onReverseComplete: () => card.classList.remove('flipped')
+          onStart: () => card.classList.add('flipped')
+          // Removed onReverseComplete - cards stay flipped once flipped
         }, startTime + 0.1 + CONFIG.breathingHold);
       }
 
@@ -640,17 +640,159 @@
   // ============================================
   // Section 4b: Solution Matrix
   // 
-  // 節奏：Visual 滑入 → Items 滑入 → H1 highlight → H2 → H3
+  // 工作流程：
+  // 1. 當 scroll 進入區段時，title 和 matrix 變為 sticky
+  // 2. Layout 滑入顯示（時間可配置）
+  // 3. Layout 完成後開始 scrub highlight
+  // 4. Highlight 為即時切換（無動畫）
+  // 5. 結尾留 10% 空間
+  // 
+  // Scroll Progress Timeline:
+  // - 0-10%: Layout 滑入
+  // - 10-20%: 等待
+  // - 20-43%: H1 highlight (stage 長度可調整)
+  // - 43-66%: H1 + H2 highlight (stage 長度可調整)
+  // - 66-90%: All highlight (stage 長度可調整)
+  // - 90-100%: 結尾留白，保持 All highlighted
+  // 
+  // 配置選項：
+  // - layoutRevealEnd: Layout 滑入完成的進度
+  // - highlightStart: Highlight 開始的進度
+  // - highlightEnd: Highlight 結束的進度（結尾留 10%）
+  // - h1StageLength, h2StageLength, h3StageLength: 各 stage 長度（可調整）
   // ============================================
   function initSolutionMatrix() {
+    console.log('[SolutionMatrix] ========== FUNCTION START ==========');
+    console.log('[SolutionMatrix] Function called, searching for elements...');
+    
     const scrollContainer = document.querySelector('.scroll-container--solution-matrix');
     const visual = document.querySelector('.solution-matrix__visual');
     const items = document.querySelector('.solution-matrix__items');
-    const matrixItems = document.querySelectorAll('.solution-matrix__item');
-    const svgColored = document.querySelector('.solution-matrix__svg--colored');
+    const coloredSvg = document.querySelector('.solution-matrix__svg--colored');
+    
+    // Get H1, H2, H3 items for .highlighted class toggle
+    const h1Item = document.querySelector('.solution-matrix__item[data-h="1"]');
+    const h2Item = document.querySelector('.solution-matrix__item[data-h="2"]');
+    const h3Item = document.querySelector('.solution-matrix__item[data-h="3"]');
 
-    if (!scrollContainer || !visual) return;
+    console.log('[SolutionMatrix] Elements found:', {
+      scrollContainer: !!scrollContainer,
+      visual: !!visual,
+      items: !!items,
+      coloredSvg: !!coloredSvg,
+      h1Item: !!h1Item,
+      h2Item: !!h2Item,
+      h3Item: !!h3Item
+    });
 
+    if (!scrollContainer || !visual) {
+      console.warn('[SolutionMatrix] Container or visual not found, skipping initialization');
+      console.warn('[SolutionMatrix] scrollContainer:', scrollContainer);
+      console.warn('[SolutionMatrix] visual:', visual);
+      return;
+    }
+
+    console.log('[SolutionMatrix] Initialized', {
+      container: !!scrollContainer,
+      visual: !!visual,
+      items: !!items,
+      coloredSvg: !!coloredSvg,
+      h1Item: !!h1Item,
+      h2Item: !!h2Item,
+      h3Item: !!h3Item
+    });
+
+    // 配置參數（可調整）
+    const config = {
+      layoutRevealEnd: 0.10,      // Layout 滑入完成的進度 (10%)
+      highlightStart: 0.20,        // Highlight 開始的進度 (20%，直接套色，無動畫)
+      highlightEnd: 0.90,          // Highlight 結束的進度 (90%，結尾留 10%)
+      // Stage 長度（可調整，總和建議 = highlightEnd - highlightStart = 0.70）
+      h1StageLength: 0.23,         // H1 stage 長度 (23% of total)
+      h2StageLength: 0.23,         // H2 stage 長度 (23% of total)
+      h3StageLength: 0.24          // H3 stage 長度 (24% of total, 填滿剩餘空間)
+    };
+    
+    // 計算實際的進度點（基於 stage 長度）
+    const highlightRange = config.highlightEnd - config.highlightStart;
+    const h1End = config.highlightStart + config.h1StageLength;
+    const h2End = h1End + config.h2StageLength;
+    const h3End = config.highlightEnd; // H3 結束在 highlightEnd
+
+    console.log('[SolutionMatrix] Config:', {
+      layoutRevealEnd: config.layoutRevealEnd,
+      highlightStart: config.highlightStart,
+      highlightEnd: config.highlightEnd,
+      thresholds: {
+        h1End: h1End.toFixed(2),
+        h2End: h2End.toFixed(2),
+        h3End: h3End.toFixed(2)
+      },
+      stageLengths: {
+        h1: config.h1StageLength,
+        h2: config.h2StageLength,
+        h3: config.h3StageLength
+      }
+    });
+
+    // Clip-path values for matrix highlighting
+    const CLIP_PATHS = {
+      none: 'circle(0% at 0% 0%)',
+      h1: 'circle(7.2% at 28.4% 74.4%)',           // H1 only (bottom-left)
+      h1h2: 'inset(41.6% 35.4% 18.6% 21.2%)',      // H1 + H2
+      all: 'inset(15.9% 6.2% 18.6% 21.2%)'         // All circles
+    };
+
+    // Track current highlight state to avoid unnecessary DOM updates
+    let currentState = -1; // -1=uninitialized, 0=none, 1=H1, 2=H1+H2, 3=all
+
+    // Function to set highlight state (INSTANT, no animation)
+    function setHighlightState(state) {
+      if (state === currentState) return;
+      
+      const stateNames = ['None', 'H1', 'H1+H2', 'All'];
+      console.log(`[SolutionMatrix] State change: ${stateNames[currentState]} → ${stateNames[state]}`);
+      currentState = state;
+
+      if (!coloredSvg) return;
+
+      // Instant state changes - no transitions
+      if (state === 0) {
+        // No highlights
+        coloredSvg.style.opacity = '0';
+        coloredSvg.style.clipPath = CLIP_PATHS.none;
+        coloredSvg.style.webkitClipPath = CLIP_PATHS.none;
+        h1Item?.classList.remove('highlighted');
+        h2Item?.classList.remove('highlighted');
+        h3Item?.classList.remove('highlighted');
+      } else if (state === 1) {
+        // H1 only (instant)
+        coloredSvg.style.opacity = '1';
+        coloredSvg.style.clipPath = CLIP_PATHS.h1;
+        coloredSvg.style.webkitClipPath = CLIP_PATHS.h1;
+        h1Item?.classList.add('highlighted');
+        h2Item?.classList.remove('highlighted');
+        h3Item?.classList.remove('highlighted');
+      } else if (state === 2) {
+        // H1 + H2 (instant)
+        coloredSvg.style.opacity = '1';
+        coloredSvg.style.clipPath = CLIP_PATHS.h1h2;
+        coloredSvg.style.webkitClipPath = CLIP_PATHS.h1h2;
+        h1Item?.classList.add('highlighted');
+        h2Item?.classList.add('highlighted');
+        h3Item?.classList.remove('highlighted');
+      } else {
+        // All (H1 + H2 + H3) (instant)
+        coloredSvg.style.opacity = '1';
+        coloredSvg.style.clipPath = CLIP_PATHS.all;
+        coloredSvg.style.webkitClipPath = CLIP_PATHS.all;
+        h1Item?.classList.add('highlighted');
+        h2Item?.classList.add('highlighted');
+        h3Item?.classList.add('highlighted');
+      }
+    }
+
+    // Timeline for layout reveal (with scrub)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: scrollContainer,
@@ -661,81 +803,65 @@
       }
     });
 
-    // Show visual
+    // Phase 1: Show visual and items (0 到 layoutRevealEnd)
     tl.to(visual, {
       opacity: 1,
       x: 0,
-      duration: 0.1,
+      duration: config.layoutRevealEnd,
       onStart: () => visual.classList.add('visible'),
       onReverseComplete: () => visual.classList.remove('visible')
     }, 0);
 
-    // Show items
     tl.to(items, {
       opacity: 1,
       x: 0,
-      duration: 0.1,
+      duration: config.layoutRevealEnd,
       onStart: () => items?.classList.add('visible'),
       onReverseComplete: () => items?.classList.remove('visible')
-    }, 0.05);
+    }, 0);
 
-    // Breathing hold
-    tl.to({}, { duration: CONFIG.breathingHold }, 0.15);
+    // Extend timeline to full duration
+    tl.to({}, { duration: 1 - config.layoutRevealEnd }, config.layoutRevealEnd);
 
-    // H1 highlight
-    const h1Start = 0.15 + CONFIG.breathingHold;
-    tl.to(matrixItems[0], {
-      duration: 0.05,
-      onStart: () => {
-        matrixItems[0]?.classList.add('highlighted');
-        svgColored?.classList.add('highlight-h1');
-      },
-      onReverseComplete: () => {
-        matrixItems[0]?.classList.remove('highlighted');
-        svgColored?.classList.remove('highlight-h1');
+    // ScrollTrigger for instant highlight state changes
+    // Highlights start AFTER layout is visible, end at 90% (結尾留 10%)
+    ScrollTrigger.create({
+      trigger: scrollContainer,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        
+        // Thresholds for INSTANT highlight changes
+        // 0 - highlightStart: Layout appearing, no highlights
+        // highlightStart - h1End: H1 highlighted
+        // h1End - h2End: H1 + H2 highlighted  
+        // h2End - highlightEnd: All highlighted (H1 + H2 + H3)
+        // highlightEnd - 100%: 結尾留白，保持 All highlighted
+        
+        // Debug log (only log when state might change to reduce noise)
+        const debugInterval = 0.05; // Log every 5% progress
+        if (progress % debugInterval < 0.01 || progress > 0.19 && progress < 0.21) {
+          console.log(`[SolutionMatrix] Progress: ${(progress * 100).toFixed(1)}% | State: ${currentState}`);
+        }
+        
+        if (progress < config.highlightStart) {
+          setHighlightState(0);
+        } else if (progress < h1End) {
+          setHighlightState(1);
+        } else if (progress < h2End) {
+          setHighlightState(2);
+        } else if (progress < config.highlightEnd) {
+          setHighlightState(3);
+        } else {
+          // 90% 之後保持 All highlighted（結尾留白）
+          setHighlightState(3);
+        }
       }
-    }, h1Start);
+    });
 
-    // Breathing
-    tl.to({}, { duration: CONFIG.breathingHold }, h1Start + 0.05);
-
-    // H2 highlight
-    const h2Start = h1Start + 0.05 + CONFIG.breathingHold;
-    tl.to(matrixItems[1], {
-      duration: 0.05,
-      onStart: () => {
-        matrixItems[1]?.classList.add('highlighted');
-        svgColored?.classList.remove('highlight-h1');
-        svgColored?.classList.add('highlight-h1-h2');
-      },
-      onReverseComplete: () => {
-        matrixItems[1]?.classList.remove('highlighted');
-        svgColored?.classList.add('highlight-h1');
-        svgColored?.classList.remove('highlight-h1-h2');
-      }
-    }, h2Start);
-
-    // Breathing
-    tl.to({}, { duration: CONFIG.breathingHold }, h2Start + 0.05);
-
-    // H3 highlight
-    const h3Start = h2Start + 0.05 + CONFIG.breathingHold;
-    tl.to(matrixItems[2], {
-      duration: 0.05,
-      onStart: () => {
-        matrixItems[2]?.classList.add('highlighted');
-        svgColored?.classList.remove('highlight-h1-h2');
-        svgColored?.classList.add('highlight-all');
-      },
-      onReverseComplete: () => {
-        matrixItems[2]?.classList.remove('highlighted');
-        svgColored?.classList.add('highlight-h1-h2');
-        svgColored?.classList.remove('highlight-all');
-      }
-    }, h3Start);
-
-    // Final breathing
-    tl.to({}, { duration: CONFIG.breathingHold * 2 });
+    console.log('[SolutionMatrix] ========== FUNCTION COMPLETE ==========');
   }
 
   // ============================================
