@@ -306,24 +306,23 @@
       <div class="scroll-container scroll-container--solution-matrix">
         <div class="sticky-stage sticky-stage--solution-matrix">
           <div class="solution-matrix">
-            <!-- Left: Matrix SVG (dual-layer: gray base + colored overlay) -->
+            <!-- Left: Matrix SVG (dual-layer: gray base + colored highlight overlay) -->
             <div class="solution-matrix__visual">
               <div class="solution-matrix__svg-wrap">
-                <!-- Gray version: base layer, always visible -->
+                <!-- Gray base layer (always visible) -->
                 <img 
-                  src="./img/Know%20What%20You%20Own%20Firs_0t.svg" 
+                  src="./img/Know%20What%20You%20Own%20First.svg" 
                   alt="Know What You Own First Matrix" 
                   class="solution-matrix__svg solution-matrix__svg--gray"
                   loading="lazy"
-                >
-                <!-- Colored version: overlay, controlled via opacity and clip-path -->
+                />
+                <!-- Colored highlight layer (controlled by clip-path) -->
                 <img 
-                  src="./img/Know%20What%20You%20Own%20First.svg" 
-                  alt="" 
+                  src="./img/Know%20What%20You%20Own%20First_hightlight.svg.svg" 
+                  alt="Know What You Own First Matrix Highlighted" 
                   class="solution-matrix__svg solution-matrix__svg--colored"
-                  aria-hidden="true"
                   loading="lazy"
-                >
+                />
               </div>
             </div>
             <!-- Right: H1, H2, H3 items (dual-layer icons: gray base + colored overlay) -->
@@ -481,7 +480,7 @@
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                 </a>
-          </div>
+              </div>
               <!-- Right: Three books stack -->
               <div class="resources__books">
                 <div class="resources__book" data-book="1">
@@ -1298,6 +1297,7 @@
         const matrixContainer = section.querySelector('.scroll-container--solution-matrix');
         const matrixVisual = section.querySelector('.solution-matrix__visual');
         const matrixItems = section.querySelector('.solution-matrix__items');
+        // Dual-layer SVG: gray base + colored highlight overlay
         const matrixSvgColored = section.querySelector('.solution-matrix__svg--colored');
         const hItems = Array.from(section.querySelectorAll('.solution-matrix__item'));
         
@@ -1307,24 +1307,35 @@
         // 配置參數（根據 scrollytelling 原則調整）
         const matrixConfig = {
           layoutRevealEnd: 0.10,      // Layout 滑入完成的進度 (10%)
-          highlightStart: 0.40,        // Highlight 開始的進度 (40%，延後觸發，直接套色，無動畫)
-          highlightEnd: 0.90,          // Highlight 結束的進度 (90%，結尾留 10%)
-          // Stage 長度（可調整，確保有 breathing holds）
-          h1StageLength: 0.23,         // H1 stage 長度 (23% of total)
-          h2StageLength: 0.23,         // H2 stage 長度 (23% of total)
-          h3StageLength: 0.24          // H3 stage 長度 (24% of total)
+          highlightStart: 0.25,        // Highlight 提早開始 (25%)
+          highlightEnd: 0.65,          // Highlight 在 65% 完成，保留 35% 的停留時間
+          // Stage 長度：讓 H3 早一點亮完，後面留更長的「全亮停留」
+          h1StageLength: 0.12,         // H1: 25% - 37%
+          h2StageLength: 0.12,         // H2: 37% - 49%
+          h3StageLength: 0.16          // H3: 49% - 65%，之後保留 35% 停留時間
         };
         
         // 計算實際的進度點（基於 stage 長度）
         const matrixH1End = matrixConfig.highlightStart + matrixConfig.h1StageLength;
         const matrixH2End = matrixH1End + matrixConfig.h2StageLength;
         
-        // Clip-path values for instant highlight
+        // Clip-path values for H1/H2/H3 reveal (based on SVG dimensions: 622x660)
+        // H1 circle: x=190.5, y=418, size=79.8568 (bottom-left, 第4象限)
+        // H2 circles (兩個):
+        //   - x=190.5, y=260, size=79.8568 (middle-left, 第2-3象限交界)
+        //   - x=349.5, y=418, size=79.8568 (bottom-center, 第3-4象限交界)
+        // H3 circles (兩個):
+        //   - x=190.5, y=102, size=79.8568 (top-left, 第2象限左上)
+        //   - x=508.5, y=418, size=79.8568 (bottom-right, 第4象限右下)
+        // inset(top right bottom left) - percentages hide edges from each side
+        // H1: Show bottom-left area only (y: 418-497.86, x: 190.5-270.36)
+        // H2: Show H1 + both H2 circles (y: 260-497.86, x: 190.5-429.36)
+        // H3: Show all circles (full reveal)
         const MATRIX_CLIP_PATHS = {
-          none: 'circle(0% at 0% 0%)',
-          h1: 'circle(7.2% at 28.4% 74.4%)',           // H1 only (bottom-left)
-          h1h2: 'inset(41.6% 35.4% 18.6% 21.2%)',      // H1 + H2
-          all: 'inset(15.9% 6.2% 18.6% 21.2%)'         // All circles
+          none: 'inset(100% 100% 0% 0%)',           // Hidden (clip everything)
+          h1:   'inset(63.3% 56.5% 0% 30.6%)',     // Show H1 only (bottom-left circle area)
+          h2:   'inset(39.4% 31.0% 0% 30.6%)',    // Show H1+H2 (covers left-middle H2 + bottom-center H2)
+          h3:   'inset(0% 0% 0% 0%)'                // Show all (full reveal, H1+H2+H3, covers all 4 circles)
         };
         
         // Stage 3: Resource Fit
@@ -1409,13 +1420,12 @@
               setOpacityTransform(matrixItems, itemsProgress, `translateX(${lerp(30, 0, itemsProgress)}px)`);
             }
             
-            // INSTANT highlight state changes (無動畫，直接套色)
-            // 根據 scrollytelling 原則：當 title 和 matrix sticky 後開始 highlight
-            // 0 - highlightStart: No highlights
-            // highlightStart - h1End: H1 highlighted
+            // 分階段，但每一階段都是「直接改色／切換」，沒有補間動畫
+            // 0 - highlightStart: No highlights（灰階）
+            // highlightStart - h1End: H1 highlighted（左圖露出 H1 區域、右欄 H1 變色）
             // h1End - h2End: H1 + H2 highlighted
-            // h2End - highlightEnd: All highlighted
-            // highlightEnd - 100%: 結尾留白，保持 All highlighted
+            // h2End - highlightEnd: All highlighted（左圖全彩、右欄 H1+H2+H3 全部變色）
+            // highlightEnd - 100%: 保持 All highlighted，當作「停一下」的閱讀時間
             
             // 判斷當前應該的 highlight 狀態
             let targetState = -1;
@@ -1429,77 +1439,59 @@
               targetState = 3;
             }
             
-            // 只在狀態變化時更新（避免重複 DOM 操作）
-            if (targetState === matrixHighlightState) return;
-            matrixHighlightState = targetState;
-            
-            if (targetState === 0) {
-              // No highlights
+            // 狀態只往「更高」前進，不會在往下捲時退回
+            const newState = Math.max(matrixHighlightState, targetState);
+            if (newState === matrixHighlightState) {
+              // 狀態沒變就不重刷樣式
+            } else {
+              matrixHighlightState = newState;
+              
+              // 左邊矩陣：使用 clip-path 控制彩色層的顯示區域
               if (matrixSvgColored) {
-                setStyleImportant(matrixSvgColored, 'opacity', '0');
-                setStyleImportant(matrixSvgColored, 'clip-path', MATRIX_CLIP_PATHS.none);
-                setStyleImportant(matrixSvgColored, '-webkit-clip-path', MATRIX_CLIP_PATHS.none);
-              }
-              hItems.forEach((item) => {
-                const coloredIcon = item.querySelector('.solution-matrix__icon--colored');
-                if (coloredIcon) setStyleImportant(coloredIcon, 'opacity', '0');
-                const text = item.querySelector('.solution-matrix__text');
-                if (text) setStyleImportant(text, 'color', 'var(--text-muted)');
-              });
-            } else if (targetState === 1) {
-              // H1 only (instant)
-              if (matrixSvgColored) {
-                setStyleImportant(matrixSvgColored, 'opacity', '1');
-                setStyleImportant(matrixSvgColored, 'clip-path', MATRIX_CLIP_PATHS.h1);
-                setStyleImportant(matrixSvgColored, '-webkit-clip-path', MATRIX_CLIP_PATHS.h1);
-              }
-            hItems.forEach((item, i) => {
-              const coloredIcon = item.querySelector('.solution-matrix__icon--colored');
-              const text = item.querySelector('.solution-matrix__text');
-                if (i === 0) {
-                  // H1 highlighted
-                  if (coloredIcon) setStyleImportant(coloredIcon, 'opacity', '1');
-                  if (text) setStyleImportant(text, 'color', '#3d3d3d');
-                } else {
-                  // H2, H3 not highlighted
-                  if (coloredIcon) setStyleImportant(coloredIcon, 'opacity', '0');
-                  if (text) setStyleImportant(text, 'color', 'var(--text-muted)');
+                let clipPath = MATRIX_CLIP_PATHS.none;
+                if (matrixHighlightState >= 3) {
+                  clipPath = MATRIX_CLIP_PATHS.h3;      // Show all
+                } else if (matrixHighlightState >= 2) {
+                  clipPath = MATRIX_CLIP_PATHS.h2;      // Show H1+H2
+                } else if (matrixHighlightState >= 1) {
+                  clipPath = MATRIX_CLIP_PATHS.h1;      // Show H1 only
                 }
-              });
-            } else if (targetState === 2) {
-              // H1 + H2 (instant)
-            if (matrixSvgColored) {
-                setStyleImportant(matrixSvgColored, 'opacity', '1');
-                setStyleImportant(matrixSvgColored, 'clip-path', MATRIX_CLIP_PATHS.h1h2);
-                setStyleImportant(matrixSvgColored, '-webkit-clip-path', MATRIX_CLIP_PATHS.h1h2);
+                
+                // Apply clip-path with important flag
+                matrixSvgColored.style.setProperty('clip-path', clipPath, 'important');
+                matrixSvgColored.style.setProperty('-webkit-clip-path', clipPath, 'important');
+                
+                // Fade in colored layer when any highlight is active
+                const coloredOpacity = matrixHighlightState >= 1 ? 1 : 0;
+                setStyleImportant(matrixSvgColored, 'opacity', String(coloredOpacity));
               }
+              
+              // 右邊 H1 / H2 / H3：
+              // - circle icon 顏色由各自 SVG 檔決定（H1/H2/H3 與 matrix circle 同色）
+              // - 文字顏色維持 232323（主文字色），不跟著變色
               hItems.forEach((item, i) => {
                 const coloredIcon = item.querySelector('.solution-matrix__icon--colored');
                 const text = item.querySelector('.solution-matrix__text');
-                if (i < 2) {
-                  // H1, H2 highlighted
-                  if (coloredIcon) setStyleImportant(coloredIcon, 'opacity', '1');
-                  if (text) setStyleImportant(text, 'color', '#3d3d3d');
+                
+                let isActive = false;
+                if (matrixHighlightState === 0) {
+                  isActive = false;
+                } else if (matrixHighlightState === 1) {
+                  isActive = i === 0;        // 只有 H1
+                } else if (matrixHighlightState === 2) {
+                  isActive = i < 2;          // H1 + H2
                 } else {
-                  // H3 not highlighted
-                  if (coloredIcon) setStyleImportant(coloredIcon, 'opacity', '0');
-                  if (text) setStyleImportant(text, 'color', 'var(--text-muted)');
+                  isActive = true;           // 全部 H1 + H2 + H3
                 }
-              });
-            } else {
-              // All (H1 + H2 + H3) (instant)
-              // Show full colored SVG so第三顆圓 (H3) 也會完整顯示，不再被 clip-path 截掉
-              if (matrixSvgColored) {
-                setStyleImportant(matrixSvgColored, 'opacity', '1');
-                setStyleImportant(matrixSvgColored, 'clip-path', 'none');
-                setStyleImportant(matrixSvgColored, '-webkit-clip-path', 'none');
-              }
-              hItems.forEach((item) => {
-                const coloredIcon = item.querySelector('.solution-matrix__icon--colored');
-                const text = item.querySelector('.solution-matrix__text');
-                // All highlighted
-                if (coloredIcon) setStyleImportant(coloredIcon, 'opacity', '1');
-                if (text) setStyleImportant(text, 'color', '#3d3d3d');
+                
+                if (coloredIcon) {
+                  setStyleImportant(coloredIcon, 'opacity', isActive ? '1' : '0');
+                }
+                if (text) {
+                  // 文字：active 時固定用 #232323，非 active 用 muted 色
+                  const textColor = isActive ? '#232323' : 'var(--text-muted)';
+                  setStyleImportant(text, 'color', textColor);
+                }
               });
             }
           }
@@ -1519,10 +1511,35 @@
               setOpacityTransform(resourceVisual, visualProgress, `translateX(${lerp(-40, 0, visualProgress)}px)`);
             }
             
-            // Resource Fit highlight (circle 2): 65% - 90% of scroll within this stage
+            // Resource Fit highlight (circle 2)
+            // 行為：
+            // - 當 progress 到中段時才開始啟動
+            // - 有一段淡入動畫，之後「停一下」維持亮起，再進入下一段
             if (resourceHighlight) {
-              const highlightProgress = mapRange(p, 0.65, 0.90, 0, 1);
-              setOpacityTransform(resourceHighlight, highlightProgress, `scale(${lerp(0.8, 1, highlightProgress)})`);
+              let highlightOpacity = 0;
+              let highlightScale = 0.8;
+              
+              // 三段式：0-0.45 關閉；0.45-0.60 淡入；0.60-1.0 保持點亮（停一下，40% 停留時間）
+              if (p < 0.45) {
+                // 關閉狀態
+                highlightOpacity = 0;
+                highlightScale = 0.8;
+              } else if (p >= 0.45 && p <= 0.60) {
+                // 0.45-0.60：淡入＋放大（15% 動畫時間）
+                const highlightProgress = mapRange(p, 0.45, 0.60, 0, 1);
+                highlightOpacity = highlightProgress;
+                highlightScale = lerp(0.8, 1, highlightProgress);
+              } else {
+                // 0.60 之後：維持亮起（停在高亮狀態，40% 停留時間）
+                highlightOpacity = 1;
+                highlightScale = 1;
+              }
+              
+              setOpacityTransform(
+                resourceHighlight,
+                highlightOpacity,
+                `scale(${highlightScale})`
+              );
             }
           }
           
@@ -1537,10 +1554,28 @@
             setStyleImportant(opportunityVisual, 'transform', 'translateX(0)');
           }
           // Opportunity highlight (circle 2) scrubbed by scroll within its container
+          // 行為：0.50-0.70 淡入，0.70-1.0 保持點亮（30% 停留時間）
           if (opportunityContainer && opportunityHighlight) {
             const p = calculateProgress(opportunityContainer);
-            const highlightProgress = mapRange(p, 0.65, 0.90, 0, 1);
-            setOpacityTransform(opportunityHighlight, highlightProgress, `scale(${lerp(0.8, 1, highlightProgress)})`);
+            let highlightOpacity = 0;
+            let highlightScale = 0.8;
+            
+            if (p < 0.50) {
+              // 關閉狀態
+              highlightOpacity = 0;
+              highlightScale = 0.8;
+            } else if (p >= 0.50 && p <= 0.70) {
+              // 0.50-0.70：淡入＋放大（20% 動畫時間）
+              const highlightProgress = mapRange(p, 0.50, 0.70, 0, 1);
+              highlightOpacity = highlightProgress;
+              highlightScale = lerp(0.8, 1, highlightProgress);
+            } else {
+              // 0.70 之後：維持亮起（停在高亮狀態，30% 停留時間）
+              highlightOpacity = 1;
+              highlightScale = 1;
+            }
+            
+            setOpacityTransform(opportunityHighlight, highlightOpacity, `scale(${highlightScale})`);
           }
         };
       }

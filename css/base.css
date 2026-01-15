@@ -37,12 +37,13 @@
   --font-cjk: 'YuGothic', 'Yu Gothic', '游ゴシック', var(--font-primary);
   
   /* Spacing */
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 40px;
-  --space-xl: 60px;
-  --space-xxl: 120px;
+  /* Enlarged global spacing scale (more padding/margins across the page) */
+  --space-xs: 8px;   /* keep base unit */
+  --space-sm: 24px;  /* was 16px */
+  --space-md: 32px;  /* was 24px */
+  --space-lg: 48px;  /* was 40px */
+  --space-xl: 72px;  /* was 60px */
+  --space-xxl: 128px; /* was 120px */
   
   /* Transitions */
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -102,8 +103,8 @@ body::before {
   z-index: 0; /* Behind content but visible as background */
   background: var(--gradient-overlay-gradient, linear-gradient(to bottom, rgb(17, 0, 0) 0%, rgb(17, 0, 0) 100%));
   opacity: var(--gradient-overlay-opacity, 1);
-  /* Smoother, slower background switching between sections to avoid flashing */
-  transition: background 1.4s ease-in-out;
+  /* Extra-slow background switching between sections (e.g., section 5 → 6) */
+  transition: background 2.2s ease-in-out;
   will-change: background;
 }
 
@@ -140,6 +141,11 @@ body::before {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
+}
+
+/* Default heading sizes (explicitly shrink h3) */
+h3 {
+  font-size: 1.1rem; /* slightly smaller than browser default */
 }
 
 p {

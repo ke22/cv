@@ -251,7 +251,7 @@
 }
 
 .sticky-stage--cards {
-  padding: var(--space-lg) var(--space-md);
+  padding: var(--space-xl) var(--space-lg);
 }
 
 .flip-cards {
@@ -325,7 +325,7 @@
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
   /* Increase padding to constrain content width */
-  padding: var(--space-lg) var(--space-md);
+  padding: var(--space-xl) var(--space-lg);
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -501,12 +501,13 @@
 }
 
 /* Titles container - matches reference */
+/* Titles container - matches reference, but keep it narrower so right side feels wider */
 .future-outlook__titles {
-  flex: 1;
+  flex: 0 0 40%;       /* fixed ~40% width for left column */
   position: relative;
   min-height: 400px;
-  max-width: 50%;
-  padding-right: 60px;
+  max-width: 40%;
+  padding-right: 40px; /* a bit less padding to compensate narrower width */
 }
 
 /* Title items - absolutely positioned, stacked */
@@ -565,11 +566,13 @@
 
 /* Circles stack - positioned absolute at bottom-right */
 .future-outlook__circles {
-  position: absolute;
+  /* Anchor the circles group to the viewport bottom-right corner */
+  position: fixed;
   bottom: 0;
   right: 0;
   flex-shrink: 0;
   pointer-events: none;
+  z-index: var(--z-sticky); /* Stay above section background, below nav */
 }
 
 .future-circle {
@@ -585,26 +588,26 @@
 
 .future-circle.visible {
   opacity: 1;
-  transform: translate(50%, 50%); /* Center point aligns to bottom-right corner */
+  transform: translate(50%, 50%);
 }
 
 .future-circle--small {
-  width: 350px;
-  height: 350px;
+  width: 550px;  /* was 450px */
+  height: 550px; /* was 450px */
   background: #D65D5D;
   z-index: 3;
 }
 
 .future-circle--medium {
-  width: 500px;
-  height: 500px;
+  width: 800px;  /* was 650px */
+  height: 800px; /* was 650px */
   background: #C44646;
   z-index: 2;
 }
 
 .future-circle--large {
-  width: 650px;
-  height: 650px;
+  width: 1050px;  /* was 850px */
+  height: 1050px; /* was 850px */
   background: #9F3030;
   z-index: 1;
 }
@@ -708,7 +711,8 @@
 
 /* Stage 2: Matrix */
 .scroll-container--solution-matrix {
-  height: 200vh; /* Reduced to minimize overlap */
+  /* Longer runway so每一段 H1 / H1+H2 / H1+H2+H3 有明顯停留時間 */
+  height: 320vh; /* Increased from 260vh for longer hold time after highlight */
 }
 
 .solution-matrix {
@@ -749,6 +753,9 @@
   left: 0;
   z-index: 2;
   will-change: clip-path, opacity;
+  opacity: 0;
+  clip-path: inset(100% 100% 0% 0%);
+  -webkit-clip-path: inset(100% 100% 0% 0%);
 }
 
 .solution-matrix__items {
@@ -800,7 +807,7 @@
 
 /* Stage 3: Resource Fit Matrix */
 .scroll-container--solution-resource-fit {
-  height: 120vh; /* Reduced to minimize overlap */
+  height: 220vh; /* Increased from 150vh for longer hold time after highlight */
 }
 
 .solution-resource-fit {
@@ -856,7 +863,8 @@
 
 /* Stage 4: Opportunity Matrix */
 .scroll-container--solution-opportunity {
-  height: 120vh; /* Reduced to minimize overlap */
+  /* Longer runway so Opportunity Matrix 有明顯停留時間 */
+  height: 280vh; /* Increased from 200vh for longer hold time after highlight */
 }
 
 .solution-opportunity {
@@ -1006,7 +1014,7 @@
 }
 
 .scroll-container--resources {
-  height: 200vh; /* Reduced to minimize overlap */
+  height: 140vh; /* Shorter so footer appears sooner */
 }
 
 .sticky-stage--resources {
@@ -1145,10 +1153,13 @@
    Footer
    ============================================ */
 .footer {
+  position: relative;
+  z-index: 10; /* Above gradient overlay (body::before has z-index: 0) */
   background: var(--bg-dark);
   color: var(--text-white);
   padding: 80px 0;
   text-align: center;
+  margin-top: 80px; /* Create clear separation from previous section */
 }
 
 .footer__title {
@@ -1233,9 +1244,10 @@
   }
 
   .future-outlook__circles {
+    /* On mobile, keep circles inside layout instead of fixed to viewport */
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 320px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1251,18 +1263,18 @@
   }
 
   .future-circle--small {
-    width: 200px;
-    height: 200px;
+    width: 280px;  /* slightly larger on mobile as well */
+    height: 280px;
   }
 
   .future-circle--medium {
-    width: 250px;
-    height: 250px;
+    width: 360px;
+    height: 360px;
   }
 
   .future-circle--large {
-    width: 300px;
-    height: 300px;
+    width: 420px;
+    height: 420px;
   }
   
   .solution-matrix,
