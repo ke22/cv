@@ -291,16 +291,13 @@
   .strategy__svg,
   .resources__heading,
   .resources__link-block,
-  .resources__book,
-  .future-circle {
+  .resources__book {
     opacity: 1 !important;
     transform: none !important;
   }
   
-  /* Show final state for circles */
-  .future-circle {
-    transform: translate(50%, 50%) !important;
-  }
+  /* 移除 .future-circle 的強制顯示，因為它是 scroll-scrubbed，不應該在動畫完成後強制顯示 */
+  /* .future-circle 由 JavaScript 根據 scroll progress 動態控制 */
   
   /* Skip flip animation */
   .flip-card.flipped {

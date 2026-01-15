@@ -69,6 +69,7 @@ colors: {
 
 使用已安裝的 Framer Motion:
 
+{% raw %}
 ```tsx
 import { motion } from 'framer-motion'
 
@@ -79,11 +80,13 @@ import { motion } from 'framer-motion'
   內容
 </motion.div>
 ```
+{% endraw %}
 
 ### 加入圖表
 
 使用已安裝的 ECharts:
 
+{% raw %}
 ```tsx
 import ReactECharts from 'echarts-for-react'
 
@@ -93,6 +96,7 @@ import ReactECharts from 'echarts-for-react'
   series: [{ data: [1, 2], type: 'bar' }]
 }} />
 ```
+{% endraw %}
 
 ## 🚢 部署選項
 

@@ -23,10 +23,21 @@
 }
 
 /* Future Outlook section - circles should not be affected by fade/blur */
-.section--future-outlook .future-outlook__circles,
-.section--future-outlook .future-circle {
-  opacity: 1 !important;
+/* 移除強制 opacity，讓 JavaScript 可以控制顯示/隱藏 */
+.section--future-outlook .future-outlook__circles {
   filter: none !important;
+  /* 移除 opacity: 1 !important，讓 JS 控制 */
+}
+
+.section--future-outlook .future-circle {
+  filter: none !important;
+  /* 移除 opacity: 1 !important，讓 JS 控制 */
+}
+
+/* 移除 visible 狀態的強制 opacity，讓 JavaScript 動態控制 */
+/* JavaScript 會根據 scroll progress 設定 opacity */
+.section--future-outlook .future-circle.visible {
+  /* opacity 由 JavaScript 控制 */
 }
 
 /* Dynamic gradient fade at section boundaries */
@@ -636,7 +647,8 @@
 }
 
 .future-circle.visible {
-  opacity: 1 !important;
+  /* 移除 opacity: 1 !important，讓 JavaScript 動態控制 */
+  /* JavaScript 會根據 scroll progress 設定 opacity */
   transform: translate(50%, 50%) !important;
   /* 強制顯示 */
   visibility: visible !important;
