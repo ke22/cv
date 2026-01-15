@@ -12,8 +12,6 @@
   --radius-lg: 20px;
   --radius-pill: 999px;
   --separator: rgba(60, 60, 67, 0.18);
-  --shadow-1: 0 1px 1px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.12);
-  --shadow-2: 0 12px 40px rgba(0, 0, 0, 0.16);
   --material-dark: rgba(28, 28, 30, 0.72);
   --focus-ring: rgba(10, 132, 255, 0.55);
 
@@ -45,11 +43,17 @@
   --space-xl: 72px;  /* was 60px */
   --space-xxl: 128px; /* was 120px */
   
-  /* Transitions */
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transitions - Unified timing system */
+  --ease-smooth: cubic-bezier(0.19, 1, 0.22, 1); /* Premium ease-out */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1); /* For fade-out/exit */
   --duration-fast: 0.3s;
-  --duration-normal: 0.6s;
+  --duration-normal: 0.5s; /* Unified entry: 0.4-0.6s */
   --duration-slow: 0.8s;
+  
+  /* Shadow levels - Unified shadow system */
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06); /* Cards */
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.12), 0 16px 48px rgba(0, 0, 0, 0.08); /* Important overlays (circle zoom, highlights) */
+  --shadow-3: 0 16px 48px rgba(0, 0, 0, 0.16), 0 32px 64px rgba(0, 0, 0, 0.12); /* Maximum depth */
   
   /* Z-index layers */
   --z-base: 1;

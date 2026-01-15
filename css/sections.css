@@ -8,6 +8,25 @@
 .section {
   position: relative;
   z-index: 1; /* Above gradient overlay */
+  transition: opacity 0.5s var(--ease-smooth), filter 0.5s var(--ease-smooth);
+}
+
+/* Section fade/blur effect - dim non-focused sections */
+.section:not(.section--focused) {
+  opacity: 0.7;
+  filter: blur(2px);
+}
+
+.section.section--focused {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Future Outlook section - circles should not be affected by fade/blur */
+.section--future-outlook .future-outlook__circles,
+.section--future-outlook .future-circle {
+  opacity: 1 !important;
+  filter: none !important;
 }
 
 /* Dynamic gradient fade at section boundaries */
@@ -315,6 +334,7 @@
   /* Front starts at 0deg, visible when card is at 0deg */
   transform: rotateY(0deg);
   -webkit-transform: rotateY(0deg);
+  box-shadow: var(--shadow-1); /* Unified shadow level 1 */
 }
 
 .flip-card__back {
@@ -467,6 +487,10 @@
    ============================================ */
 .section--future-outlook {
   /* Background removed - using dynamic gradient overlay instead */
+  /* 確保不會限制 fixed circles 的顯示 */
+  overflow: visible !important;
+  clip: none !important;
+  clip-path: none !important;
 }
 
 .scroll-container--future-outlook {
@@ -483,8 +507,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible !important; /* Allow circles to overflow for zoom-out effect */
-  z-index: 1;
+  overflow: visible !important; /* Allow fixed circles to be visible */
+  z-index: var(--z-sticky); /* 使用標準 sticky z-index: 10 */
 }
 
 .future-outlook {
@@ -508,6 +532,7 @@
   min-height: 400px;
   max-width: 40%;
   padding-right: 40px; /* a bit less padding to compensate narrower width */
+  z-index: 1; /* 確保 titles 在 circles 下方（circles 是 fixed，z-index: 999） */
 }
 
 /* Title items - absolutely positioned, stacked */
@@ -567,49 +592,85 @@
 /* Circles stack - positioned absolute at bottom-right */
 .future-outlook__circles {
   /* Anchor the circles group to the viewport bottom-right corner */
-  position: fixed;
-  bottom: 0;
-  right: 0;
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
   flex-shrink: 0;
   pointer-events: none;
-  z-index: var(--z-sticky); /* Stay above section background, below nav */
+  z-index: 999 !important; /* 提高 z-index，確保在所有 section 內容之上，但低於 nav (1000) */
+  /* Override section fade/blur effect - circles should always be visible */
+  opacity: 1 !important;
+  filter: none !important;
+  /* Ensure container has enough space for circles */
+  width: 1200px !important;
+  height: 1200px !important;
+  min-width: 1200px !important;
+  min-height: 1200px !important;
+  display: block !important;
+  visibility: visible !important;
+  /* 確保不被任何父元素限制 */
+  overflow: visible !important;
+  clip: none !important;
+  clip-path: none !important;
 }
 
 .future-circle {
-  position: absolute;
+  position: absolute !important;
   border-radius: 50%;
   opacity: 0;
   transform: translate(150%, 150%); /* Center point starts outside bottom-right */
   transform-origin: center;
-  bottom: 0;
-  right: 0;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
   will-change: transform, opacity;
+  /* Ensure circles are not affected by section fade/blur */
+  filter: none !important;
+  display: block !important;
+  visibility: visible !important;
+  /* 確保背景色可見 */
+  background-color: inherit;
 }
 
 .future-circle.visible {
-  opacity: 1;
-  transform: translate(50%, 50%);
+  opacity: 1 !important;
+  transform: translate(50%, 50%) !important;
+  /* 強制顯示 */
+  visibility: visible !important;
+  display: block !important;
 }
 
 .future-circle--small {
-  width: 550px;  /* was 450px */
-  height: 550px; /* was 450px */
-  background: #D65D5D;
-  z-index: 3;
+  width: 550px !important;  /* was 450px */
+  height: 550px !important; /* was 450px */
+  background: #D65D5D !important;
+  background-color: #D65D5D !important;
+  z-index: 3 !important;
+  min-width: 550px !important;
+  min-height: 550px !important;
 }
 
 .future-circle--medium {
-  width: 800px;  /* was 650px */
-  height: 800px; /* was 650px */
-  background: #C44646;
-  z-index: 2;
+  width: 800px !important;  /* was 650px */
+  height: 800px !important; /* was 650px */
+  background: #C44646 !important;
+  background-color: #C44646 !important;
+  z-index: 2 !important;
+  min-width: 800px !important;
+  min-height: 800px !important;
 }
 
 .future-circle--large {
-  width: 1050px;  /* was 850px */
-  height: 1050px; /* was 850px */
-  background: #9F3030;
-  z-index: 1;
+  width: 1050px !important;  /* was 850px */
+  height: 1050px !important; /* was 850px */
+  background: #9F3030 !important;
+  background-color: #9F3030 !important;
+  z-index: 1 !important;
+  min-width: 1050px !important;
+  min-height: 1050px !important;
 }
 
 /* Zoom-out mode - circles become fixed, center point at viewport bottom-right */
@@ -621,6 +682,7 @@
   top: auto !important;
   transform-origin: 100% 100% !important; /* Scale from bottom-right corner (same as normal stage) */
   pointer-events: none;
+  box-shadow: var(--shadow-2); /* Unified shadow level 2 for important overlays */
 }
 
 .future-circle--zoom-out.future-circle--small {
@@ -758,6 +820,11 @@
   -webkit-clip-path: inset(100% 100% 0% 0%);
 }
 
+/* Pulse effect when colored overlay is fully visible (all highlights shown) */
+.solution-matrix__svg--colored.pulse-active {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
 .solution-matrix__items {
   flex: 1;
   display: flex;
@@ -797,6 +864,11 @@
   left: 0;
   z-index: 2;
   will-change: opacity;
+}
+
+/* Pulse effect when icon colored overlay is visible */
+.solution-matrix__item.highlighted .solution-matrix__icon--colored {
+  animation: subtlePulse 3s ease-in-out infinite;
 }
 
 .solution-matrix__text {
@@ -841,6 +913,11 @@
   width: 13%;
   height: auto;
   will-change: transform, opacity;
+}
+
+/* Pulse effect when highlight is fully visible */
+.solution-resource-fit__highlight.visible {
+  animation: subtlePulse 3s ease-in-out infinite;
 }
 
 .solution-resource-fit__title-wrap {
@@ -922,6 +999,11 @@
   width: 13.3%;
   height: auto;
   will-change: transform, opacity;
+}
+
+/* Pulse effect when highlight is fully visible */
+.solution-opportunity__highlight.visible {
+  animation: subtlePulse 3s ease-in-out infinite;
 }
 
 /* ============================================

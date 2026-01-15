@@ -975,13 +975,25 @@
       // ============================================
       function initFutureOutlook() {
         const section = document.querySelector('#future-outlook');
-        if (!section) return;
+        if (!section) {
+          console.warn('[FutureOutlook] Section not found');
+          return;
+        }
         
         const container = section.querySelector('.scroll-container--future-outlook');
         const titleItems = Array.from(section.querySelectorAll('.future-outlook__title-item'));
         const circleSmall = section.querySelector('.future-circle--small');
         const circleMedium = section.querySelector('.future-circle--medium');
         const circleLarge = section.querySelector('.future-circle--large');
+        
+        console.log('[FutureOutlook] Initialized:', {
+          section: !!section,
+          container: !!container,
+          titleItems: titleItems.length,
+          circleSmall: !!circleSmall,
+          circleMedium: !!circleMedium,
+          circleLarge: !!circleLarge
+        });
         
         // Track auto-advance state
         let hasAutoAdvanced = false;
@@ -990,29 +1002,29 @@
         // Keep original different sizes for small / medium / large circles
         const circleSizes = [350, 500, 650]; // small, medium, large
         
-        // Timeline: 0-75% content, 75-100% zoom-out
+        // Timeline: 0-70% content, 70-100% zoom-out (動畫提前完成，保留更多靜止時間)
         // Each title and circle pair share the same start/end times
         const config = {
           // Group A: Title A + Small Circle (synchronized)
           titleAStart: 0,
-          titleAEnd: 0.25,
+          titleAEnd: 0.20,
           circleSmallStart: 0,
-          circleSmallEnd: 0.25,
+          circleSmallEnd: 0.20,
           
           // Group B: Title B + Medium Circle (synchronized)
-          titleBStart: 0.25,
-          titleBEnd: 0.50,
-          circleMediumStart: 0.25,
-          circleMediumEnd: 0.50,
+          titleBStart: 0.20,
+          titleBEnd: 0.40,
+          circleMediumStart: 0.20,
+          circleMediumEnd: 0.40,
           
           // Group C: Title C + Large Circle (synchronized)
-          titleCStart: 0.50,
-          titleCEnd: 0.75,
-          circleLargeStart: 0.50,
-          circleLargeEnd: 0.75,
+          titleCStart: 0.40,
+          titleCEnd: 0.60,
+          circleLargeStart: 0.40,
+          circleLargeEnd: 0.60,
           
-          // Zoom-out stage: 75% - 100%
-          zoomStart: 0.75
+          // Zoom-out stage: 60% - 100% (保留 40% 靜止時間在 zoom-out 前)
+          zoomStart: 0.60
         };
         
         // Zoom-out stagger timing (relative to zoom phase 0-1)
@@ -1031,6 +1043,51 @@
           if (!container) return;
           const p = calculateProgress(container);
           const isZoomStage = p >= config.zoomStart;
+          
+          // Debug log when in the range where circles should be visible (20-30%)
+          if (p >= 0.20 && p <= 0.30) {
+            const circlesContainer = document.querySelector('.future-outlook__circles');
+            const containerStyle = circlesContainer ? window.getComputedStyle(circlesContainer) : null;
+            const smallStyle = circleSmall ? window.getComputedStyle(circleSmall) : null;
+            const mediumStyle = circleMedium ? window.getComputedStyle(circleMedium) : null;
+            const largeStyle = circleLarge ? window.getComputedStyle(circleLarge) : null;
+            
+            console.log('[FutureOutlook] DEBUG Progress:', (p * 100).toFixed(1) + '%', {
+              isZoomStage,
+              // Circle elements exist
+              circleSmall: !!circleSmall,
+              circleMedium: !!circleMedium,
+              circleLarge: !!circleLarge,
+              // Visible classes
+              smallVisible: circleSmall?.classList.contains('visible'),
+              mediumVisible: circleMedium?.classList.contains('visible'),
+              largeVisible: circleLarge?.classList.contains('visible'),
+              // Small circle computed styles
+              smallOpacity: smallStyle?.opacity,
+              smallTransform: smallStyle?.transform,
+              smallZIndex: smallStyle?.zIndex,
+              smallPosition: smallStyle?.position,
+              smallDisplay: smallStyle?.display,
+              smallVisibility: smallStyle?.visibility,
+              smallWidth: smallStyle?.width,
+              smallHeight: smallStyle?.height,
+              // Container styles
+              containerExists: !!circlesContainer,
+              containerZIndex: containerStyle?.zIndex,
+              containerPosition: containerStyle?.position,
+              containerOpacity: containerStyle?.opacity,
+              containerWidth: containerStyle?.width,
+              containerHeight: containerStyle?.height,
+              containerBottom: containerStyle?.bottom,
+              containerRight: containerStyle?.right,
+              // Check parent sections
+              section: section ? {
+                className: section.className,
+                opacity: window.getComputedStyle(section).opacity,
+                filter: window.getComputedStyle(section).filter
+              } : null
+            });
+          }
           
           // ============================================
           // Titles: Sequential A → B → C (one at a time)
@@ -1307,12 +1364,12 @@
         // 配置參數（根據 scrollytelling 原則調整）
         const matrixConfig = {
           layoutRevealEnd: 0.10,      // Layout 滑入完成的進度 (10%)
-          highlightStart: 0.25,        // Highlight 提早開始 (25%)
-          highlightEnd: 0.65,          // Highlight 在 65% 完成，保留 35% 的停留時間
+          highlightStart: 0.20,       // Highlight 提早開始 (20%)
+          highlightEnd: 0.80,         // Highlight 在 80% 完成，保留 20% 的停留時間
           // Stage 長度：讓 H3 早一點亮完，後面留更長的「全亮停留」
-          h1StageLength: 0.12,         // H1: 25% - 37%
-          h2StageLength: 0.12,         // H2: 37% - 49%
-          h3StageLength: 0.16          // H3: 49% - 65%，之後保留 35% 停留時間
+          h1StageLength: 0.15,         // H1: 20% - 35%
+          h2StageLength: 0.15,        // H2: 35% - 50%
+          h3StageLength: 0.30         // H3: 50% - 80%，之後保留 20% 停留時間
         };
         
         // 計算實際的進度點（基於 stage 長度）
@@ -1365,13 +1422,13 @@
             }
             
             // DisintegratingText: Each char animates in sequence with fade + translateY + scale
-            // Characters appear sequentially: roughly 25% ~ 70% of scroll
-            // 之後 70% ~ 100% 都是「fully visible」的停留時間
+            // Characters appear sequentially: roughly 20% ~ 80% of scroll
+            // 之後 80% ~ 100% 都是「fully visible」的停留時間（20% 靜止空間）
             if (chars.length > 0) {
             chars.forEach((char, i) => {
-                // Timing: start at 25%, each char gets 2% spacing, 8% animation window
-                // 例如 19 個字元會在大約 25%~70% 全部完成動畫
-                const charStart = 0.25 + (i * 0.02);
+                // Timing: start at 20%, each char gets 2% spacing, 8% animation window
+                // 例如 19 個字元會在大約 20%~80% 全部完成動畫，保留 20% 靜止空間
+                const charStart = 0.20 + (i * 0.02);
                 const charEnd = charStart + 0.08;
               const charProgress = mapRange(p, charStart, charEnd, 0, 1);
                 const clampedProgress = Math.max(0, Math.min(1, charProgress));
@@ -1464,6 +1521,13 @@
                 // Fade in colored layer when any highlight is active
                 const coloredOpacity = matrixHighlightState >= 1 ? 1 : 0;
                 setStyleImportant(matrixSvgColored, 'opacity', String(coloredOpacity));
+                
+                // Add pulse effect when all highlights are shown (state 3)
+                if (matrixHighlightState >= 3) {
+                  matrixSvgColored.classList.add('pulse-active');
+                } else {
+                  matrixSvgColored.classList.remove('pulse-active');
+                }
               }
               
               // 右邊 H1 / H2 / H3：
@@ -1500,39 +1564,46 @@
           if (resourceContainer) {
             const p = calculateProgress(resourceContainer);
             
-            // Resource Fit: Title 0-25%, Visual 30-60% (Scroll Storytelling: sequential, clear separation)
+            // Resource Fit: Title 0-15%, Visual 20-40% (動畫提前完成，保留更多靜止時間)
             if (resourceTitle) {
-              const titleProgress = mapRange(p, 0, 0.25, 0, 1);
+              const titleProgress = mapRange(p, 0, 0.15, 0, 1);
               setOpacityTransform(resourceTitle, titleProgress, `translateX(${lerp(40, 0, titleProgress)}px)`);
             }
             
             if (resourceVisual) {
-              const visualProgress = mapRange(p, 0.30, 0.60, 0, 1);
-              setOpacityTransform(resourceVisual, visualProgress, `translateX(${lerp(-40, 0, visualProgress)}px)`);
+              // 動畫提前完成：0.20-0.40，保留 60% 靜止時間
+              // Parallax: Visual moves slower for depth
+              const visualProgress = mapRange(p, 0.20, 0.40, 0, 1);
+              const parallaxX = lerp(-40, 0, visualProgress) * 0.8;
+              setOpacityTransform(resourceVisual, visualProgress, `translateX(${parallaxX}px)`);
             }
             
             // Resource Fit highlight (circle 2)
             // 行為：
             // - 當 progress 到中段時才開始啟動
             // - 有一段淡入動畫，之後「停一下」維持亮起，再進入下一段
+            // - 調整：動畫在 0.60 完成，保留 40% 靜止時間
             if (resourceHighlight) {
               let highlightOpacity = 0;
               let highlightScale = 0.8;
               
-              // 三段式：0-0.45 關閉；0.45-0.60 淡入；0.60-1.0 保持點亮（停一下，40% 停留時間）
-              if (p < 0.45) {
+              // 三段式：0-0.50 關閉；0.50-0.60 淡入；0.60-1.0 保持點亮（40% 停留時間）
+              if (p < 0.50) {
                 // 關閉狀態
                 highlightOpacity = 0;
                 highlightScale = 0.8;
-              } else if (p >= 0.45 && p <= 0.60) {
-                // 0.45-0.60：淡入＋放大（15% 動畫時間）
-                const highlightProgress = mapRange(p, 0.45, 0.60, 0, 1);
+                resourceHighlight.classList.remove('visible');
+              } else if (p >= 0.50 && p <= 0.60) {
+                // 0.50-0.60：淡入＋放大（10% 動畫時間）
+                const highlightProgress = mapRange(p, 0.50, 0.60, 0, 1);
                 highlightOpacity = highlightProgress;
                 highlightScale = lerp(0.8, 1, highlightProgress);
+                resourceHighlight.classList.toggle('visible', highlightOpacity > 0.5);
               } else {
                 // 0.60 之後：維持亮起（停在高亮狀態，40% 停留時間）
                 highlightOpacity = 1;
                 highlightScale = 1;
+                resourceHighlight.classList.add('visible');
               }
               
               setOpacityTransform(
@@ -1554,7 +1625,7 @@
             setStyleImportant(opportunityVisual, 'transform', 'translateX(0)');
           }
           // Opportunity highlight (circle 2) scrubbed by scroll within its container
-          // 行為：0.50-0.70 淡入，0.70-1.0 保持點亮（30% 停留時間）
+          // 行為：0.50-0.60 淡入，0.60-1.0 保持點亮（40% 停留時間）
           if (opportunityContainer && opportunityHighlight) {
             const p = calculateProgress(opportunityContainer);
             let highlightOpacity = 0;
@@ -1564,15 +1635,18 @@
               // 關閉狀態
               highlightOpacity = 0;
               highlightScale = 0.8;
-            } else if (p >= 0.50 && p <= 0.70) {
-              // 0.50-0.70：淡入＋放大（20% 動畫時間）
-              const highlightProgress = mapRange(p, 0.50, 0.70, 0, 1);
+              opportunityHighlight.classList.remove('visible');
+            } else if (p >= 0.50 && p <= 0.60) {
+              // 0.50-0.60：淡入＋放大（10% 動畫時間）
+              const highlightProgress = mapRange(p, 0.50, 0.60, 0, 1);
               highlightOpacity = highlightProgress;
               highlightScale = lerp(0.8, 1, highlightProgress);
+              opportunityHighlight.classList.toggle('visible', highlightOpacity > 0.5);
             } else {
-              // 0.70 之後：維持亮起（停在高亮狀態，30% 停留時間）
+              // 0.60 之後：維持亮起（停在高亮狀態，40% 停留時間）
               highlightOpacity = 1;
               highlightScale = 1;
+              opportunityHighlight.classList.add('visible');
             }
             
             setOpacityTransform(opportunityHighlight, highlightOpacity, `scale(${highlightScale})`);
@@ -1595,15 +1669,18 @@
           if (!container) return;
           const p = calculateProgress(container);
           
-          // Growth: Title 0-25%, SVG 30-65% (Scroll Storytelling: sequential, clear separation)
+          // Growth: Title 0-15%, SVG 20-40% (動畫提前完成，保留 60% 靜止時間)
+          // Parallax: SVG moves slower than title for depth effect
           if (title) {
-            const titleProgress = mapRange(p, 0, 0.25, 0, 1);
+            const titleProgress = mapRange(p, 0, 0.15, 0, 1);
             setOpacityTransform(title, titleProgress, `translateY(${lerp(30, 0, titleProgress)}px)`);
           }
           
           if (svg) {
-            const svgProgress = mapRange(p, 0.30, 0.65, 0, 1);
-            setOpacityTransform(svg, svgProgress, `translateY(${lerp(50, 0, svgProgress)}px) scale(${lerp(0.95, 1, svgProgress)})`);
+            const svgProgress = mapRange(p, 0.20, 0.40, 0, 1);
+            // Parallax: SVG moves slower (multiply translateY by 0.7 for subtle parallax)
+            const parallaxY = lerp(50, 0, svgProgress) * 0.7;
+            setOpacityTransform(svg, svgProgress, `translateY(${parallaxY}px) scale(${lerp(0.95, 1, svgProgress)})`);
           }
         };
       }
@@ -1623,15 +1700,31 @@
           if (!container) return;
           const p = calculateProgress(container);
           
-          // Strategy: Heading 0-25%, SVG 30-65% (Scroll Storytelling: sequential, clear separation)
+          // Strategy: Heading 0-15%, SVG 20-40% (動畫提前完成，保留 60% 靜止時間)
+          // SVG stroke-draw effect will be handled by IntersectionObserver
           if (heading) {
-            const headingProgress = mapRange(p, 0, 0.25, 0, 1);
+            const headingProgress = mapRange(p, 0, 0.15, 0, 1);
             setOpacityTransform(heading, headingProgress, `translateY(${lerp(30, 0, headingProgress)}px)`);
           }
           
           if (svg) {
-            const svgProgress = mapRange(p, 0.30, 0.65, 0, 1);
-            setOpacityTransform(svg, svgProgress, `translateY(${lerp(50, 0, svgProgress)}px) scale(${lerp(0.95, 1, svgProgress)})`);
+            const svgProgress = mapRange(p, 0.20, 0.40, 0, 1);
+            // Parallax: SVG moves slower (multiply translateY by 0.7 for subtle parallax)
+            const parallaxY = lerp(50, 0, svgProgress) * 0.7;
+            setOpacityTransform(svg, svgProgress, `translateY(${parallaxY}px) scale(${lerp(0.95, 1, svgProgress)})`);
+            
+            // Trigger SVG draw effect when SVG becomes visible
+            if (svgProgress > 0.3 && !svg.classList.contains('svg-draw-triggered')) {
+              svg.classList.add('svg-draw-triggered');
+              // Add stroke-draw effect to SVG paths/lines
+              const paths = svg.querySelectorAll('path, line, polyline, polygon');
+              paths.forEach((path, index) => {
+                path.style.strokeDasharray = '1000';
+                path.style.strokeDashoffset = '1000';
+                path.style.animation = `svgDraw 2s var(--ease-smooth) forwards`;
+                path.style.animationDelay = `${index * 0.1}s`;
+              });
+            }
           }
         };
       }
@@ -1648,11 +1741,11 @@
         const links = Array.from(section.querySelectorAll('.resources__link-block'));
         const books = Array.from(section.querySelectorAll('.resources__book'));
         
-        // Timings for sequential reveal
+        // Timings for sequential reveal (動畫提前完成，保留更多靜止時間)
         const itemTimings = [
-          { start: 0.10, end: 0.25 },
-          { start: 0.30, end: 0.45 },
-          { start: 0.50, end: 0.65 },
+          { start: 0.10, end: 0.20 },
+          { start: 0.25, end: 0.35 },
+          { start: 0.40, end: 0.50 },
         ];
         
         return function update() {
@@ -2091,6 +2184,22 @@
           });
         }
         
+        // Section focus tracking for fade/blur effect
+        function updateSectionFocus() {
+          const sections = document.querySelectorAll('.section');
+          const viewportCenter = window.scrollY + window.innerHeight / 2;
+          
+          sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            const sectionBottom = sectionTop + rect.height;
+            
+            // Section is focused if viewport center is within section bounds
+            const isFocused = viewportCenter >= sectionTop && viewportCenter <= sectionBottom;
+            section.classList.toggle('section--focused', isFocused);
+          });
+        }
+        
         // Scroll handler - runs on EVERY frame for smooth scrub
         let ticking = false;
         function handleScroll() {
@@ -2104,6 +2213,7 @@
               updateProgressBar();
               // updateSectionGradients(); // Disabled: section boundary gradients removed
               updateFullPageGradient(); // Update full-page color-changing gradient
+              updateSectionFocus(); // Update section focus for fade/blur effect
               ticking = false;
             });
             ticking = true;
