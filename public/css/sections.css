@@ -1,0 +1,1408 @@
+/* ============================================
+   Sections CSS - All section-specific styles
+   ============================================ */
+
+/* ============================================
+   Section Base
+   ============================================ */
+.section {
+  position: relative;
+  z-index: 1; /* Above gradient overlay */
+  transition: opacity 0.5s var(--ease-smooth), filter 0.5s var(--ease-smooth);
+}
+
+/* Section fade/blur effect - dim non-focused sections */
+.section:not(.section--focused) {
+  opacity: 0.7;
+  filter: blur(2px);
+}
+
+.section.section--focused {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Future Outlook section - circles should not be affected by fade/blur */
+/* 移除強制 opacity，讓 JavaScript 可以控制顯示/隱藏 */
+.section--future-outlook .future-outlook__circles {
+  filter: none !important;
+  /* 移除 opacity: 1 !important，讓 JS 控制 */
+}
+
+.section--future-outlook .future-circle {
+  filter: none !important;
+  /* 移除 opacity: 1 !important，讓 JS 控制 */
+}
+
+/* 移除 visible 狀態的強制 opacity，讓 JavaScript 動態控制 */
+/* JavaScript 會根據 scroll progress 設定 opacity */
+.section--future-outlook .future-circle.visible {
+  /* opacity 由 JavaScript 控制 */
+}
+
+/* Dynamic gradient fade at section boundaries */
+.section {
+  --gradient-opacity-top: 0;
+  --gradient-opacity-bottom: 0;
+}
+
+.section::before,
+.section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 150px;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.1s ease-out;
+}
+
+/* Top gradient - fade from previous section */
+.section::before {
+  top: 0;
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.6) 0%, 
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.1) 70%,
+    transparent 100%
+  );
+  opacity: var(--gradient-opacity-top, 0);
+}
+
+/* Bottom gradient - fade to next section */
+.section::after {
+  bottom: 0;
+  background: linear-gradient(to top, 
+    rgba(0, 0, 0, 0.6) 0%, 
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.1) 70%,
+    transparent 100%
+  );
+  opacity: var(--gradient-opacity-bottom, 0);
+}
+
+/* Enhanced gradients for light backgrounds (cream) */
+.section--intro::before,
+.section--intro::after,
+.section--solution::before,
+.section--solution::after,
+.section--strategy::before,
+.section--strategy::after,
+.section--resources::before,
+.section--resources::after {
+  background: linear-gradient(to bottom, 
+    rgba(17, 0, 0, 0.4) 0%, 
+    rgba(17, 0, 0, 0.2) 40%,
+    rgba(17, 0, 0, 0.08) 70%,
+    transparent 100%
+  );
+}
+
+.section--intro::after,
+.section--solution::after,
+.section--strategy::after,
+.section--resources::after {
+  background: linear-gradient(to top, 
+    rgba(17, 0, 0, 0.4) 0%, 
+    rgba(17, 0, 0, 0.2) 40%,
+    rgba(17, 0, 0, 0.08) 70%,
+    transparent 100%
+  );
+}
+
+/* Enhanced gradients for dark backgrounds */
+.section--cards::before,
+.section--cards::after,
+.section--problem::before,
+.section--problem::after,
+.section--future-outlook::before,
+.section--future-outlook::after {
+  background: linear-gradient(to bottom, 
+    rgba(251, 247, 236, 0.3) 0%, 
+    rgba(251, 247, 236, 0.15) 40%,
+    rgba(251, 247, 236, 0.05) 70%,
+    transparent 100%
+  );
+}
+
+.section--cards::after,
+.section--problem::after,
+.section--future-outlook::after {
+  background: linear-gradient(to top, 
+    rgba(251, 247, 236, 0.3) 0%, 
+    rgba(251, 247, 236, 0.15) 40%,
+    rgba(251, 247, 236, 0.05) 70%,
+    transparent 100%
+  );
+}
+
+/* Enhanced gradients for dark red background (solution) */
+.section--growth::before,
+.section--growth::after {
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.5) 0%, 
+    rgba(0, 0, 0, 0.25) 40%,
+    rgba(0, 0, 0, 0.1) 70%,
+    transparent 100%
+  );
+}
+
+.section--growth::after {
+  background: linear-gradient(to top, 
+    rgba(0, 0, 0, 0.5) 0%, 
+    rgba(0, 0, 0, 0.25) 40%,
+    rgba(0, 0, 0, 0.1) 70%,
+    transparent 100%
+  );
+}
+
+/* Scroll Container + Sticky Stage Pattern */
+.scroll-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Force one slide scrolling for cards section */
+.scroll-container--cards {
+  scroll-snap-type: y mandatory;
+}
+
+.sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: var(--z-sticky);
+}
+
+/* ============================================
+   Section 1: Hero Intro
+   ============================================ */
+.section--intro {
+  /* Background removed - using dynamic gradient overlay instead */
+}
+
+.scroll-container--intro {
+  height: 200vh; /* Increased for more reading time */
+}
+
+.hero {
+  text-align: center;
+  max-width: 800px;
+  padding: 0 var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
+}
+
+.hero__title {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: var(--space-lg);
+  color: var(--text-dark);
+  will-change: transform, opacity;
+  /* Initial state - will be updated by JS */
+  opacity: 0;
+  transform: translateY(30px);
+  /* No transition - controlled by JS scrub */
+}
+
+/* KineticTypography: Character-by-character animation */
+.hero__title--kinetic .char {
+  display: inline-block;
+  will-change: transform, opacity;
+  /* Negative margin for tight character spacing */
+  margin-left: -0.08em;
+  /* Initial state - will be animated by JS */
+  /* Enhanced initial state for more dramatic effect */
+  opacity: 0;
+  transform: translateY(60px) translateX(-20px) scale(0.3) rotate(-15deg);
+}
+
+.hero__title--kinetic .char:first-child {
+  margin-left: 0;
+}
+
+.hero__desc {
+  font-size: clamp(18px, 2.5vw, 24px);
+  line-height: 1.6;
+  margin-bottom: var(--space-xl);
+  color: var(--text-dark);
+  will-change: transform, opacity;
+  /* Initial state - will be updated by JS */
+  opacity: 0;
+  transform: translateY(30px);
+  /* No transition - controlled by JS scrub */
+}
+
+.hero__cta {
+  display: inline-block;
+  padding: 0 var(--space-lg);
+  background: var(--bg-solution);
+  color: var(--text-white);
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  font-size: 18px;
+  min-height: 44px;
+  line-height: 44px;
+  box-shadow: 0 6px 18px rgba(99, 21, 21, 0.25);
+  will-change: transform, opacity;
+  transition: box-shadow var(--duration-fast) ease, filter var(--duration-fast) ease;
+  /* Initial state - will be updated by JS */
+  opacity: 0;
+  transform: translateY(20px);
+  /* No transition - controlled by JS scrub */
+}
+
+.hero__cta:hover {
+  box-shadow: 0 10px 28px rgba(99, 21, 21, 0.35);
+  filter: brightness(1.03);
+}
+
+/* ============================================
+   Section 2: Flip Cards
+   ============================================ */
+.section--cards {
+  /* Background removed - using dynamic gradient overlay instead */
+}
+
+.scroll-container--cards {
+  height: 600vh; /* 6x viewport - reduced to shorten spacing between cards */
+  /* Force one slide scrolling: each card takes exactly 33.33% of scroll */
+  scroll-snap-type: y mandatory;
+}
+
+.sticky-stage--cards {
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.flip-cards {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.flip-card-wrapper {
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  width: 100%;
+  min-height: 400px;
+  opacity: 0;
+  transform: translateY(40px);
+  /* No transition - controlled by JS scrub */
+  will-change: transform, opacity;
+}
+
+/* Once visible, card stays visible */
+.flip-card-wrapper.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  /* No transition - controlled by JS scrub */
+  will-change: transform;
+}
+
+.flip-card__front,
+.flip-card__back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  box-shadow: var(--shadow-1);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.flip-card__front {
+  background: linear-gradient(135deg, var(--bg-solution) 0%, var(--circle-large) 100%);
+  color: var(--text-white);
+  /* Front starts at 0deg, visible when card is at 0deg */
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  box-shadow: var(--shadow-1); /* Unified shadow level 1 */
+}
+
+.flip-card__back {
+  background: var(--bg-cream);
+  color: var(--text-dark);
+  border-color: var(--separator);
+  /* Back starts at 180deg (behind), visible when card rotates to 180deg */
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  /* Increase padding to constrain content width */
+  padding: var(--space-xl) var(--space-lg);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.flip-card__number {
+  font-size: clamp(36px, 4vw, 48px);
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  opacity: 0.3;
+}
+
+.flip-card__title {
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.flip-card__content {
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.flip-card__description {
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.6;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.flip-card__description ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.flip-card__description li {
+  margin-bottom: 12px;
+  padding-left: 24px;
+  position: relative;
+  /* Ensure text wraps properly */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.flip-card__description li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  font-size: 1.5em;
+  line-height: 1;
+  color: #9F3030;
+}
+
+.flip-card__desc-item--dark {
+  color: #232323;
+}
+
+.flip-card__desc-item--accent {
+  color: #631515;
+}
+
+.flip-card__list {
+  list-style: none;
+  text-align: left;
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.6;
+}
+
+.flip-card__list li {
+  margin-bottom: var(--space-sm);
+  padding-left: var(--space-md);
+  position: relative;
+}
+
+.flip-card__list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  font-size: 24px;
+  line-height: 1;
+}
+
+/* ============================================
+   Section 3: Problem
+   ============================================ */
+.section--problem {
+  /* Background removed - using dynamic gradient overlay instead */
+}
+
+.scroll-container--problem {
+  height: 150vh; /* Reduced to minimize overlap */
+}
+
+.sticky-stage--problem {
+  padding: var(--space-lg);
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.problem {
+  max-width: 1400px;
+  padding: var(--space-lg);
+  text-align: left;
+}
+
+.problem__title {
+  font-size: clamp(64px, 12vw, 160px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-white);
+  margin-bottom: var(--space-md);
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.problem__subtitle {
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 400;
+  color: var(--text-muted);
+  font-family: var(--font-cjk);
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   Section 3b: Future Outlook (Reference: ProblemSectionEffect)
+   ============================================ */
+.section--future-outlook {
+  /* Background removed - using dynamic gradient overlay instead */
+  /* 確保不會限制 fixed circles 的顯示 */
+  overflow: visible !important;
+  clip: none !important;
+  clip-path: none !important;
+}
+
+.scroll-container--future-outlook {
+  height: 600vh; /* 6x viewport - optimized to reduce overlap with other sections */
+  position: relative;
+  width: 100%;
+}
+
+.sticky-stage--future-outlook {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important; /* Allow fixed circles to be visible */
+  z-index: var(--z-sticky); /* 使用標準 sticky z-index: 10 */
+}
+
+.future-outlook {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  padding: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  overflow: visible; /* Allow circles to overflow for zoom-out */
+}
+
+/* Titles container - matches reference */
+/* Titles container - matches reference, but keep it narrower so right side feels wider */
+.future-outlook__titles {
+  flex: 0 0 40%;       /* fixed ~40% width for left column */
+  position: relative;
+  min-height: 400px;
+  max-width: 40%;
+  padding-right: 40px; /* a bit less padding to compensate narrower width */
+  z-index: 1; /* 確保 titles 在 circles 下方（circles 是 fixed，z-index: 999） */
+}
+
+/* Title items - absolutely positioned, stacked */
+.future-outlook__title-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.future-outlook__title-item.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.future-outlook__title-item.exiting {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+/* Typography matches reference */
+.future-outlook__title {
+  color: #848484;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 24px;
+}
+
+.future-outlook__stat {
+  color: #ffffff;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 50px;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 16px;
+}
+
+.future-outlook__value {
+  color: #ff3b30;
+}
+
+.future-outlook__sub {
+  color: #C7C7C7;
+  font-family: var(--font-cjk);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: normal;
+}
+
+/* Circles stack - positioned absolute at bottom-right */
+.future-outlook__circles {
+  /* Anchor the circles group to the viewport bottom-right corner */
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  flex-shrink: 0;
+  pointer-events: none;
+  z-index: 999 !important; /* 提高 z-index，確保在所有 section 內容之上，但低於 nav (1000) */
+  /* Override section fade/blur effect - circles should always be visible */
+  opacity: 1 !important;
+  filter: none !important;
+  /* Ensure container has enough space for circles */
+  width: 1200px !important;
+  height: 1200px !important;
+  min-width: 1200px !important;
+  min-height: 1200px !important;
+  display: block !important;
+  visibility: visible !important;
+  /* 確保不被任何父元素限制 */
+  overflow: visible !important;
+  clip: none !important;
+  clip-path: none !important;
+}
+
+.future-circle {
+  position: absolute !important;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(150%, 150%); /* Center point starts outside bottom-right */
+  transform-origin: center;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  will-change: transform, opacity;
+  /* Ensure circles are not affected by section fade/blur */
+  filter: none !important;
+  display: block !important;
+  visibility: visible !important;
+  /* 確保背景色可見 */
+  background-color: inherit;
+}
+
+.future-circle.visible {
+  /* 移除 opacity: 1 !important，讓 JavaScript 動態控制 */
+  /* JavaScript 會根據 scroll progress 設定 opacity */
+  transform: translate(50%, 50%) !important;
+  /* 強制顯示 */
+  visibility: visible !important;
+  display: block !important;
+}
+
+.future-circle--small {
+  width: 550px !important;  /* was 450px */
+  height: 550px !important; /* was 450px */
+  background: #D65D5D !important;
+  background-color: #D65D5D !important;
+  z-index: 3 !important;
+  min-width: 550px !important;
+  min-height: 550px !important;
+}
+
+.future-circle--medium {
+  width: 800px !important;  /* was 650px */
+  height: 800px !important; /* was 650px */
+  background: #C44646 !important;
+  background-color: #C44646 !important;
+  z-index: 2 !important;
+  min-width: 800px !important;
+  min-height: 800px !important;
+}
+
+.future-circle--large {
+  width: 1050px !important;  /* was 850px */
+  height: 1050px !important; /* was 850px */
+  background: #9F3030 !important;
+  background-color: #9F3030 !important;
+  z-index: 1 !important;
+  min-width: 1050px !important;
+  min-height: 1050px !important;
+}
+
+/* Zoom-out mode - circles become fixed, center point at viewport bottom-right */
+.future-circle--zoom-out {
+  position: fixed !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  transform-origin: 100% 100% !important; /* Scale from bottom-right corner (same as normal stage) */
+  pointer-events: none;
+  box-shadow: var(--shadow-2); /* Unified shadow level 2 for important overlays */
+}
+
+.future-circle--zoom-out.future-circle--small {
+  z-index: 9999 !important; /* Top */
+}
+
+.future-circle--zoom-out.future-circle--medium {
+  z-index: 9998 !important; /* Middle */
+}
+
+.future-circle--zoom-out.future-circle--large {
+  z-index: 9997 !important; /* Bottom */
+}
+
+/* Fade-out state */
+.future-circle--fade-out {
+  opacity: 0 !important;
+}
+
+/* ============================================
+   Section 4: Solution
+   ============================================ */
+.section--solution {
+  /* Background removed - using dynamic gradient overlay instead */
+}
+
+/* Stage 1: Disintegrating Text */
+.scroll-container--solution-text {
+  height: 280vh; /* Further increased for longer stick time - solution text stays on screen longer */
+}
+
+.solution-text {
+  text-align: center;
+  max-width: 1200px;
+  padding: var(--space-lg);
+}
+
+.solution-text__item {
+  will-change: transform, opacity;
+  /* Ensure children (chars) can animate independently */
+  transform: none;
+  /* Don't apply opacity to item - let chars animate individually */
+}
+
+.solution-text__title {
+  font-size: clamp(32px, 5vw, 72px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: var(--space-md);
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+}
+
+.solution-text__title--disintegrate {
+  white-space: nowrap; /* Keep text in one line */
+  overflow: hidden; /* Prevent text overflow */
+  letter-spacing: -0.03em;
+}
+
+.solution-text__title--disintegrate .char {
+  display: inline-block;
+  will-change: transform, opacity;
+  /* Tighter character spacing for better optical arrangement */
+  margin-left: -0.05em;
+  /* Initial state for DisintegratingText effect */
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+
+.solution-text__title--disintegrate .char:first-child {
+  margin-left: 0;
+}
+
+/* Space characters: reset negative margin and add proper spacing */
+.solution-text__title--disintegrate .char--space {
+  margin-left: 0.1em;
+  /* Space characters should always be visible and not animated */
+  opacity: 1 !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+.solution-text__sub {
+  font-size: clamp(24px, 4vw, 48px);
+  font-weight: 400;
+  color: #525252;
+}
+
+/* Stage 2: Matrix */
+.scroll-container--solution-matrix {
+  /* Longer runway so每一段 H1 / H1+H2 / H1+H2+H3 有明顯停留時間 */
+  height: 320vh; /* Increased from 260vh for longer hold time after highlight */
+}
+
+.solution-matrix {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  max-width: 1400px;
+  padding: var(--space-lg);
+  width: 100%;
+}
+
+.solution-matrix__visual {
+  flex: 1;
+  will-change: transform, opacity;
+}
+
+.solution-matrix__svg-wrap {
+  position: relative;
+  max-width: 600px;
+}
+
+.solution-matrix__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.solution-matrix__svg--gray {
+  position: relative;
+  z-index: 1;
+}
+
+.solution-matrix__svg--colored {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  will-change: clip-path, opacity;
+  opacity: 0;
+  clip-path: inset(100% 100% 0% 0%);
+  -webkit-clip-path: inset(100% 100% 0% 0%);
+}
+
+/* Pulse effect when colored overlay is fully visible (all highlights shown) */
+.solution-matrix__svg--colored.pulse-active {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+.solution-matrix__items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  will-change: transform, opacity;
+}
+
+.solution-matrix__item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.solution-matrix__icon-wrap {
+  --icon-size: clamp(44px, 5vw, 60px);
+  position: relative;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex-shrink: 0;
+}
+
+.solution-matrix__icon {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.solution-matrix__icon--gray {
+  position: relative;
+  z-index: 1;
+}
+
+.solution-matrix__icon--colored {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  will-change: opacity;
+}
+
+/* Pulse effect when icon colored overlay is visible */
+.solution-matrix__item.highlighted .solution-matrix__icon--colored {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+.solution-matrix__text {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 500;
+  will-change: color;
+}
+
+/* Stage 3: Resource Fit Matrix */
+.scroll-container--solution-resource-fit {
+  height: 220vh; /* Increased from 150vh for longer hold time after highlight */
+}
+
+.solution-resource-fit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  max-width: 1400px;
+  padding: var(--space-lg);
+  width: 100%;
+}
+
+.solution-resource-fit__visual {
+  flex: 1;
+  position: relative;
+  will-change: transform, opacity;
+}
+
+.solution-resource-fit__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Highlight circle (circle 2) overlay on Resource Fit Matrix */
+.solution-resource-fit__highlight {
+  position: absolute;
+  top: 13.5%;   /* tuned for circle 2 position on matrix */
+  left: 71%;    /* tuned for circle 2 position on matrix */
+  width: 13%;
+  height: auto;
+  will-change: transform, opacity;
+}
+
+/* Pulse effect when highlight is fully visible */
+.solution-resource-fit__highlight.visible {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+.solution-resource-fit__title-wrap {
+  flex: 1;
+  text-align: right;
+  will-change: transform, opacity;
+}
+
+.solution-resource-fit__title {
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 700;
+  color: var(--bg-solution);
+  margin-bottom: var(--space-md);
+}
+
+.solution-resource-fit__sub {
+  font-size: clamp(18px, 2.5vw, 32px);
+  color: var(--text-dark);
+}
+
+/* Stage 4: Opportunity Matrix */
+.scroll-container--solution-opportunity {
+  /* Longer runway so Opportunity Matrix 有明顯停留時間 */
+  height: 280vh; /* Increased from 200vh for longer hold time after highlight */
+}
+
+.solution-opportunity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  max-width: 1400px;
+  padding: var(--space-lg);
+  width: 100%;
+}
+
+.solution-opportunity__title-wrap {
+  flex: 1;
+  text-align: left;
+  will-change: transform, opacity;
+  /* Initial state - will be updated by JS */
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.solution-opportunity__title {
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 700;
+  color: var(--bg-solution);
+  margin-bottom: var(--space-md);
+}
+
+.solution-opportunity__sub {
+  font-size: clamp(18px, 2.5vw, 32px);
+  color: var(--text-dark);
+  /* Ensure subtitle is always visible */
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.solution-opportunity__visual {
+  flex: 1;
+  position: relative;
+  will-change: transform, opacity;
+}
+
+.solution-opportunity__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.solution-opportunity__highlight {
+  position: absolute;
+  top: 13.9%;
+  left: 71.4%;
+  width: 13.3%;
+  height: auto;
+  will-change: transform, opacity;
+}
+
+/* Pulse effect when highlight is fully visible */
+.solution-opportunity__highlight.visible {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+/* ============================================
+   Section 5: Growth Strategy
+   ============================================ */
+.section--growth {
+  /* Background removed - using dynamic gradient overlay instead */
+}
+
+.scroll-container--growth {
+  height: 150vh; /* Reduced to minimize overlap */
+}
+
+.growth {
+  text-align: center;
+  max-width: 900px;
+  padding: var(--space-lg);
+}
+
+.growth__title {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bg-cream);
+  margin-bottom: var(--space-xl);
+  text-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  will-change: transform, opacity;
+}
+
+.growth__figure {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.growth__svg {
+  width: 100%;
+  height: auto;
+  will-change: transform, opacity;
+}
+
+
+/* ============================================
+   Section 6: Strategy Tree
+   ============================================ */
+.section--strategy {
+  /* Background removed - using dynamic gradient overlay instead */
+}
+
+.scroll-container--strategy {
+  height: 200vh; /* Reduced to minimize overlap */
+}
+
+.sticky-stage--strategy {
+  padding: var(--space-lg);
+}
+
+.strategy {
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.strategy__heading {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-dark);
+  margin-bottom: var(--space-xl);
+  will-change: transform, opacity;
+}
+
+.strategy__figure {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.strategy__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   Section 7: Resources
+   ============================================ */
+.section--resources {
+  /* Background removed - using dynamic gradient overlay instead */
+  color: var(--text-dark);
+}
+
+.scroll-container--resources {
+  height: 140vh; /* Shorter so footer appears sooner */
+}
+
+.sticky-stage--resources {
+  padding: var(--space-md);
+}
+
+.resources {
+  max-width: 1400px;
+  margin: 0;
+  padding: 0 var(--space-md);
+  text-align: left;
+}
+
+.resources__heading {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-md);
+  text-align: left;
+  color: var(--text-dark);
+  will-change: transform, opacity;
+}
+
+.resources__layout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-xl);
+}
+
+.resources__links {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.resources__link-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--text-white);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-dark);
+  width: 100%;
+  max-width: 640px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  will-change: transform, opacity;
+  transition: box-shadow var(--duration-fast) ease;
+}
+
+.resources__link-block:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.resources__link-name {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 500;
+  flex: 1;
+}
+
+.resources__arrow {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-left: var(--space-md);
+  transition: transform var(--duration-fast) ease;
+}
+
+.resources__link-block:hover .resources__arrow {
+  transform: translateX(4px);
+}
+
+/* Books stack */
+/* Books stack - enlarged for stronger visual weight */
+.resources__books {
+  flex: 0 0 320px; /* was 260px */
+  position: relative;
+  width: 320px;    /* was 260px */
+  height: 360px;   /* was 300px */
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  align-self: flex-start;
+}
+
+.resources__book {
+  position: absolute;
+  width: 150px;   /* was 120px */
+  height: 210px;  /* was 160px */
+  will-change: transform, opacity;
+}
+
+.resources__book[data-book="1"] {
+  top: 0;
+  right: 0;
+  z-index: 1; /* First book at bottom */
+}
+
+.resources__book[data-book="2"] {
+  top: 28px;   /* was 20px */
+  right: 24px; /* was 20px */
+  z-index: 2; /* Second book in middle */
+}
+
+.resources__book[data-book="3"] {
+  top: 56px;   /* was 40px */
+  right: 48px; /* was 40px */
+  z-index: 3; /* Third book on top */
+}
+
+.resources__book-cover {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-solution) 0%, var(--circle-large) 100%);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.resources__book[data-book="2"] .resources__book-cover {
+  background: linear-gradient(135deg, var(--bg-solution) 0%, var(--circle-medium) 100%);
+}
+
+.resources__book[data-book="3"] .resources__book-cover {
+  background: linear-gradient(135deg, var(--bg-solution) 0%, var(--circle-small) 100%);
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.footer {
+  position: relative;
+  z-index: 10; /* Above gradient overlay (body::before has z-index: 0) */
+  background: var(--bg-dark);
+  color: var(--text-white);
+  padding: 80px 0;
+  text-align: center;
+  margin-top: 80px; /* Create clear separation from previous section */
+}
+
+.footer__title {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-lg);
+}
+
+.footer__text {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-lg);
+}
+
+.footer__social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-white);
+  text-decoration: none;
+  transition: all var(--duration-fast) ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer__social-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.footer__social-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* ============================================
+   Responsive - Mobile
+   ============================================ */
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: 48px;
+  }
+  
+  .flip-cards {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .flip-card-wrapper {
+    min-height: 350px;
+  }
+  
+  .flip-card {
+    height: 350px;
+  }
+  
+  /* Future Outlook - Mobile */
+  .future-outlook {
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px;
+  }
+
+  .future-outlook__titles {
+    max-width: 100%;
+    padding-right: 0;
+    min-height: 280px;
+  }
+
+  .future-outlook__circles {
+    /* On mobile, keep circles inside layout instead of fixed to viewport */
+    position: relative;
+    width: 100%;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .future-circle {
+    position: relative;
+    transform: none;
+  }
+
+  .future-circle.visible {
+    transform: none;
+  }
+
+  .future-circle--small {
+    width: 280px;  /* slightly larger on mobile as well */
+    height: 280px;
+  }
+
+  .future-circle--medium {
+    width: 360px;
+    height: 360px;
+  }
+
+  .future-circle--large {
+    width: 420px;
+    height: 420px;
+  }
+  
+  .solution-matrix,
+  .solution-resource-fit,
+  .solution-opportunity {
+    flex-direction: column;
+  }
+  
+  .solution-resource-fit__title-wrap {
+    text-align: center;
+    order: 2;
+  }
+  
+  .solution-resource-fit__visual {
+    order: 1;
+  }
+  
+  .solution-opportunity__title-wrap {
+    text-align: center;
+    order: 1;
+  }
+  
+  .solution-opportunity__visual {
+    order: 2;
+  }
+
+  .resources__layout {
+    gap: var(--space-md);
+  }
+
+  .resources__books {
+    /* Slightly larger on mobile as well, but within layout */
+    flex: 0 0 200px; /* was 140px */
+    width: 200px;    /* was 140px */
+    height: 260px;   /* was 220px */
+  }
+}

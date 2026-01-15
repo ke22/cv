@@ -1,0 +1,180 @@
+/* ============================================
+   Base CSS - Variables, Resets, Typography
+   ============================================ */
+
+/* ============================================
+   CSS Variables
+   ============================================ */
+:root {
+  /* Apple-ish surface tokens (HIG-inspired) */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --separator: rgba(60, 60, 67, 0.18);
+  --material-dark: rgba(28, 28, 30, 0.72);
+  --focus-ring: rgba(10, 132, 255, 0.55);
+
+  /* Colors */
+  --bg-dark: rgb(17, 0, 0);
+  --bg-cream: #fbf7ec;
+  --bg-problem: #232323;
+  --bg-solution: #631515;
+  --text-white: #ffffff;
+  --text-dark: #3d3d3d;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --nav-pill: var(--material-dark);
+  --red-primary: #d32f2f;
+  --red-accent: #b71c1c;
+  --circle-small: #D65D5D;
+  --circle-medium: #C44646;
+  --circle-large: #9F3030;
+  
+  /* Typography */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-cjk: 'YuGothic', 'Yu Gothic', '游ゴシック', var(--font-primary);
+  
+  /* Spacing */
+  /* Enlarged global spacing scale (more padding/margins across the page) */
+  --space-xs: 8px;   /* keep base unit */
+  --space-sm: 24px;  /* was 16px */
+  --space-md: 32px;  /* was 24px */
+  --space-lg: 48px;  /* was 40px */
+  --space-xl: 72px;  /* was 60px */
+  --space-xxl: 128px; /* was 120px */
+  
+  /* Transitions - Unified timing system */
+  --ease-smooth: cubic-bezier(0.19, 1, 0.22, 1); /* Premium ease-out */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1); /* For fade-out/exit */
+  --duration-fast: 0.3s;
+  --duration-normal: 0.5s; /* Unified entry: 0.4-0.6s */
+  --duration-slow: 0.8s;
+  
+  /* Shadow levels - Unified shadow system */
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06); /* Cards */
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.12), 0 16px 48px rgba(0, 0, 0, 0.08); /* Important overlays (circle zoom, highlights) */
+  --shadow-3: 0 16px 48px rgba(0, 0, 0, 0.16), 0 32px 64px rgba(0, 0, 0, 0.12); /* Maximum depth */
+  
+  /* Z-index layers */
+  --z-base: 1;
+  --z-sticky: 10;
+  --z-nav: 1000;
+  --z-modal: 2000;
+  --z-progress: 3000;
+  --z-transition: 9997;
+}
+
+/* ============================================
+   Reset & Base
+   ============================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--bg-dark); /* Fallback background */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: transparent; /* Background replaced by dynamic gradient */
+  color: var(--text-white);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--duration-fast) ease;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  position: relative;
+  --gradient-overlay-opacity: 1;
+  --gradient-overlay-gradient: linear-gradient(to bottom, rgb(17, 0, 0) 0%, rgb(17, 0, 0) 100%);
+}
+
+/* Dynamic gradient overlay - gradient transitions at section boundaries */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0; /* Behind content but visible as background */
+  background: var(--gradient-overlay-gradient, linear-gradient(to bottom, rgb(17, 0, 0) 0%, rgb(17, 0, 0) 100%));
+  opacity: var(--gradient-overlay-opacity, 1);
+  /* Extra-slow background switching between sections (e.g., section 5 → 6) */
+  transition: background 2.2s ease-in-out;
+  will-change: background;
+}
+
+/* Apple-like focus ring */
+:where(a, button, [role="button"], [tabindex]):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Container */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Default heading sizes (explicitly shrink h3) */
+h3 {
+  font-size: 1.1rem; /* slightly smaller than browser default */
+}
+
+p {
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Prevent background scroll when modal is open */
+body.is-modal-open {
+  overflow: hidden;
+}

@@ -1,0 +1,2308 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CV - Professional Portfolio with Scrollytelling">
+  <meta name="version" content="2.0.3">
+  <meta name="last-updated" content="2024-12">
+  <title>CV - Scrollytelling Portfolio v2.0.3</title>
+  <!-- Modular CSS -->
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/sections.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/animations.css">
+</head>
+<body>
+  <!-- ============================================
+       Progress Indicator (進度回饋)
+       ============================================ -->
+  <div class="progress-bar" aria-hidden="true">
+    <div class="progress-bar__fill"></div>
+  </div>
+
+  <!-- ============================================
+       Debug Monitor (進度與觸發點監控)
+       ============================================ -->
+  <div id="debug-monitor" class="debug-monitor" style="display: none;">
+    <div class="debug-monitor__header">
+      <h3>Scrollytelling Monitor</h3>
+      <button id="debug-monitor-close" class="debug-monitor__close">×</button>
+    </div>
+    <div class="debug-monitor__content">
+      <div class="debug-monitor__section">
+        <h4>Global Scroll</h4>
+        <div class="debug-monitor__item">
+          <span>Scroll Y:</span>
+          <span id="debug-scroll-y">0</span>px
+        </div>
+        <div class="debug-monitor__item">
+          <span>Viewport Height:</span>
+          <span id="debug-viewport-h">0</span>px
+        </div>
+        <div class="debug-monitor__item">
+          <span>Document Height:</span>
+          <span id="debug-doc-h">0</span>px
+        </div>
+        <div class="debug-monitor__item">
+          <span>Global Progress:</span>
+          <span id="debug-global-progress">0.000</span>
+        </div>
+      </div>
+      <div class="debug-monitor__section">
+        <h4>Section Progress</h4>
+        <div id="debug-sections-list"></div>
+      </div>
+      <div class="debug-monitor__section">
+        <h4>Trigger Points</h4>
+        <div id="debug-triggers-list"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Debug Toggle Button -->
+  <button id="debug-toggle" class="debug-toggle" title="Toggle Debug Monitor (Press 'D')">🔍</button>
+
+  <!-- ============================================
+       Desktop Navigation
+       ============================================ -->
+  <nav class="nav" aria-label="主導覽">
+    <div class="nav__pill">
+      <button class="nav__dot-btn active" data-section="intro" aria-label="開場">
+        <span class="nav__label-wrap"><span class="nav__label">開場</span></span>
+        <span class="nav__dot"></span>
+      </button>
+      <button class="nav__dot-btn" data-section="cards" aria-label="目標">
+        <span class="nav__label-wrap"><span class="nav__label">目標</span></span>
+        <span class="nav__dot"></span>
+      </button>
+      <button class="nav__dot-btn" data-section="problem" aria-label="現況">
+        <span class="nav__label-wrap"><span class="nav__label">現況</span></span>
+        <span class="nav__dot"></span>
+      </button>
+      <button class="nav__dot-btn" data-section="solution" aria-label="策略">
+        <span class="nav__label-wrap"><span class="nav__label">策略</span></span>
+        <span class="nav__dot"></span>
+      </button>
+      <button class="nav__dot-btn" data-section="growth" aria-label="成長">
+        <span class="nav__label-wrap"><span class="nav__label">成長</span></span>
+        <span class="nav__dot"></span>
+      </button>
+      <button class="nav__dot-btn" data-section="contact" aria-label="聯繫">
+        <span class="nav__label-wrap"><span class="nav__label">聯繫</span></span>
+        <span class="nav__dot"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       Mobile Navigation
+       ============================================ -->
+  <nav class="mobile-nav" aria-label="行動裝置導覽">
+    <div class="mobile-nav__pill">
+      <button class="mobile-nav__header" aria-expanded="false" aria-label="開啟選單">
+        <span class="mobile-nav__label">CV Portfolio</span>
+        <div class="mobile-nav__icon">
+          <span class="mobile-nav__icon-line"></span>
+          <span class="mobile-nav__icon-line"></span>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Modal -->
+  <div class="mobile-modal" role="dialog" aria-modal="true" aria-label="導覽選單" aria-hidden="true">
+    <div class="mobile-modal__content">
+      <div class="mobile-modal__header">
+        <span class="mobile-modal__title">導覽</span>
+        <button class="mobile-modal__close" aria-label="關閉選單">×</button>
+      </div>
+      <ul class="mobile-modal__list">
+        <li><a href="#intro" class="mobile-modal__link active">開場</a></li>
+        <li><a href="#cards" class="mobile-modal__link">目標</a></li>
+        <li><a href="#problem" class="mobile-modal__link">現況</a></li>
+        <li><a href="#solution" class="mobile-modal__link">策略</a></li>
+        <li><a href="#growth" class="mobile-modal__link">成長</a></li>
+        <li><a href="#contact" class="mobile-modal__link">聯繫</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <main>
+    <!-- ============================================
+         Section 1: Hero Intro (開場)
+         ============================================ -->
+    <section id="intro" class="section section--intro" data-scroll-section="hero" aria-labelledby="intro-title">
+      <div class="scroll-container scroll-container--intro">
+        <div class="sticky-stage sticky-stage--intro">
+          <div class="hero">
+            <h1 id="intro-title" class="hero__title hero__title--kinetic">
+              <span class="char">C</span><span class="char">V</span><span class="char">C</span><span class="char">V</span><span class="char">C</span><span class="char">V</span><span class="char">C</span><span class="char">V</span><span class="char">C</span><span class="char">V</span><span class="char">C</span><span class="char">V</span>
+            </h1>
+            <p class="hero__desc">
+              Yulin Cho
+            </p>
+            <a href="#contact" class="hero__cta">View the Guidelines</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         Section 2: Flip Cards (目標)
+         ============================================ -->
+    <section id="cards" class="section section--cards" data-scroll-section="flipCards" aria-labelledby="cards-title">
+      <h2 id="cards-title" class="sr-only">三大目標</h2>
+      <div class="scroll-container scroll-container--cards">
+        <div class="sticky-stage sticky-stage--cards">
+          <div class="flip-cards">
+            <!-- Card 1 -->
+            <div class="flip-card-wrapper" data-card="1">
+              <div class="flip-card">
+                <div class="flip-card__front">
+                  <div class="flip-card__content">
+                    <div class="flip-card__number">1</div>
+                    <div class="flip-card__title">任務目標</div>
+                  </div>
+                </div>
+                <div class="flip-card__back">
+                  <div class="flip-card__content">
+                    <div class="flip-card__title">任務目標</div>
+                    <div class="flip-card__description">
+                      <ul>
+                        <li class="flip-card__desc-item flip-card__desc-item--dark">優化編輯產出流程與品質</li>
+                        <li class="flip-card__desc-item flip-card__desc-item--accent">完成論文與研討會成果</li>
+                  </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="flip-card-wrapper" data-card="2">
+              <div class="flip-card">
+                <div class="flip-card__front">
+                  <div class="flip-card__content">
+                    <div class="flip-card__number">2</div>
+                    <div class="flip-card__title">策略目標</div>
+                  </div>
+                </div>
+                <div class="flip-card__back">
+                  <div class="flip-card__content">
+                    <div class="flip-card__title">策略目標</div>
+                    <div class="flip-card__description">
+                      <ul>
+                        <li class="flip-card__desc-item flip-card__desc-item--dark">以視覺創意組為核心啟動 AI 流程轉型</li>
+                        <li class="flip-card__desc-item flip-card__desc-item--accent">置身創新實踐學習場域</li>
+                  </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="flip-card-wrapper" data-card="3">
+              <div class="flip-card">
+                <div class="flip-card__front">
+                  <div class="flip-card__content">
+                    <div class="flip-card__number">3</div>
+                    <div class="flip-card__title">個人目標</div>
+                  </div>
+                </div>
+                <div class="flip-card__back">
+                  <div class="flip-card__content">
+                    <div class="flip-card__title">個人目標</div>
+                    <div class="flip-card__description">
+                      <ul>
+                        <li class="flip-card__desc-item flip-card__desc-item--dark">累積 AI 工作流規劃的實戰經驗</li>
+                        <li class="flip-card__desc-item flip-card__desc-item--accent">提升個人思維與心智層次</li>
+                  </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         Section 3: Problem (現況)
+         ============================================ -->
+    <section id="problem" class="section section--problem" data-scroll-section="problem" aria-label="現況">
+      <div class="scroll-container scroll-container--problem">
+        <div class="sticky-stage sticky-stage--problem">
+          <div class="problem">
+            <h2 class="problem__title">I'm so panic！</h2>
+            <p class="problem__subtitle">我很驚恐</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         Section 3b: Future Outlook (未來展望)
+         Reference: ProblemSectionEffect Frame 20
+         ============================================ -->
+    <section id="future-outlook" class="section section--future-outlook" data-scroll-section="futureOutlook" aria-label="未來展望">
+      <div class="scroll-container scroll-container--future-outlook">
+        <div class="sticky-stage sticky-stage--future-outlook">
+          <div class="future-outlook">
+            <!-- Left: Title Items (switch sequentially) -->
+              <div class="future-outlook__titles">
+                <div class="future-outlook__title-item" data-title="1">
+                <div class="future-outlook__title">Low Salary Levels</div>
+                <div class="future-outlook__stat"><span class="future-outlook__value">36.5%</span> with an annual salary of less than 600,000.</div>
+                <div class="future-outlook__sub">薪資偏低：<span class="future-outlook__value">36.5%</span> 年薪 &lt; 60萬</div>
+                </div>
+                <div class="future-outlook__title-item" data-title="2">
+                <div class="future-outlook__title">Insufficient</div>
+                <div class="future-outlook__stat">Career satisfaction rating of <span class="future-outlook__value">2.99</span>/ 5</div>
+                <div class="future-outlook__sub">職涯發展不足</div>
+                </div>
+                <div class="future-outlook__title-item" data-title="3">
+                <div class="future-outlook__title">Future Outlook</div>
+                <div class="future-outlook__stat"><span class="future-outlook__value">60.5%</span> intend to remain in their current roles.</div>
+                <div class="future-outlook__sub"><span class="future-outlook__value">60.5%</span> 會繼續目前工作</div>
+                </div>
+              </div>
+            <!-- Right: Circle Stack (zoom-out effect) -->
+              <div class="future-outlook__circles" aria-hidden="true">
+              <div class="future-circle future-circle--small"></div>
+              <div class="future-circle future-circle--medium"></div>
+              <div class="future-circle future-circle--large"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         Section 4: Solution (策略)
+         ============================================ -->
+    <section id="solution" class="section section--solution" data-scroll-section="solution" aria-labelledby="solution-title">
+      <h2 id="solution-title" class="sr-only">解決方案</h2>
+
+      <!-- Stage 1: Disintegrating text -->
+      <div class="scroll-container scroll-container--solution-text">
+        <div class="sticky-stage sticky-stage--solution-text">
+          <div class="solution-text">
+            <div class="solution-text__item" data-text="1">
+              <h3 class="solution-text__title solution-text__title--disintegrate">
+                <span class="char">K</span><span class="char">n</span><span class="char">o</span><span class="char">w</span><span class="char char--space">&nbsp;</span>
+                <span class="char">W</span><span class="char">h</span><span class="char">a</span><span class="char">t</span><span class="char char--space">&nbsp;</span>
+                <span class="char">Y</span><span class="char">o</span><span class="char">u</span><span class="char char--space">&nbsp;</span>
+                <span class="char">O</span><span class="char">w</span><span class="char">n</span><span class="char char--space">&nbsp;</span>
+                <span class="char">F</span><span class="char">i</span><span class="char">r</span><span class="char">s</span><span class="char">t</span>
+              </h3>
+              <p class="solution-text__sub">了解自己</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 2: Two-column layout with matrix -->
+      <div class="scroll-container scroll-container--solution-matrix">
+        <div class="sticky-stage sticky-stage--solution-matrix">
+          <div class="solution-matrix">
+            <!-- Left: Matrix SVG (dual-layer: gray base + colored highlight overlay) -->
+            <div class="solution-matrix__visual">
+              <div class="solution-matrix__svg-wrap">
+                <!-- Gray base layer (always visible) -->
+                <img 
+                  src="./img/Know%20What%20You%20Own%20First.svg" 
+                  alt="Know What You Own First Matrix" 
+                  class="solution-matrix__svg solution-matrix__svg--gray"
+                  loading="lazy"
+                />
+                <!-- Colored highlight layer (controlled by clip-path) -->
+                <img 
+                  src="./img/Know%20What%20You%20Own%20First_hightlight.svg.svg" 
+                  alt="Know What You Own First Matrix Highlighted" 
+                  class="solution-matrix__svg solution-matrix__svg--colored"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <!-- Right: H1, H2, H3 items (dual-layer icons: gray base + colored overlay) -->
+            <div class="solution-matrix__items">
+              <div class="solution-matrix__item" data-h="1">
+                <div class="solution-matrix__icon-wrap">
+                  <img src="./img/H_hightlight_01_0.svg" alt="" class="solution-matrix__icon solution-matrix__icon--gray">
+                  <img src="./img/H_hightlight_01.svg" alt="" class="solution-matrix__icon solution-matrix__icon--colored">
+                </div>
+                <span class="solution-matrix__text">核心技能</span>
+              </div>
+              <div class="solution-matrix__item" data-h="2">
+                <div class="solution-matrix__icon-wrap">
+                  <img src="./img/H_hightlight_02_0.svg" alt="" class="solution-matrix__icon solution-matrix__icon--gray">
+                  <img src="./img/H_hightlight_02.svg" alt="" class="solution-matrix__icon solution-matrix__icon--colored">
+                </div>
+                <span class="solution-matrix__text">發展技能</span>
+              </div>
+              <div class="solution-matrix__item" data-h="3">
+                <div class="solution-matrix__icon-wrap">
+                  <img src="./img/H_hightlight_03_0.svg" alt="" class="solution-matrix__icon solution-matrix__icon--gray">
+                  <img src="./img/H_hightlight_03.svg" alt="" class="solution-matrix__icon solution-matrix__icon--colored">
+                </div>
+                <span class="solution-matrix__text">未來技能</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 3: Resource Fit Matrix (swapped: SVG left, Title right) -->
+      <div class="scroll-container scroll-container--solution-resource-fit">
+        <div class="sticky-stage sticky-stage--solution-resource-fit">
+          <div class="solution-resource-fit">
+            <div class="solution-resource-fit__visual">
+              <img 
+                src="./img/Resource%20Fit%20Matrix.svg" 
+                alt="Resource Fit Matrix" 
+                class="solution-resource-fit__svg"
+                loading="lazy"
+              >
+              <!-- Highlight circle (circle 2) overlay -->
+              <img
+                src="./img/circle2.svg"
+                alt=""
+                class="solution-resource-fit__highlight"
+                aria-hidden="true"
+                loading="lazy"
+              >
+            </div>
+            <div class="solution-resource-fit__title-wrap">
+              <h3 class="solution-resource-fit__title">Resource Fit Matrix</h3>
+              <p class="solution-resource-fit__sub">資源適配矩陣</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 4: Opportunity Matrix (two-column: Title left, SVG right) -->
+      <div class="scroll-container scroll-container--solution-opportunity">
+        <div class="sticky-stage sticky-stage--solution-opportunity">
+          <div class="solution-opportunity">
+            <div class="solution-opportunity__title-wrap">
+              <h3 class="solution-opportunity__title">Opportunity Matrix</h3>
+              <p class="solution-opportunity__sub">機會選擇矩陣</p>
+            </div>
+            <div class="solution-opportunity__visual">
+              <img 
+                src="./img/Opportunity%20Matrix.svg" 
+                alt="Opportunity Matrix" 
+                class="solution-opportunity__svg"
+                loading="lazy"
+              >
+              <img 
+                src="./img/circle2.svg" 
+                alt="" 
+                class="solution-opportunity__highlight"
+                aria-hidden="true"
+                loading="lazy"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         Section 5: Growth Strategy (成長)
+         ============================================ -->
+    <section id="growth" class="section section--growth" data-scroll-section="growth" aria-labelledby="growth-title">
+      <div class="scroll-container scroll-container--growth">
+        <div class="sticky-stage sticky-stage--growth">
+          <div class="growth">
+            <h2 id="growth-title" class="growth__title">Growth Strategy</h2>
+            <figure class="growth__figure">
+              <img 
+                src="./img/Group%2029.svg" 
+                alt="Growth Strategy Diagram" 
+                class="growth__svg"
+                loading="lazy"
+              >
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         Section 6: Strategy Tree (FAQs alternative)
+         ============================================ -->
+    <section id="strategy" class="section section--strategy" data-scroll-section="strategy" aria-labelledby="strategy-title">
+      <div class="scroll-container scroll-container--strategy">
+        <div class="sticky-stage sticky-stage--strategy">
+          <div class="strategy">
+            <h2 id="strategy-title" class="strategy__heading">Strategy Tree</h2>
+            <figure class="strategy__figure">
+              <img 
+                src="./img/strategy%20tree.svg" 
+                alt="Strategy Tree Diagram" 
+                class="strategy__svg"
+                loading="lazy"
+              >
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         Section 7: Resources (Sticky)
+         ============================================ -->
+    <section id="resources" class="section section--resources" data-scroll-section="resources" aria-labelledby="resources-title">
+      <div class="scroll-container scroll-container--resources">
+        <div class="sticky-stage sticky-stage--resources">
+          <div class="resources">
+            <h2 id="resources-title" class="resources__heading">Resources</h2>
+            <div class="resources__layout">
+              <!-- Left: Three link blocks -->
+              <div class="resources__links">
+                <a href="#" class="resources__link-block" data-link="1">
+                  <span class="resources__link-name">Link Name 1</span>
+                  <svg class="resources__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
+                <a href="#" class="resources__link-block" data-link="2">
+                  <span class="resources__link-name">Link Name 2</span>
+                  <svg class="resources__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
+                <a href="#" class="resources__link-block" data-link="3">
+                  <span class="resources__link-name">Link Name 3</span>
+                  <svg class="resources__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+              <!-- Right: Three books stack -->
+              <div class="resources__books">
+                <div class="resources__book" data-book="1">
+                  <div class="resources__book-cover"></div>
+                </div>
+                <div class="resources__book" data-book="2">
+                  <div class="resources__book-cover"></div>
+                </div>
+                <div class="resources__book" data-book="3">
+                  <div class="resources__book-cover"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================
+       Footer
+       ============================================ -->
+  <footer id="contact" class="footer" role="contentinfo">
+    <div class="container footer__inner">
+      <h2 class="footer__title">Yulin Cho CV</h2>
+      <p class="footer__text">Designed & Engineered in D.C. by National Design Studio</p>
+      <div class="footer__social">
+        <a href="https://www.facebook.com/yulin.cho.562414?locale=zh_TW" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="Facebook">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+        <a href="https://www.instagram.com/ke2211975/" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="Instagram">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/%E8%82%B2%E9%BA%9F-%E5%8D%93-25770b9b/" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="LinkedIn">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </a>
+        <a href="https://x.com/ke2211975" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="X (Twitter)">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+        <a href="https://line.me/ti/p/@ke2211975" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="LINE">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.058 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       Final State Summary (視覺總結)
+       ============================================ -->
+  <div class="final-summary" aria-hidden="true">
+    <div class="final-summary__content">
+      <span class="final-summary__check">✓</span>
+      <span class="final-summary__text">All sections complete</span>
+    </div>
+  </div>
+
+  <!-- Scrollytelling JavaScript - TRUE SCROLL SCRUB -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ============================================
+      // Utility Functions
+      // ============================================
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      // Linear interpolation
+      function lerp(start, end, progress) {
+        return start + (end - start) * progress;
+      }
+
+      // Map progress from one range to another
+      function mapRange(value, inMin, inMax, outMin, outMax) {
+        const progress = clamp((value - inMin) / (inMax - inMin), 0, 1);
+        return lerp(outMin, outMax, progress);
+      }
+
+      // Helper function to set style with important flag
+      function setStyleImportant(element, property, value) {
+        if (!element) return;
+        element.style.setProperty(property, value, 'important');
+      }
+
+      // Helper function to set opacity and transform with important
+      function setOpacityTransform(element, opacity, transform) {
+        if (!element) return;
+        setStyleImportant(element, 'opacity', String(opacity));
+        setStyleImportant(element, 'transform', transform);
+        setStyleImportant(element, '-webkit-transform', transform);
+      }
+
+      // Calculate scroll progress for a container (0 to 1)
+      // Calculate scroll progress for a container (0 to 1)
+      // Progress = 0 when container top reaches viewport bottom
+      // Progress = 1 when container bottom reaches viewport top
+      // This uses document-relative positions for accurate calculation
+      // ENSURE NO OVERLAP: Only calculate progress when section is in viewport
+      function calculateProgress(element) {
+        if (!element) return 0;
+        
+        const viewportH = window.innerHeight; // Use same variable name as trigger points
+        const scrollY = window.scrollY;
+        const containerHeight = element.offsetHeight;
+        
+        // Get element's absolute position in document
+        // Use getBoundingClientRect for consistency with trigger points calculation
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top + scrollY;
+        const elementBottom = elementTop + containerHeight;
+        
+        // Special-case: Hero section should start at 0 when page just loads
+        // If scrollY === 0 且目前這個 container 在 #intro 裡面，就強制回傳 0
+        // 這樣 Hero 的動畫會從 progress 0 開始，不會一載入就落在 0.3x 位置
+        if (scrollY === 0) {
+          const heroSection = document.querySelector('#intro');
+          if (heroSection && heroSection.contains(element)) {
+            return 0;
+          }
+        }
+        
+        // Check if element is in viewport (to prevent overlap)
+        const viewportTop = 0;
+        const viewportBottom = viewportH;
+        
+        // If element is completely above viewport (bottom of element is above top of viewport)
+        // Use minimal margin to ensure no overlap between sections (scroll storytelling principle)
+        if (rect.bottom < viewportTop - 50) return 0;
+        // If element is completely below viewport (top of element is below bottom of viewport)
+        // Use minimal margin to ensure no overlap between sections (scroll storytelling principle)
+        if (rect.top > viewportBottom + 50) return 0;
+        
+        // Progress calculation (aligned with trigger points):
+        // Start: when element top reaches viewport bottom (scrollY + viewportH = elementTop)
+        // End: when element bottom reaches viewport top (scrollY = elementBottom)
+        // ENSURE NO OVERLAP: Use exact boundaries (no margin) to prevent section overlap
+        const progressStart = elementTop - viewportH;
+        const progressEnd = elementBottom;
+        const totalRange = progressEnd - progressStart;
+        
+        if (totalRange <= 0) {
+          // Container fits in viewport - check if we're past it
+          if (scrollY >= progressEnd) return 1;
+          if (scrollY <= progressStart) return 0;
+          // If container is already visible at load, return small progress
+          return 0.1; // Small initial value
+        }
+        
+        if (scrollY <= progressStart) return 0;
+        if (scrollY >= progressEnd) return 1;
+        
+        const progress = (scrollY - progressStart) / totalRange;
+        return clamp(progress, 0, 1);
+      }
+
+      // ============================================
+      // Section: Hero (SCRUB)
+      // ============================================
+      function initHero() {
+        const section = document.querySelector('#intro');
+        if (!section) {
+          console.warn('[Scrollytelling] Hero section not found');
+          return;
+        }
+        
+        const container = section.querySelector('.scroll-container--intro');
+        const title = section.querySelector('.hero__title');
+        const titleChars = Array.from(section.querySelectorAll('.hero__title--kinetic .char'));
+        const desc = section.querySelector('.hero__desc');
+        
+        if (!container) {
+          console.warn('[Scrollytelling] Hero container not found');
+          return;
+        }
+        
+        console.log('[Scrollytelling] Hero initialized', { container, title, desc, titleChars: titleChars.length });
+        const cta = section.querySelector('.hero__cta');
+        
+        return function update() {
+          if (!container) return;
+          const p = calculateProgress(container);
+          
+          // Debug: Log progress occasionally (throttled)
+          if (Math.random() < 0.01) { // 1% chance per frame
+            console.log('[Hero] Progress:', p.toFixed(3), 'Title opacity:', title ? mapRange(p, 0, 0.15, 0, 1).toFixed(3) : 'N/A');
+          }
+          
+          // KineticTypography: ENHANCED dramatic effect for entire title
+          // Option 1: Whole title animates together (0-30% of scroll)
+          // Option 2: Each character animates sequentially (0-50% of scroll)
+          // Currently using Option 2 with enhanced effects
+          
+          // Title container: 0-30% fade in, then parallax
+          if (title) {
+            const titleOpacity = mapRange(p, 0, 0.30, 0, 1);
+            const titleY = mapRange(p, 0, 0.30, 30, 0) + mapRange(p, 0.30, 1, 0, -40);
+            setOpacityTransform(title, titleOpacity, `translateY(${titleY}px)`);
+          }
+          
+          // KineticTypography: Each character appears sequentially with ENHANCED dramatic effect
+          // All characters will animate: 0-50% of scroll, each char gets 3.5% spacing, 12% animation window
+          if (titleChars.length > 0) {
+            // Calculate total animation range needed for all characters
+            const totalChars = titleChars.length;
+            const charSpacing = 0.035; // 3.5% spacing between chars
+            const charDuration = 0.12; // 12% animation window per char
+            const totalRange = (totalChars - 1) * charSpacing + charDuration;
+            
+            titleChars.forEach((char, i) => {
+              // Ensure all characters get animated within the scroll range
+              const charStart = 0.0 + (i * charSpacing); // Start at 0%, each char gets 3.5% spacing
+              const charEnd = charStart + charDuration; // Each char animates over 12% of scroll
+              const charProgress = mapRange(p, charStart, charEnd, 0, 1);
+              const clampedCharProgress = Math.max(0, Math.min(1, charProgress));
+              
+              // ENHANCED Kinetic effect: opacity + translateY + translateX + scale + rotate
+              // More dramatic: larger Y movement, X movement, bigger scale range, rotation
+              const charOpacity = clampedCharProgress;
+              const charY = lerp(60, 0, clampedCharProgress); // Increased from 20px to 60px
+              const charX = lerp(-20, 0, clampedCharProgress); // Horizontal movement
+              const charScale = lerp(0.3, 1, clampedCharProgress); // Increased scale range from 0.8->1 to 0.3->1
+              const charRotate = lerp(-15, 0, clampedCharProgress); // Rotation effect
+              
+              // Apply enhanced animation with important flag to ALL characters
+              const transformValue = `translateY(${charY}px) translateX(${charX}px) scale(${charScale}) rotate(${charRotate}deg)`;
+              char.style.setProperty('opacity', String(charOpacity), 'important');
+              char.style.setProperty('transform', transformValue, 'important');
+              char.style.setProperty('-webkit-transform', transformValue, 'important');
+              
+              // Debug: Log all characters to ensure they're being animated
+              if (Math.random() < 0.02) { // 2% chance per frame
+                console.log(`[Hero Kinetic] Char ${i}/${totalChars} (${char.textContent}): progress=${(clampedCharProgress * 100).toFixed(1)}%, opacity=${charOpacity.toFixed(2)}, scale=${charScale.toFixed(2)}, rotate=${charRotate.toFixed(1)}deg, p=${(p * 100).toFixed(1)}%`);
+              }
+            });
+            
+            // Debug: Log total characters found
+            if (Math.random() < 0.001) { // Very rare log
+              console.log(`[Hero Kinetic] Total characters: ${totalChars}, Total animation range: ${(totalRange * 100).toFixed(1)}%`);
+            }
+          } else {
+            // Fallback: If no characters found, animate the whole title
+            if (title) {
+              const titleProgress = mapRange(p, 0, 0.30, 0, 1);
+              const titleOpacity = titleProgress;
+              const titleY = lerp(60, 0, titleProgress);
+              const titleX = lerp(-20, 0, titleProgress);
+              const titleScale = lerp(0.3, 1, titleProgress);
+              const titleRotate = lerp(-15, 0, titleProgress);
+              const transformValue = `translateY(${titleY}px) translateX(${titleX}px) scale(${titleScale}) rotate(${titleRotate}deg)`;
+              setOpacityTransform(title, titleOpacity, transformValue);
+            }
+          }
+          
+          // Desc: 25-45% fade in, then parallax (Scroll Storytelling: no overlap, clear separation)
+          if (desc) {
+            const descOpacity = mapRange(p, 0.25, 0.45, 0, 1);
+            const descY = mapRange(p, 0.25, 0.45, 30, 0) + mapRange(p, 0.45, 1, 0, -40);
+            setOpacityTransform(desc, descOpacity, `translateY(${descY}px)`);
+          }
+          
+          // CTA: 50-70% fade in, then parallax (Scroll Storytelling: sequential, no overlap)
+          if (cta) {
+            const ctaOpacity = mapRange(p, 0.50, 0.70, 0, 1);
+            const ctaY = mapRange(p, 0.50, 0.70, 30, 0) + mapRange(p, 0.70, 1, 0, -30);
+            setOpacityTransform(cta, ctaOpacity, `translateY(${ctaY}px)`);
+          }
+        };
+      }
+
+      // ============================================
+      // Section: Flip Cards (SCRUB) - Sequential Reveal + Flip
+      // ============================================
+      function initFlipCards() {
+        const section = document.querySelector('#cards');
+        if (!section) { console.log('[FlipCards] Section not found'); return; }
+        
+        const container = section.querySelector('.scroll-container--cards');
+        if (!container) { console.log('[FlipCards] Container not found'); return; }
+        
+        const wrappers = Array.from(section.querySelectorAll('.flip-card-wrapper'));
+        const cards = wrappers.map(w => w.querySelector('.flip-card'));
+        
+        console.log('[FlipCards] Initialized:', {
+          section: !!section,
+          container: !!container,
+          wrappers: wrappers.length,
+          cards: cards.length,
+          containerHeight: container.offsetHeight
+        });
+        
+        // Force initial state
+        wrappers.forEach((wrapper, i) => {
+          const card = cards[i];
+          wrapper.style.setProperty('opacity', '0', 'important');
+          wrapper.style.setProperty('transform', 'translateY(40px) scale(0.95)', 'important');
+          wrapper.style.setProperty('-webkit-transform', 'translateY(40px) scale(0.95)', 'important');
+          if (card) {
+            card.style.setProperty('transform', 'rotateY(0deg)', 'important');
+            card.style.setProperty('-webkit-transform', 'rotateY(0deg)', 'important');
+          }
+        });
+        
+        // ONE SLIDE FORCED: Each card takes exactly 33.33% of scroll, no gaps
+        // Cards appear sequentially, flip, then hide before next card appears
+        // Scroll Storytelling Principles:
+        // 1. Each card has lifecycle: appear → flip → hold → hide
+        // 2. Only one card visible at a time (one slide forced)
+        // 3. Adequate reading time for each stage
+        // 4. Clear separation between cards
+        // Card 1: 0-33.33% (appear 0-8%, flip 8-15%, hold to 33.33%)
+        // Card 2: 33.33-66.66% (appear 33.33-41.33%, flip 41.33-48.33%, hold to 66.66%)
+        // Card 3: 66.66-100% (appear 66.66-74.66%, flip 74.66-81.66%, hold to 100%)
+        const cardTimings = [
+          { appearStart: 0.00, appearEnd: 0.08, flipStart: 0.08, flipEnd: 0.15, holdEnd: 0.3333 },
+          { appearStart: 0.3333, appearEnd: 0.4133, flipStart: 0.4133, flipEnd: 0.4833, holdEnd: 0.6666 },
+          { appearStart: 0.6666, appearEnd: 0.7466, flipStart: 0.7466, flipEnd: 0.8166, holdEnd: 1.00 },
+        ];
+        
+        // Log timing configuration for debugging
+        console.log('[FlipCards] ONE SLIDE FORCED - Timing config:', cardTimings.map((t, i) => ({
+          card: i + 1,
+          appear: `${(t.appearStart * 100).toFixed(1)}%-${(t.appearEnd * 100).toFixed(1)}%`,
+          flip: `${(t.flipStart * 100).toFixed(1)}%-${(t.flipEnd * 100).toFixed(1)}%`,
+          hold: `to ${(t.holdEnd * 100).toFixed(1)}%`,
+          range: `${(t.appearStart * 100).toFixed(1)}%-${(t.holdEnd * 100).toFixed(1)}%`
+        })));
+        console.log('[FlipCards] Card 1: 0-33.33%, Card 2: 33.33-66.66%, Card 3: 66.66-100%');
+        
+        return function update() {
+          if (!container) return;
+          
+          // Calculate progress - this handles viewport checking internally
+          const p = calculateProgress(container);
+          
+          // If progress is invalid, reset to initial state
+          // Note: p === 0 is valid (section just started), don't reset
+          if (p < 0 || isNaN(p)) {
+          wrappers.forEach((wrapper, i) => {
+            const card = cards[i];
+              wrapper.style.setProperty('opacity', '0', 'important');
+              wrapper.style.setProperty('transform', 'translateY(40px) scale(0.95)', 'important');
+              wrapper.style.setProperty('-webkit-transform', 'translateY(40px) scale(0.95)', 'important');
+              if (card) {
+                card.style.setProperty('transform', 'rotateY(0deg)', 'important');
+                card.style.setProperty('-webkit-transform', 'rotateY(0deg)', 'important');
+              }
+            });
+            return;
+          }
+          
+          // Clamp progress to 0-1 range
+          const clampedP = Math.max(0, Math.min(1, p));
+          
+          // Debug: Log progress and card states (more frequent for troubleshooting)
+          if (clampedP > 0 && clampedP < 1 && Math.random() < 0.05) { // 5% chance when in range
+            console.log('[FlipCards] Progress:', (clampedP * 100).toFixed(1) + '%');
+            wrappers.forEach((wrapper, i) => {
+              const cardNum = wrapper.getAttribute('data-card');
+              const timing = cardTimings[i];
+              const isVisible = clampedP >= timing.appearStart;
+              const isFlipping = clampedP >= timing.flipStart && clampedP <= timing.flipEnd;
+              const actualOpacity = window.getComputedStyle(wrapper).opacity;
+              const expectedRange = `${(timing.appearStart * 100).toFixed(1)}%-${(timing.holdEnd * 100).toFixed(1)}%`;
+              console.log(`  Card ${cardNum}: p=${(clampedP * 100).toFixed(1)}%, range=${expectedRange}, visible=${isVisible}, flipping=${isFlipping}, opacity=${actualOpacity}`);
+            });
+          }
+          
+          wrappers.forEach((wrapper, i) => {
+            const card = cards[i];
+            const timing = cardTimings[i];
+            
+            // Appear animation (opacity + translateY + scale)
+            // Once appeared and flipped, stays visible forever
+            let opacity = 0;
+            let y = 40;
+            let scale = 0.95;
+            
+            if (clampedP < timing.appearStart) {
+              // Before appear: hidden
+              opacity = 0;
+              y = 40;
+              scale = 0.95;
+            } else if (clampedP >= timing.appearStart && clampedP <= timing.appearEnd) {
+              // During appear: fade in
+              const appearProgress = mapRange(clampedP, timing.appearStart, timing.appearEnd, 0, 1);
+              opacity = appearProgress;
+              y = lerp(40, 0, appearProgress);
+              scale = lerp(0.95, 1, appearProgress);
+            } else {
+              // After appear: fully visible and stay visible (no hiding after holdEnd)
+              opacity = 1;
+              y = 0;
+              scale = 1;
+            }
+            
+            
+            // Force set opacity and transform using setProperty with important flag
+            // This ensures it overrides any CSS !important rules
+            wrapper.style.setProperty('opacity', String(opacity), 'important');
+            wrapper.style.setProperty('transform', `translateY(${y}px) scale(${scale})`, 'important');
+            wrapper.style.setProperty('-webkit-transform', `translateY(${y}px) scale(${scale})`, 'important');
+            
+            // Remove any CSS classes that might interfere
+            wrapper.classList.remove('visible');
+
+            // Flip animation: rotate card container from 0deg to 180deg
+            // Front is at 0deg, Back is at 180deg (relative to card)
+            // When card rotates 180deg: front goes to 180deg (hidden), back goes to 0deg (visible)
+            if (card) {
+              let cardRotation = 0;
+              
+              if (clampedP < timing.appearStart) {
+                // Before appear: show front (card at 0deg)
+                cardRotation = 0;
+              } else if (clampedP >= timing.appearStart && clampedP < timing.flipStart) {
+                // After appear, before flip: show front (card at 0deg)
+                cardRotation = 0;
+              } else if (clampedP >= timing.flipStart && clampedP <= timing.flipEnd) {
+                // During flip: rotate from 0 to 180
+                const flipProgress = mapRange(clampedP, timing.flipStart, timing.flipEnd, 0, 1);
+                cardRotation = lerp(0, 180, flipProgress);
+              } else {
+                // After flip: show back (card at 180deg, stays flipped forever)
+                cardRotation = 180;
+              }
+              
+              // Apply rotation to card container
+              card.style.setProperty('transform', `rotateY(${cardRotation}deg)`, 'important');
+              card.style.setProperty('-webkit-transform', `rotateY(${cardRotation}deg)`, 'important');
+              
+              // Ensure front and back maintain their relative positions
+              const front = card.querySelector('.flip-card__front');
+              const back = card.querySelector('.flip-card__back');
+              if (front) {
+                front.style.setProperty('transform', 'rotateY(0deg)', 'important');
+                front.style.setProperty('-webkit-transform', 'rotateY(0deg)', 'important');
+              }
+              if (back) {
+                back.style.setProperty('transform', 'rotateY(180deg)', 'important');
+                back.style.setProperty('-webkit-transform', 'rotateY(180deg)', 'important');
+              }
+            }
+          });
+        };
+      }
+
+      // ============================================
+      // Section: Problem (SCRUB)
+      // ============================================
+      function initProblem() {
+        const section = document.querySelector('#problem');
+        if (!section) return;
+        
+        const container = section.querySelector('.scroll-container--problem');
+        const title = section.querySelector('.problem__title');
+        const subtitle = section.querySelector('.problem__subtitle');
+        
+        return function update() {
+          if (!container) return;
+          const p = calculateProgress(container);
+          
+          // Title: 0-25% (Scroll Storytelling: clear start, adequate reading time)
+          if (title) {
+            const titleProgress = mapRange(p, 0, 0.25, 0, 1);
+            setOpacityTransform(title, titleProgress, `translateY(${lerp(40, 0, titleProgress)}px)`);
+          }
+          
+          // Subtitle: 30-60% (Scroll Storytelling: clear separation, no overlap)
+          if (subtitle) {
+            const subProgress = mapRange(p, 0.30, 0.60, 0, 1);
+            setOpacityTransform(subtitle, subProgress, `translateY(${lerp(30, 0, subProgress)}px)`);
+          }
+        };
+      }
+
+      // ============================================
+      // Section: Future Outlook - Scroll Scrub Effect
+      // Titles: A→B→C sequential (appear/disappear)
+      // Circles: Stack cumulatively (don't disappear)
+      // End: Concentric zoom-out (staggered) → next section
+      // ============================================
+      function initFutureOutlook() {
+        const section = document.querySelector('#future-outlook');
+        if (!section) {
+          console.warn('[FutureOutlook] Section not found');
+          return;
+        }
+        
+        const container = section.querySelector('.scroll-container--future-outlook');
+        const titleItems = Array.from(section.querySelectorAll('.future-outlook__title-item'));
+        const circleSmall = section.querySelector('.future-circle--small');
+        const circleMedium = section.querySelector('.future-circle--medium');
+        const circleLarge = section.querySelector('.future-circle--large');
+        
+        console.log('[FutureOutlook] Initialized:', {
+          section: !!section,
+          container: !!container,
+          titleItems: titleItems.length,
+          circleSmall: !!circleSmall,
+          circleMedium: !!circleMedium,
+          circleLarge: !!circleLarge
+        });
+        
+        // Track auto-advance state
+        let hasAutoAdvanced = false;
+        
+        // Circle sizes (for zoom calculation)
+        // Keep original different sizes for small / medium / large circles
+        const circleSizes = [350, 500, 650]; // small, medium, large
+        
+        // Timeline: 0-70% content, 70-100% zoom-out (動畫提前完成，保留更多靜止時間)
+        // Each title and circle pair share the same start/end times
+        const config = {
+          // Group A: Title A + Small Circle (synchronized)
+          titleAStart: 0,
+          titleAEnd: 0.20,
+          circleSmallStart: 0,
+          circleSmallEnd: 0.20,
+          
+          // Group B: Title B + Medium Circle (synchronized)
+          titleBStart: 0.20,
+          titleBEnd: 0.40,
+          circleMediumStart: 0.20,
+          circleMediumEnd: 0.40,
+          
+          // Group C: Title C + Large Circle (synchronized)
+          titleCStart: 0.40,
+          titleCEnd: 0.60,
+          circleLargeStart: 0.40,
+          circleLargeEnd: 0.60,
+          
+          // Zoom-out stage: 60% - 100% (保留 40% 靜止時間在 zoom-out 前)
+          zoomStart: 0.60
+        };
+        
+        // Zoom-out stagger timing (relative to zoom phase 0-1)
+        const zoomStagger = {
+          // Large starts first (it's at the back)
+          largeStart: 0.0, largeEnd: 0.6,
+          // Medium starts slightly after
+          mediumStart: 0.15, mediumEnd: 0.75,
+          // Small starts last (it's on top)
+          smallStart: 0.30, smallEnd: 0.90,
+          // Fade out
+          fadeStart: 0.80, fadeEnd: 1.0
+        };
+        
+        return function update() {
+          if (!container) return;
+          const p = calculateProgress(container);
+          const isZoomStage = p >= config.zoomStart;
+          
+          // Debug log when in the range where circles should be visible (20-30%)
+          if (p >= 0.20 && p <= 0.30) {
+            const circlesContainer = document.querySelector('.future-outlook__circles');
+            const containerStyle = circlesContainer ? window.getComputedStyle(circlesContainer) : null;
+            const smallStyle = circleSmall ? window.getComputedStyle(circleSmall) : null;
+            const mediumStyle = circleMedium ? window.getComputedStyle(circleMedium) : null;
+            const largeStyle = circleLarge ? window.getComputedStyle(circleLarge) : null;
+            
+            console.log('[FutureOutlook] DEBUG Progress:', (p * 100).toFixed(1) + '%', {
+              isZoomStage,
+              // Circle elements exist
+              circleSmall: !!circleSmall,
+              circleMedium: !!circleMedium,
+              circleLarge: !!circleLarge,
+              // Visible classes
+              smallVisible: circleSmall?.classList.contains('visible'),
+              mediumVisible: circleMedium?.classList.contains('visible'),
+              largeVisible: circleLarge?.classList.contains('visible'),
+              // Small circle computed styles
+              smallOpacity: smallStyle?.opacity,
+              smallTransform: smallStyle?.transform,
+              smallZIndex: smallStyle?.zIndex,
+              smallPosition: smallStyle?.position,
+              smallDisplay: smallStyle?.display,
+              smallVisibility: smallStyle?.visibility,
+              smallWidth: smallStyle?.width,
+              smallHeight: smallStyle?.height,
+              // Container styles
+              containerExists: !!circlesContainer,
+              containerZIndex: containerStyle?.zIndex,
+              containerPosition: containerStyle?.position,
+              containerOpacity: containerStyle?.opacity,
+              containerWidth: containerStyle?.width,
+              containerHeight: containerStyle?.height,
+              containerBottom: containerStyle?.bottom,
+              containerRight: containerStyle?.right,
+              // Check parent sections
+              section: section ? {
+                className: section.className,
+                opacity: window.getComputedStyle(section).opacity,
+                filter: window.getComputedStyle(section).filter
+              } : null
+            });
+          }
+          
+          // ============================================
+          // Titles: Sequential A → B → C (one at a time)
+          // ============================================
+          titleItems.forEach((item, i) => {
+            let opacity = 0;
+            const slideDistance = 80; // Increased slide distance
+            let y = slideDistance;
+            
+            if (i === 0) {
+              // Title A: 0% - 25%
+              if (p >= config.titleAStart && p < config.titleAEnd) {
+                const fadeInEnd = config.titleAStart + 0.08;
+                const fadeOutStart = config.titleAEnd - 0.08;
+                
+                if (p < fadeInEnd) {
+                  // Fade in
+                  const progress = (p - config.titleAStart) / (fadeInEnd - config.titleAStart);
+                  opacity = progress;
+                  y = lerp(slideDistance, 0, progress);
+                } else if (p >= fadeOutStart) {
+                  // Fade out
+                  const progress = (p - fadeOutStart) / (config.titleAEnd - fadeOutStart);
+                  opacity = 1 - progress;
+                  y = lerp(0, -slideDistance, progress);
+                } else {
+                  // Hold
+                  opacity = 1;
+                  y = 0;
+                }
+              }
+            } else if (i === 1) {
+              // Title B: 25% - 50%
+              if (p >= config.titleBStart && p < config.titleBEnd) {
+                const fadeInEnd = config.titleBStart + 0.08;
+                const fadeOutStart = config.titleBEnd - 0.08;
+                
+                if (p < fadeInEnd) {
+                  const progress = (p - config.titleBStart) / (fadeInEnd - config.titleBStart);
+                  opacity = progress;
+                  y = lerp(slideDistance, 0, progress);
+                } else if (p >= fadeOutStart) {
+                  const progress = (p - fadeOutStart) / (config.titleBEnd - fadeOutStart);
+                  opacity = 1 - progress;
+                  y = lerp(0, -slideDistance, progress);
+                } else {
+                  opacity = 1;
+                  y = 0;
+                }
+              }
+            } else if (i === 2) {
+              // Title C: 50% - 75%
+              if (p >= config.titleCStart && p < config.titleCEnd) {
+                const fadeInEnd = config.titleCStart + 0.08;
+                const fadeOutStart = config.titleCEnd - 0.08;
+                
+                if (p < fadeInEnd) {
+                  const progress = (p - config.titleCStart) / (fadeInEnd - config.titleCStart);
+                  opacity = progress;
+                  y = lerp(slideDistance, 0, progress);
+                } else if (p >= fadeOutStart) {
+                  const progress = (p - fadeOutStart) / (config.titleCEnd - fadeOutStart);
+                  opacity = 1 - progress;
+                  y = lerp(0, -slideDistance, progress);
+                } else {
+                  opacity = 1;
+                  y = 0;
+                }
+              }
+            }
+            
+            setOpacityTransform(item, opacity, `translateY(${y}px)`);
+            item.classList.toggle('active', opacity > 0.5);
+          });
+          
+          // ============================================
+          // Circles: Stack cumulatively (don't disappear)
+          // ============================================
+          if (isZoomStage) {
+            // ZOOM-OUT STAGE (75-100%): Staggered zoom from bottom-right
+            const zoomProgress = (p - config.zoomStart) / (1 - config.zoomStart);
+            const viewportW = window.innerWidth;
+            const viewportH = window.innerHeight;
+            const maxDimension = Math.max(viewportW, viewportH) * 2.5;
+            
+            // All circles visible, zoom from bottom-right (staggered)
+            [circleSmall, circleMedium, circleLarge].forEach((circle, i) => {
+              if (!circle) return;
+              
+              circle.classList.add('future-circle--zoom-out');
+              
+              // Stagger timing (large first, small last)
+              let start, end;
+              if (i === 0) { // Small (top z-index, zooms last)
+                start = zoomStagger.smallStart;
+                end = zoomStagger.smallEnd;
+              } else if (i === 1) { // Medium
+                start = zoomStagger.mediumStart;
+                end = zoomStagger.mediumEnd;
+              } else { // Large (bottom z-index, zooms first)
+                start = zoomStagger.largeStart;
+                end = zoomStagger.largeEnd;
+              }
+              
+              let circleZoomProgress = 0;
+              if (zoomProgress >= start && zoomProgress <= end) {
+                circleZoomProgress = (zoomProgress - start) / (end - start);
+              } else if (zoomProgress > end) {
+                circleZoomProgress = 1;
+              }
+              
+              // Scale from center, but center point stays at viewport bottom-right
+              // Use each circle's own original size
+              const originalSize = circleSizes[i];
+              const maxScale = maxDimension / originalSize;
+              const scale = 1 + (circleZoomProgress * (maxScale - 1));
+              
+              // Fade out at the end
+              let opacity = 1;
+              if (zoomProgress >= zoomStagger.fadeStart) {
+                const fadeProgress = (zoomProgress - zoomStagger.fadeStart) / (zoomStagger.fadeEnd - zoomStagger.fadeStart);
+                opacity = Math.max(0, 1 - fadeProgress);
+              }
+              
+              // Translate 50% to move center point to bottom-right, then scale from center
+              // This keeps the circle's center point at the viewport's bottom-right corner
+              setOpacityTransform(circle, opacity, `translate(50%, 50%) scale(${scale})`);
+              circle.classList.toggle('future-circle--fade-out', opacity <= 0);
+            });
+            
+            // Auto-advance to solution section at 98%
+            if (!hasAutoAdvanced && zoomProgress >= 0.98) {
+              hasAutoAdvanced = true;
+              const solutionSection = document.getElementById('solution');
+              if (solutionSection) {
+                solutionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          } else {
+            // NORMAL STAGE (0-75%): Circles stack cumulatively (stop at end but remain visible)
+            // Circles sync with titles: fade in during first 0.08, then hold until end
+            
+            // Small circle: appears with Title A (0-25%), sync fade in timing
+            if (circleSmall) {
+              circleSmall.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
+              if (p >= config.circleSmallEnd) {
+                // Past stop point: keep visible and fixed at final position
+                setOpacityTransform(circleSmall, 1, 'translate(50%, 50%)');
+                circleSmall.classList.add('visible');
+              } else if (p >= config.circleSmallStart) {
+                const fadeInEnd = config.circleSmallStart + 0.08; // Match title fade in timing
+                let opacity, translate;
+                
+                if (p < fadeInEnd) {
+                  // Fade in phase: sync with title fade in
+                  const fadeProgress = (p - config.circleSmallStart) / (fadeInEnd - config.circleSmallStart);
+                  opacity = fadeProgress;
+                  translate = lerp(150, 50, fadeProgress);
+                } else {
+                  // Hold phase: fully visible, stay at final position
+                  opacity = 1;
+                  translate = 50;
+                }
+                
+                setOpacityTransform(circleSmall, opacity, `translate(${translate}%, ${translate}%)`);
+                circleSmall.classList.toggle('visible', opacity > 0);
+              } else {
+                // Before start: hidden
+                setOpacityTransform(circleSmall, 0, 'translate(150%, 150%)');
+                circleSmall.classList.remove('visible');
+              }
+            }
+            
+            // Medium circle: appears with Title B (25-50%), sync fade in timing
+            if (circleMedium) {
+              circleMedium.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
+              if (p >= config.circleMediumEnd) {
+                // Past stop point: keep visible and fixed at final position
+                setOpacityTransform(circleMedium, 1, 'translate(50%, 50%)');
+                circleMedium.classList.add('visible');
+              } else if (p >= config.circleMediumStart) {
+                const fadeInEnd = config.circleMediumStart + 0.08; // Match title fade in timing
+                let opacity, translate;
+                
+                if (p < fadeInEnd) {
+                  // Fade in phase: sync with title fade in
+                  const fadeProgress = (p - config.circleMediumStart) / (fadeInEnd - config.circleMediumStart);
+                  opacity = fadeProgress;
+                  translate = lerp(150, 50, fadeProgress);
+              } else {
+                  // Hold phase: fully visible, stay at final position
+                  opacity = 1;
+                  translate = 50;
+                }
+                
+                setOpacityTransform(circleMedium, opacity, `translate(${translate}%, ${translate}%)`);
+                circleMedium.classList.toggle('visible', opacity > 0);
+              } else {
+                // Before start: hidden
+                setOpacityTransform(circleMedium, 0, 'translate(150%, 150%)');
+                circleMedium.classList.remove('visible');
+              }
+            }
+            
+            // Large circle: appears with Title C (50-75%), sync fade in timing
+            if (circleLarge) {
+              circleLarge.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
+              if (p >= config.circleLargeEnd) {
+                // Past stop point: keep visible and fixed at final position
+                setOpacityTransform(circleLarge, 1, 'translate(50%, 50%)');
+                circleLarge.classList.add('visible');
+              } else if (p >= config.circleLargeStart) {
+                const fadeInEnd = config.circleLargeStart + 0.08; // Match title fade in timing
+                let opacity, translate;
+                
+                if (p < fadeInEnd) {
+                  // Fade in phase: sync with title fade in
+                  const fadeProgress = (p - config.circleLargeStart) / (fadeInEnd - config.circleLargeStart);
+                  opacity = fadeProgress;
+                  translate = lerp(150, 50, fadeProgress);
+              } else {
+                  // Hold phase: fully visible, stay at final position
+                  opacity = 1;
+                  translate = 50;
+                }
+                
+                setOpacityTransform(circleLarge, opacity, `translate(${translate}%, ${translate}%)`);
+                circleLarge.classList.toggle('visible', opacity > 0);
+              } else {
+                // Before start: hidden
+                setOpacityTransform(circleLarge, 0, 'translate(150%, 150%)');
+                circleLarge.classList.remove('visible');
+              }
+            }
+            
+            // Reset auto-advance flag when scrolling back
+            hasAutoAdvanced = false;
+          }
+        };
+      }
+
+      // ============================================
+      // Section: Solution (SCRUB)
+      // ============================================
+      function initSolution() {
+        const section = document.querySelector('#solution');
+        if (!section) return;
+        
+        // Stage 1: Text
+        const textContainer = section.querySelector('.scroll-container--solution-text');
+        const textItem = section.querySelector('.solution-text__item');
+        // Get all chars, but filter out space characters (they shouldn't animate)
+        const allChars = Array.from(section.querySelectorAll('.solution-text__title--disintegrate .char'));
+        const chars = allChars.filter(char => !char.classList.contains('char--space'));
+        
+        console.log('[Solution Text] DisintegratingText initialized:', {
+          allChars: allChars.length,
+          chars: chars.length,
+          textContainer: !!textContainer,
+          textItem: !!textItem
+        });
+        
+        // Stage 2: Matrix
+        const matrixContainer = section.querySelector('.scroll-container--solution-matrix');
+        const matrixVisual = section.querySelector('.solution-matrix__visual');
+        const matrixItems = section.querySelector('.solution-matrix__items');
+        // Dual-layer SVG: gray base + colored highlight overlay
+        const matrixSvgColored = section.querySelector('.solution-matrix__svg--colored');
+        const hItems = Array.from(section.querySelectorAll('.solution-matrix__item'));
+        
+        // Track Matrix highlight state (閉包外，保持狀態)
+        let matrixHighlightState = -1;
+        
+        // 配置參數（根據 scrollytelling 原則調整）
+        const matrixConfig = {
+          layoutRevealEnd: 0.10,      // Layout 滑入完成的進度 (10%)
+          highlightStart: 0.20,       // Highlight 提早開始 (20%)
+          highlightEnd: 0.80,         // Highlight 在 80% 完成，保留 20% 的停留時間
+          // Stage 長度：讓 H3 早一點亮完，後面留更長的「全亮停留」
+          h1StageLength: 0.15,         // H1: 20% - 35%
+          h2StageLength: 0.15,        // H2: 35% - 50%
+          h3StageLength: 0.30         // H3: 50% - 80%，之後保留 20% 停留時間
+        };
+        
+        // 計算實際的進度點（基於 stage 長度）
+        const matrixH1End = matrixConfig.highlightStart + matrixConfig.h1StageLength;
+        const matrixH2End = matrixH1End + matrixConfig.h2StageLength;
+        
+        // Clip-path values for H1/H2/H3 reveal (based on SVG dimensions: 622x660)
+        // H1 circle: x=190.5, y=418, size=79.8568 (bottom-left, 第4象限)
+        // H2 circles (兩個):
+        //   - x=190.5, y=260, size=79.8568 (middle-left, 第2-3象限交界)
+        //   - x=349.5, y=418, size=79.8568 (bottom-center, 第3-4象限交界)
+        // H3 circles (兩個):
+        //   - x=190.5, y=102, size=79.8568 (top-left, 第2象限左上)
+        //   - x=508.5, y=418, size=79.8568 (bottom-right, 第4象限右下)
+        // inset(top right bottom left) - percentages hide edges from each side
+        // H1: Show bottom-left area only (y: 418-497.86, x: 190.5-270.36)
+        // H2: Show H1 + both H2 circles (y: 260-497.86, x: 190.5-429.36)
+        // H3: Show all circles (full reveal)
+        const MATRIX_CLIP_PATHS = {
+          none: 'inset(100% 100% 0% 0%)',           // Hidden (clip everything)
+          h1:   'inset(63.3% 56.5% 0% 30.6%)',     // Show H1 only (bottom-left circle area)
+          h2:   'inset(39.4% 31.0% 0% 30.6%)',    // Show H1+H2 (covers left-middle H2 + bottom-center H2)
+          h3:   'inset(0% 0% 0% 0%)'                // Show all (full reveal, H1+H2+H3, covers all 4 circles)
+        };
+        
+        // Stage 3: Resource Fit
+        const resourceContainer = section.querySelector('.scroll-container--solution-resource-fit');
+        const resourceTitle = section.querySelector('.solution-resource-fit__title-wrap');
+        const resourceVisual = section.querySelector('.solution-resource-fit__visual');
+        const resourceHighlight = section.querySelector('.solution-resource-fit__highlight');
+        
+        // Stage 4: Opportunity
+        const opportunityContainer = section.querySelector('.scroll-container--solution-opportunity');
+        const opportunityTitle = section.querySelector('.solution-opportunity__title-wrap');
+        const opportunityVisual = section.querySelector('.solution-opportunity__visual');
+        const opportunityHighlight = section.querySelector('.solution-opportunity__highlight');
+        
+        return function update() {
+          // Stage 1: Text with character scrub
+          // GOAL: Solution text appears smoothly, finishes animation早一點, 然後「停留更久」在畫面上
+          if (textContainer) {
+            const p = calculateProgress(textContainer);
+            
+            // Text item container: 20-35% fade in (earlier + longer ramp)
+            // After 35%, container stays fully visible so chars can animate +停留
+            if (textItem) {
+              const itemProgress = mapRange(p, 0.20, 0.35, 0, 1);
+              // Only animate container opacity, not transform (to avoid affecting chars)
+              setStyleImportant(textItem, 'opacity', String(itemProgress));
+            }
+            
+            // DisintegratingText: Each char animates in sequence with fade + translateY + scale
+            // Characters appear sequentially: roughly 20% ~ 80% of scroll
+            // 之後 80% ~ 100% 都是「fully visible」的停留時間（20% 靜止空間）
+            if (chars.length > 0) {
+            chars.forEach((char, i) => {
+                // Timing: start at 20%, each char gets 2% spacing, 8% animation window
+                // 例如 19 個字元會在大約 20%~80% 全部完成動畫，保留 20% 靜止空間
+                const charStart = 0.20 + (i * 0.02);
+                const charEnd = charStart + 0.08;
+              const charProgress = mapRange(p, charStart, charEnd, 0, 1);
+                const clampedProgress = Math.max(0, Math.min(1, charProgress));
+                
+                // DisintegratingText effect: opacity + translateY + scale
+                const charOpacity = clampedProgress;
+                const charY = lerp(20, 0, clampedProgress);
+                const charScale = lerp(0.8, 1, clampedProgress);
+                
+                // Apply animation with important flag to override CSS and parent styles
+                setOpacityTransform(char, charOpacity, `translateY(${charY}px) scale(${charScale})`);
+                
+                // Debug: Log first few and last few characters (more frequent)
+                if ((i < 5 || i >= chars.length - 5) && Math.random() < 0.15) {
+                  console.log(`[DisintegratingText] Char ${i}/${chars.length} (${char.textContent.trim() || 'space'}): progress=${(clampedProgress * 100).toFixed(1)}%, opacity=${charOpacity.toFixed(2)}, scale=${charScale.toFixed(2)}, p=${(p * 100).toFixed(1)}%`);
+                }
+              });
+            } else {
+              // Debug: Log if no chars found
+              if (Math.random() < 0.01) {
+                console.warn('[DisintegratingText] No characters found!', {
+                  textContainer: !!textContainer,
+                  textItem: !!textItem,
+                  title: textItem ? textItem.querySelector('.solution-text__title--disintegrate') : null
+                });
+              }
+            }
+          }
+          
+          // Stage 2: Matrix with H1/H2/H3 instant highlight
+          if (matrixContainer) {
+            const p = calculateProgress(matrixContainer);
+            
+            // Clamp progress to valid range (根據 scrollytelling 原則)
+            const clampedP = Math.max(0, Math.min(1, p));
+            
+            // Visual slides in (0 到 layoutRevealEnd) - 使用 clamped progress
+            if (matrixVisual) {
+              const visualProgress = mapRange(clampedP, 0, matrixConfig.layoutRevealEnd, 0, 1);
+              setOpacityTransform(matrixVisual, visualProgress, `translateX(${lerp(-30, 0, visualProgress)}px)`);
+            }
+            
+            // Items slide in (0 到 layoutRevealEnd) - 使用 clamped progress
+            if (matrixItems) {
+              const itemsProgress = mapRange(clampedP, 0, matrixConfig.layoutRevealEnd, 0, 1);
+              setOpacityTransform(matrixItems, itemsProgress, `translateX(${lerp(30, 0, itemsProgress)}px)`);
+            }
+            
+            // 分階段，但每一階段都是「直接改色／切換」，沒有補間動畫
+            // 0 - highlightStart: No highlights（灰階）
+            // highlightStart - h1End: H1 highlighted（左圖露出 H1 區域、右欄 H1 變色）
+            // h1End - h2End: H1 + H2 highlighted
+            // h2End - highlightEnd: All highlighted（左圖全彩、右欄 H1+H2+H3 全部變色）
+            // highlightEnd - 100%: 保持 All highlighted，當作「停一下」的閱讀時間
+            
+            // 判斷當前應該的 highlight 狀態
+            let targetState = -1;
+            if (clampedP < matrixConfig.highlightStart) {
+              targetState = 0;
+            } else if (clampedP < matrixH1End) {
+              targetState = 1;
+            } else if (clampedP < matrixH2End) {
+              targetState = 2;
+            } else {
+              targetState = 3;
+            }
+            
+            // 狀態只往「更高」前進，不會在往下捲時退回
+            const newState = Math.max(matrixHighlightState, targetState);
+            if (newState === matrixHighlightState) {
+              // 狀態沒變就不重刷樣式
+            } else {
+              matrixHighlightState = newState;
+              
+              // 左邊矩陣：使用 clip-path 控制彩色層的顯示區域
+              if (matrixSvgColored) {
+                let clipPath = MATRIX_CLIP_PATHS.none;
+                if (matrixHighlightState >= 3) {
+                  clipPath = MATRIX_CLIP_PATHS.h3;      // Show all
+                } else if (matrixHighlightState >= 2) {
+                  clipPath = MATRIX_CLIP_PATHS.h2;      // Show H1+H2
+                } else if (matrixHighlightState >= 1) {
+                  clipPath = MATRIX_CLIP_PATHS.h1;      // Show H1 only
+                }
+                
+                // Apply clip-path with important flag
+                matrixSvgColored.style.setProperty('clip-path', clipPath, 'important');
+                matrixSvgColored.style.setProperty('-webkit-clip-path', clipPath, 'important');
+                
+                // Fade in colored layer when any highlight is active
+                const coloredOpacity = matrixHighlightState >= 1 ? 1 : 0;
+                setStyleImportant(matrixSvgColored, 'opacity', String(coloredOpacity));
+                
+                // Add pulse effect when all highlights are shown (state 3)
+                if (matrixHighlightState >= 3) {
+                  matrixSvgColored.classList.add('pulse-active');
+                } else {
+                  matrixSvgColored.classList.remove('pulse-active');
+                }
+              }
+              
+              // 右邊 H1 / H2 / H3：
+              // - circle icon 顏色由各自 SVG 檔決定（H1/H2/H3 與 matrix circle 同色）
+              // - 文字顏色維持 232323（主文字色），不跟著變色
+              hItems.forEach((item, i) => {
+                const coloredIcon = item.querySelector('.solution-matrix__icon--colored');
+                const text = item.querySelector('.solution-matrix__text');
+                
+                let isActive = false;
+                if (matrixHighlightState === 0) {
+                  isActive = false;
+                } else if (matrixHighlightState === 1) {
+                  isActive = i === 0;        // 只有 H1
+                } else if (matrixHighlightState === 2) {
+                  isActive = i < 2;          // H1 + H2
+                } else {
+                  isActive = true;           // 全部 H1 + H2 + H3
+                }
+                
+                if (coloredIcon) {
+                  setStyleImportant(coloredIcon, 'opacity', isActive ? '1' : '0');
+                }
+                if (text) {
+                  // 文字：active 時固定用 #232323，非 active 用 muted 色
+                  const textColor = isActive ? '#232323' : 'var(--text-muted)';
+                  setStyleImportant(text, 'color', textColor);
+                }
+              });
+            }
+          }
+          
+          // Stage 3: Resource Fit
+          if (resourceContainer) {
+            const p = calculateProgress(resourceContainer);
+            
+            // Resource Fit: Title 0-15%, Visual 20-40% (動畫提前完成，保留更多靜止時間)
+            if (resourceTitle) {
+              const titleProgress = mapRange(p, 0, 0.15, 0, 1);
+              setOpacityTransform(resourceTitle, titleProgress, `translateX(${lerp(40, 0, titleProgress)}px)`);
+            }
+            
+            if (resourceVisual) {
+              // 動畫提前完成：0.20-0.40，保留 60% 靜止時間
+              // Parallax: Visual moves slower for depth
+              const visualProgress = mapRange(p, 0.20, 0.40, 0, 1);
+              const parallaxX = lerp(-40, 0, visualProgress) * 0.8;
+              setOpacityTransform(resourceVisual, visualProgress, `translateX(${parallaxX}px)`);
+            }
+            
+            // Resource Fit highlight (circle 2)
+            // 行為：
+            // - 當 progress 到中段時才開始啟動
+            // - 有一段淡入動畫，之後「停一下」維持亮起，再進入下一段
+            // - 調整：動畫在 0.60 完成，保留 40% 靜止時間
+            if (resourceHighlight) {
+              let highlightOpacity = 0;
+              let highlightScale = 0.8;
+              
+              // 三段式：0-0.50 關閉；0.50-0.60 淡入；0.60-1.0 保持點亮（40% 停留時間）
+              if (p < 0.50) {
+                // 關閉狀態
+                highlightOpacity = 0;
+                highlightScale = 0.8;
+                resourceHighlight.classList.remove('visible');
+              } else if (p >= 0.50 && p <= 0.60) {
+                // 0.50-0.60：淡入＋放大（10% 動畫時間）
+                const highlightProgress = mapRange(p, 0.50, 0.60, 0, 1);
+                highlightOpacity = highlightProgress;
+                highlightScale = lerp(0.8, 1, highlightProgress);
+                resourceHighlight.classList.toggle('visible', highlightOpacity > 0.5);
+              } else {
+                // 0.60 之後：維持亮起（停在高亮狀態，40% 停留時間）
+                highlightOpacity = 1;
+                highlightScale = 1;
+                resourceHighlight.classList.add('visible');
+              }
+              
+              setOpacityTransform(
+                resourceHighlight,
+                highlightOpacity,
+                `scale(${highlightScale})`
+              );
+            }
+          }
+          
+          // Stage 4: Opportunity
+          // Keep title and visual always visible (not scrubbed here)
+            if (opportunityTitle) {
+            setStyleImportant(opportunityTitle, 'opacity', '1');
+            setStyleImportant(opportunityTitle, 'transform', 'translateX(0)');
+            }
+            if (opportunityVisual) {
+            setStyleImportant(opportunityVisual, 'opacity', '1');
+            setStyleImportant(opportunityVisual, 'transform', 'translateX(0)');
+          }
+          // Opportunity highlight (circle 2) scrubbed by scroll within its container
+          // 行為：0.50-0.60 淡入，0.60-1.0 保持點亮（40% 停留時間）
+          if (opportunityContainer && opportunityHighlight) {
+            const p = calculateProgress(opportunityContainer);
+            let highlightOpacity = 0;
+            let highlightScale = 0.8;
+            
+            if (p < 0.50) {
+              // 關閉狀態
+              highlightOpacity = 0;
+              highlightScale = 0.8;
+              opportunityHighlight.classList.remove('visible');
+            } else if (p >= 0.50 && p <= 0.60) {
+              // 0.50-0.60：淡入＋放大（10% 動畫時間）
+              const highlightProgress = mapRange(p, 0.50, 0.60, 0, 1);
+              highlightOpacity = highlightProgress;
+              highlightScale = lerp(0.8, 1, highlightProgress);
+              opportunityHighlight.classList.toggle('visible', highlightOpacity > 0.5);
+            } else {
+              // 0.60 之後：維持亮起（停在高亮狀態，40% 停留時間）
+              highlightOpacity = 1;
+              highlightScale = 1;
+              opportunityHighlight.classList.add('visible');
+            }
+            
+            setOpacityTransform(opportunityHighlight, highlightOpacity, `scale(${highlightScale})`);
+          }
+        };
+      }
+
+      // ============================================
+      // Section: Growth (SCRUB)
+      // ============================================
+      function initGrowth() {
+        const section = document.querySelector('#growth');
+        if (!section) return;
+        
+        const container = section.querySelector('.scroll-container--growth');
+        const title = section.querySelector('.growth__title');
+        const svg = section.querySelector('.growth__svg');
+        
+        return function update() {
+          if (!container) return;
+          const p = calculateProgress(container);
+          
+          // Growth: Title 0-15%, SVG 20-40% (動畫提前完成，保留 60% 靜止時間)
+          // Parallax: SVG moves slower than title for depth effect
+          if (title) {
+            const titleProgress = mapRange(p, 0, 0.15, 0, 1);
+            setOpacityTransform(title, titleProgress, `translateY(${lerp(30, 0, titleProgress)}px)`);
+          }
+          
+          if (svg) {
+            const svgProgress = mapRange(p, 0.20, 0.40, 0, 1);
+            // Parallax: SVG moves slower (multiply translateY by 0.7 for subtle parallax)
+            const parallaxY = lerp(50, 0, svgProgress) * 0.7;
+            setOpacityTransform(svg, svgProgress, `translateY(${parallaxY}px) scale(${lerp(0.95, 1, svgProgress)})`);
+          }
+        };
+      }
+
+      // ============================================
+      // Section: Strategy (SCRUB)
+      // ============================================
+      function initStrategy() {
+        const section = document.querySelector('#strategy');
+        if (!section) return;
+        
+        const container = section.querySelector('.scroll-container--strategy');
+        const heading = section.querySelector('.strategy__heading');
+        const svg = section.querySelector('.strategy__svg');
+        
+        return function update() {
+          if (!container) return;
+          const p = calculateProgress(container);
+          
+          // Strategy: Heading 0-15%, SVG 20-40% (動畫提前完成，保留 60% 靜止時間)
+          // SVG stroke-draw effect will be handled by IntersectionObserver
+          if (heading) {
+            const headingProgress = mapRange(p, 0, 0.15, 0, 1);
+            setOpacityTransform(heading, headingProgress, `translateY(${lerp(30, 0, headingProgress)}px)`);
+          }
+          
+          if (svg) {
+            const svgProgress = mapRange(p, 0.20, 0.40, 0, 1);
+            // Parallax: SVG moves slower (multiply translateY by 0.7 for subtle parallax)
+            const parallaxY = lerp(50, 0, svgProgress) * 0.7;
+            setOpacityTransform(svg, svgProgress, `translateY(${parallaxY}px) scale(${lerp(0.95, 1, svgProgress)})`);
+            
+            // Trigger SVG draw effect when SVG becomes visible
+            if (svgProgress > 0.3 && !svg.classList.contains('svg-draw-triggered')) {
+              svg.classList.add('svg-draw-triggered');
+              // Add stroke-draw effect to SVG paths/lines
+              const paths = svg.querySelectorAll('path, line, polyline, polygon');
+              paths.forEach((path, index) => {
+                path.style.strokeDasharray = '1000';
+                path.style.strokeDashoffset = '1000';
+                path.style.animation = `svgDraw 2s var(--ease-smooth) forwards`;
+                path.style.animationDelay = `${index * 0.1}s`;
+              });
+            }
+          }
+        };
+      }
+
+      // ============================================
+      // Section: Resources (SCRUB)
+      // ============================================
+      function initResources() {
+        const section = document.querySelector('#resources');
+        if (!section) return;
+        
+        const container = section.querySelector('.scroll-container--resources');
+        const heading = section.querySelector('.resources__heading');
+        const links = Array.from(section.querySelectorAll('.resources__link-block'));
+        const books = Array.from(section.querySelectorAll('.resources__book'));
+        
+        // Timings for sequential reveal (動畫提前完成，保留更多靜止時間)
+        const itemTimings = [
+          { start: 0.10, end: 0.20 },
+          { start: 0.25, end: 0.35 },
+          { start: 0.40, end: 0.50 },
+        ];
+        
+        return function update() {
+          if (!container) return;
+          const p = calculateProgress(container);
+          
+          // Heading
+          if (heading) {
+            const headingProgress = mapRange(p, 0, 0.15, 0, 1);
+            setOpacityTransform(heading, headingProgress, `translateY(${lerp(30, 0, headingProgress)}px)`);
+          }
+          
+          // Books and Links
+          itemTimings.forEach((timing, i) => {
+            // Book animation: stack cumulatively (once appeared, stay visible)
+            if (books[i]) {
+              let bookOpacity = 0;
+              let bookY = 30;
+              let bookRotate = -5;
+              
+              if (p < timing.start) {
+                // Before appear: hidden
+                bookOpacity = 0;
+                bookY = 30;
+                bookRotate = -5;
+              } else if (p >= timing.start && p <= timing.end) {
+                // During appear: fade in
+                const bookProgress = mapRange(p, timing.start, timing.end, 0, 1);
+                bookOpacity = bookProgress;
+                bookY = lerp(30, 0, bookProgress);
+                bookRotate = lerp(-5, 0, bookProgress);
+              } else {
+                // After appear: stay visible and stacked (cumulative stacking)
+                bookOpacity = 1;
+                bookY = 0;
+                bookRotate = 0;
+              }
+              
+              setOpacityTransform(books[i], bookOpacity, `translateY(${bookY}px) rotate(${bookRotate}deg)`);
+            }
+            
+            // Link animation
+            const itemProgress = mapRange(p, timing.start, timing.end, 0, 1);
+            if (links[i]) {
+              setOpacityTransform(links[i], itemProgress, `translateX(${lerp(-30, 0, itemProgress)}px)`);
+              
+              // Highlight when active (current phase)
+              const isActive = p >= timing.start && p < (timing.end + 0.15);
+              setStyleImportant(links[i], 'border-left-width', isActive ? '4px' : '1px');
+              setStyleImportant(links[i], 'border-left-color', isActive ? 'var(--bg-solution)' : 'var(--separator)');
+              setStyleImportant(links[i], 'background', isActive ? 'rgba(99, 21, 21, 0.05)' : 'var(--text-white)');
+            }
+          });
+        };
+      }
+
+      // ============================================
+      // Progress Bar (SCRUB)
+      // ============================================
+      function updateProgressBar() {
+        const fill = document.querySelector('.progress-bar__fill');
+        if (!fill) return;
+        
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min(1, window.scrollY / docHeight);
+        setStyleImportant(fill, 'transform', `scaleX(${progress})`);
+      }
+
+      // ============================================
+      // Debug Monitor - Progress & Trigger Points
+      // ============================================
+      const DEBUG_MONITOR_ENABLED = new URLSearchParams(window.location.search).get('debug') === '1' || 
+                                     localStorage.getItem('scrollytelling-debug') === 'true';
+      
+      let debugMonitorVisible = DEBUG_MONITOR_ENABLED;
+      window.debugMonitorVisible = debugMonitorVisible;
+      
+      const sectionContainers = [
+        { id: 'intro', selector: '.scroll-container--intro', name: 'Hero Intro' },
+        { id: 'cards', selector: '.scroll-container--cards', name: 'Flip Cards' },
+        { id: 'problem', selector: '.scroll-container--problem', name: 'Problem' },
+        { id: 'future-outlook', selector: '.scroll-container--future-outlook', name: 'Future Outlook' },
+        { id: 'solution-text', selector: '.scroll-container--solution-text', name: 'Solution Text' },
+        { id: 'solution-matrix', selector: '.scroll-container--solution-matrix', name: 'Solution Matrix' },
+        { id: 'solution-resource-fit', selector: '.scroll-container--solution-resource-fit', name: 'Resource Fit' },
+        { id: 'solution-opportunity', selector: '.scroll-container--solution-opportunity', name: 'Opportunity' },
+        { id: 'growth', selector: '.scroll-container--growth', name: 'Growth' },
+        { id: 'strategy', selector: '.scroll-container--strategy', name: 'Strategy' },
+        { id: 'resources', selector: '.scroll-container--resources', name: 'Resources' },
+      ];
+
+      function initDebugMonitor() {
+        const monitor = document.getElementById('debug-monitor');
+        const toggle = document.getElementById('debug-toggle');
+        const close = document.getElementById('debug-monitor-close');
+        
+        if (!monitor || !toggle) return;
+
+        // Toggle visibility
+        function toggleMonitor() {
+          debugMonitorVisible = !debugMonitorVisible;
+          window.debugMonitorVisible = debugMonitorVisible;
+          monitor.style.display = debugMonitorVisible ? 'block' : 'none';
+          localStorage.setItem('scrollytelling-debug', debugMonitorVisible ? 'true' : 'false');
+          
+          // Start/stop update interval
+          if (debugMonitorVisible) {
+            updateDebugMonitor();
+            if (!window.debugMonitorInterval) {
+              window.debugMonitorInterval = setInterval(updateDebugMonitor, 100);
+            }
+          } else {
+            if (window.debugMonitorInterval) {
+              clearInterval(window.debugMonitorInterval);
+              window.debugMonitorInterval = null;
+            }
+          }
+        }
+
+        toggle.addEventListener('click', toggleMonitor);
+        if (close) close.addEventListener('click', toggleMonitor);
+        
+        // Keyboard shortcut: 'D' key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'd' || e.key === 'D') {
+            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+              e.preventDefault();
+              toggleMonitor();
+            }
+          }
+        });
+
+        // Initial state
+        if (debugMonitorVisible) {
+          monitor.style.display = 'block';
+        }
+      }
+
+      function updateDebugMonitor() {
+        if (!window.debugMonitorVisible && !debugMonitorVisible) return;
+
+        const scrollY = window.scrollY;
+        const viewportH = window.innerHeight;
+        const docH = document.documentElement.scrollHeight;
+        const globalProgress = docH > viewportH ? Math.min(1, scrollY / (docH - viewportH)) : 0;
+
+        // Update global scroll info
+        const scrollYEl = document.getElementById('debug-scroll-y');
+        const viewportHEl = document.getElementById('debug-viewport-h');
+        const docHEl = document.getElementById('debug-doc-h');
+        const globalProgressEl = document.getElementById('debug-global-progress');
+        
+        if (scrollYEl) scrollYEl.textContent = Math.round(scrollY);
+        if (viewportHEl) viewportHEl.textContent = Math.round(viewportH);
+        if (docHEl) docHEl.textContent = Math.round(docH);
+        if (globalProgressEl) globalProgressEl.textContent = globalProgress.toFixed(3);
+
+        // Update section progress
+        const sectionsList = document.getElementById('debug-sections-list');
+        if (sectionsList) {
+          sectionsList.innerHTML = sectionContainers.map(section => {
+            const container = document.querySelector(section.selector);
+            if (!container) return '';
+            
+            const progress = calculateProgress(container);
+            const rect = container.getBoundingClientRect();
+            const isInViewport = rect.top < viewportH && rect.bottom > 0;
+            
+            return `
+              <div class="debug-monitor__item ${isInViewport ? 'debug-monitor__item--active' : ''}">
+                <span>${section.name}:</span>
+                <span class="debug-progress-value">${progress.toFixed(3)}</span>
+                <div class="debug-progress-bar">
+                  <div class="debug-progress-bar__fill" style="width: ${progress * 100}%"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Update trigger points
+        const triggersList = document.getElementById('debug-triggers-list');
+        if (triggersList) {
+          const triggers = sectionContainers.map(section => {
+            const container = document.querySelector(section.selector);
+            if (!container) return null;
+            
+            const rect = container.getBoundingClientRect();
+            const containerTop = rect.top + scrollY;
+            const containerBottom = containerTop + container.offsetHeight;
+            
+            // Trigger points
+            const enterPoint = containerTop - viewportH; // When top enters viewport bottom
+            const exitPoint = containerBottom; // When bottom leaves viewport top
+            
+            const distanceToEnter = enterPoint - scrollY;
+            const distanceToExit = exitPoint - scrollY;
+            
+            let status = '';
+            let statusClass = '';
+            if (scrollY < enterPoint) {
+              status = `Enter in ${Math.round(Math.abs(distanceToEnter))}px`;
+              statusClass = 'debug-trigger--pending';
+            } else if (scrollY >= exitPoint) {
+              status = `Exited ${Math.round(Math.abs(distanceToExit))}px ago`;
+              statusClass = 'debug-trigger--exited';
+            } else {
+              status = 'ACTIVE';
+              statusClass = 'debug-trigger--active';
+            }
+            
+            return {
+              name: section.name,
+              status,
+              statusClass,
+              progress: calculateProgress(container),
+              enterPoint: Math.round(enterPoint),
+              exitPoint: Math.round(exitPoint),
+            };
+          }).filter(Boolean);
+
+          triggersList.innerHTML = triggers.map(trigger => `
+            <div class="debug-monitor__item ${trigger.statusClass}">
+              <div class="debug-trigger-header">
+                <span><strong>${trigger.name}</strong></span>
+                <span class="debug-trigger-status">${trigger.status}</span>
+              </div>
+              <div class="debug-trigger-details">
+                <span>Progress: ${trigger.progress.toFixed(3)}</span>
+                <span>Enter: ${trigger.enterPoint}px</span>
+                <span>Exit: ${trigger.exitPoint}px</span>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      // ============================================
+      // Navigation
+      // ============================================
+      function initNavigation() {
+        const dots = document.querySelectorAll('.nav__dot-btn');
+        const sections = ['intro', 'cards', 'problem', 'solution', 'growth', 'contact'];
+        
+        dots.forEach(dot => {
+          dot.addEventListener('click', () => {
+            const sectionId = dot.dataset.section;
+            const target = document.getElementById(sectionId);
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+        
+        return function update() {
+          const scrollY = window.scrollY;
+          const center = scrollY + window.innerHeight / 2;
+          
+          let activeSection = 'intro';
+          sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.offsetTop <= center) activeSection = id;
+          });
+          
+          dots.forEach(dot => {
+            dot.classList.toggle('active', dot.dataset.section === activeSection);
+          });
+        };
+      }
+
+      // ============================================
+      // Mobile Navigation
+      // ============================================
+      function initMobileNav() {
+        const header = document.querySelector('.mobile-nav__header');
+        const modal = document.querySelector('.mobile-modal');
+        const closeBtn = document.querySelector('.mobile-modal__close');
+        const links = document.querySelectorAll('.mobile-modal__link');
+        
+        function toggle(open) {
+          if (header) header.setAttribute('aria-expanded', open ? 'true' : 'false');
+          if (modal) {
+            modal.classList.toggle('active', open);
+            modal.setAttribute('aria-hidden', open ? 'false' : 'true');
+          }
+          document.body.classList.toggle('is-modal-open', open);
+        }
+        
+        if (header) header.addEventListener('click', () => toggle(!modal.classList.contains('active')));
+        if (closeBtn) closeBtn.addEventListener('click', () => toggle(false));
+        links.forEach(link => link.addEventListener('click', () => toggle(false)));
+        if (modal) modal.addEventListener('click', (e) => e.target === modal && toggle(false));
+        document.addEventListener('keydown', (e) => e.key === 'Escape' && toggle(false));
+      }
+
+      // ============================================
+      // Main Initialization
+      // ============================================
+      console.log('[Scrollytelling] SCRUB mode loaded!');
+      console.log('[Version] CV Portfolio v2.0.3 - Last Updated: 2024-12 (One Slide Forced - Fixed)');
+      console.log('[Tip] Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows) to clear cache');
+      
+      // System Check: Verify JavaScript is loaded and executing
+      console.log('[System Check] JavaScript file loaded successfully');
+      console.log('[System Check] Card timings should be: Card 1 (0-33.33%), Card 2 (33.33-66.66%), Card 3 (66.66-100%)');
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('[Scrollytelling] Initializing scrub animations...');
+        
+        const updates = [
+          initHero(),
+          initFlipCards(),
+          initProblem(),
+          initFutureOutlook(),
+          initSolution(),
+          initGrowth(),
+          initStrategy(),
+          initResources(),
+          initNavigation()
+        ].filter(Boolean);
+        
+        console.log('[Scrollytelling] Initialized', updates.length, 'animation handlers');
+        
+        initMobileNav();
+        
+        // Dynamic gradient overlay - gradient transitions at section boundaries
+        function updateFullPageGradient() {
+          const sections = Array.from(document.querySelectorAll('.section'));
+          const windowHeight = window.innerHeight;
+          const scrollY = window.scrollY;
+          const viewportTop = scrollY;
+          const viewportBottom = scrollY + windowHeight;
+          
+          // Get section color based on class - matches original section backgrounds
+          function getSectionColor(section) {
+            const classList = section.className;
+            if (classList.includes('section--intro') || 
+                classList.includes('section--solution') || 
+                classList.includes('section--strategy') || 
+                classList.includes('section--resources')) {
+              return 'rgb(251, 247, 236)'; // --bg-cream: #fbf7ec
+            } else if (classList.includes('section--cards')) {
+              return 'rgb(17, 0, 0)'; // --bg-dark
+            } else if (classList.includes('section--problem') || 
+                       classList.includes('section--future-outlook')) {
+              return 'rgb(35, 35, 35)'; // --bg-problem: #232323
+            } else if (classList.includes('section--growth')) {
+              return 'rgb(99, 21, 21)'; // --bg-solution: #631515
+            }
+            return 'rgb(17, 0, 0)'; // Default dark
+          }
+          
+          // Get all sections with positions
+          const sectionData = sections.map(section => {
+            const rect = section.getBoundingClientRect();
+            const top = rect.top + scrollY;
+            const bottom = top + rect.height;
+            return {
+              section,
+              top,
+              bottom,
+              color: getSectionColor(section),
+              rect
+            };
+          });
+          
+          // Find section that contains viewport center (no gradient at boundaries)
+          const viewportCenter = scrollY + windowHeight / 2;
+          let activeSection = null;
+          let activeColor = 'rgb(17, 0, 0)'; // Default
+          
+          // Find section containing viewport center
+          sectionData.forEach(s => {
+            if (viewportCenter >= s.top && viewportCenter <= s.bottom) {
+              activeSection = s;
+              activeColor = s.color;
+            }
+          });
+          
+          // If no section contains center, find closest one
+          if (!activeSection) {
+            let minDistance = Infinity;
+            sectionData.forEach(s => {
+              const sectionCenter = (s.top + s.bottom) / 2;
+              const distance = Math.abs(viewportCenter - sectionCenter);
+              if (distance < minDistance) {
+                minDistance = distance;
+                activeSection = s;
+                activeColor = s.color;
+              }
+            });
+          }
+          
+          // Apply solid color (no gradient transitions at boundaries)
+          document.body.style.setProperty('--gradient-overlay-opacity', '1');
+          document.body.style.setProperty('--gradient-overlay-gradient', 
+            `linear-gradient(to bottom, ${activeColor} 0%, ${activeColor} 100%)`);
+        }
+        
+        // Dynamic gradient update based on scroll position
+        function updateSectionGradients() {
+          const sections = document.querySelectorAll('.section');
+          const windowHeight = window.innerHeight;
+          const scrollY = window.scrollY;
+          
+          sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + scrollY;
+            const sectionBottom = sectionTop + rect.height;
+            
+            // Calculate distance from viewport edges
+            const distanceFromTop = rect.top;
+            const distanceFromBottom = window.innerHeight - rect.bottom;
+            
+            // Top gradient: stronger when section is entering viewport from top
+            let topOpacity = 0;
+            if (distanceFromTop < windowHeight && distanceFromTop > -150) {
+              // Section is near top of viewport
+              topOpacity = Math.max(0, Math.min(1, (windowHeight - distanceFromTop) / 200));
+            } else if (distanceFromTop <= -150 && distanceFromTop > -300) {
+              // Section is just above viewport
+              topOpacity = Math.max(0, Math.min(1, (-distanceFromTop - 150) / 150));
+            }
+            
+            // Bottom gradient: stronger when section is leaving viewport at bottom
+            let bottomOpacity = 0;
+            if (distanceFromBottom < windowHeight && distanceFromBottom > -150) {
+              // Section is near bottom of viewport
+              bottomOpacity = Math.max(0, Math.min(1, (windowHeight - distanceFromBottom) / 200));
+            } else if (distanceFromBottom <= -150 && distanceFromBottom > -300) {
+              // Section is just below viewport
+              bottomOpacity = Math.max(0, Math.min(1, (-distanceFromBottom - 150) / 150));
+            }
+            
+            // Apply opacity via CSS variables
+            section.style.setProperty('--gradient-opacity-top', topOpacity.toString());
+            section.style.setProperty('--gradient-opacity-bottom', bottomOpacity.toString());
+          });
+        }
+        
+        // Section focus tracking for fade/blur effect
+        function updateSectionFocus() {
+          const sections = document.querySelectorAll('.section');
+          const viewportCenter = window.scrollY + window.innerHeight / 2;
+          
+          sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            const sectionBottom = sectionTop + rect.height;
+            
+            // Section is focused if viewport center is within section bounds
+            const isFocused = viewportCenter >= sectionTop && viewportCenter <= sectionBottom;
+            section.classList.toggle('section--focused', isFocused);
+          });
+        }
+        
+        // Scroll handler - runs on EVERY frame for smooth scrub
+        let ticking = false;
+        function handleScroll() {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              updates.forEach(update => {
+                if (typeof update === 'function') {
+                  update();
+                }
+              });
+              updateProgressBar();
+              // updateSectionGradients(); // Disabled: section boundary gradients removed
+              updateFullPageGradient(); // Update full-page color-changing gradient
+              updateSectionFocus(); // Update section focus for fade/blur effect
+              ticking = false;
+            });
+            ticking = true;
+          }
+        }
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Initial
+        
+        // Initialize debug monitor (if function exists)
+        if (typeof initDebugMonitor === 'function') {
+          initDebugMonitor();
+          
+          // Update debug monitor on scroll
+          if (debugMonitorVisible) {
+            function handleDebugUpdate() {
+              if (typeof updateDebugMonitor === 'function') {
+                updateDebugMonitor();
+              }
+            }
+            window.addEventListener('scroll', handleDebugUpdate, { passive: true });
+            handleDebugUpdate();
+            
+            // Update debug monitor periodically
+            window.debugMonitorInterval = setInterval(() => {
+              if (typeof updateDebugMonitor === 'function') {
+                updateDebugMonitor();
+              }
+            }, 100);
+          }
+        }
+        
+        // Test: Force update after a short delay to ensure elements are ready
+        setTimeout(() => {
+          handleScroll();
+        console.log('[Scrollytelling] SCRUB Ready! All animations tied to scroll.');
+          console.log('[Scrollytelling] Test: Current scroll position:', window.scrollY);
+          console.log('[Scrollytelling] Debug Monitor:', DEBUG_MONITOR_ENABLED ? 'Enabled (Press D to toggle)' : 'Disabled (Add ?debug=1 to URL or press D)');
+          
+          // Debug: Check initial progress for hero section
+          const heroContainer = document.querySelector('.scroll-container--intro');
+          if (heroContainer) {
+            const rect = heroContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const containerHeight = heroContainer.offsetHeight;
+            console.log('[Scrollytelling] Hero container debug:', {
+              rectTop: rect.top,
+              rectBottom: rect.bottom,
+              windowHeight,
+              containerHeight,
+              initialProgress: calculateProgress(heroContainer)
+            });
+          }
+        }, 100);
+      });
+    })();
+  </script>
+
+  <!-- Version Indicator (for development) -->
+  <div id="version-indicator" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ff00;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    z-index: 99999;
+    pointer-events: none;
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    opacity: 0.7;
+  ">
+    <div>v2.0.0</div>
+    <div style="font-size: 9px; color: #888; margin-top: 2px;">2024-12</div>
+    <div id="load-time" style="font-size: 9px; color: #888; margin-top: 2px;"></div>
+    <div style="font-size: 9px; color: #888; margin-top: 2px;">⌘+Shift+R: hard refresh</div>
+  </div>
+  <script>
+    // Display load time to verify fresh load
+    (function() {
+      const loadTime = new Date().toLocaleTimeString();
+      const indicator = document.getElementById('load-time');
+      if (indicator) {
+        indicator.textContent = 'Loaded: ' + loadTime;
+      }
+      console.log('[Load Time]', loadTime);
+    })();
+  </script>
+</body>
+</html>
