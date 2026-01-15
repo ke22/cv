@@ -3,6 +3,13 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   
+  // Enable static export for GitHub Pages
+  output: 'export',
+  
+  // Base path for GitHub Pages (if your repo name is not the root)
+  // Uncomment and set if your site is deployed to a subdirectory
+  // basePath: '/cv',
+  
   // 處理 webpack 配置以避免重複載入
   webpack: (config, { isServer }) => {
     if (!isServer) {
