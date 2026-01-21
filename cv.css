@@ -159,10 +159,10 @@ body {
 .nav__pill {
   background: var(--nav-pill);
   border-radius: var(--radius-pill);
-  padding: 10px 18px;
+  padding: 6px 10px;
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 4px;
   box-shadow: var(--shadow-1);
   border: 1px solid rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(18px);
@@ -173,50 +173,91 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  min-height: 44px; /* HIG touch target */
-  padding: 10px 12px;
+  min-height: 32px;
+  padding: 6px 8px;
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 7px;
   transition: all var(--duration-fast) ease;
 }
 
 .nav__label-wrap {
+  /* Grid 0fr → 1fr 捲簾效果容器 + 背景滑開（更順） */
+  position: relative;
+  display: grid;
+  grid-template-columns: 0fr;
   overflow: hidden;
-  width: 0;
-  transition: width var(--duration-fast) ease;
   white-space: nowrap;
+  border-radius: 999px;
+  background-color: transparent;
+  padding: 0;
+  opacity: 0;
+  transform: translateX(-8px);
+  will-change: grid-template-columns, padding, opacity, transform;
+  transition:
+    grid-template-columns 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease,
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav__label-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 28, 30, 0.78);
+  border-radius: inherit;
+  transform: translateX(-120%) scaleX(1.08);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  z-index: 0;
 }
 
 .nav__label {
+  position: relative;
+  z-index: 1;
   color: var(--text-white);
-  font-size: 16px;
+  font-size: 12.5px;
   font-weight: 500;
   opacity: 0;
-  transition: opacity var(--duration-fast) ease;
+  letter-spacing: 0.2px;
+  transform: translateX(-10px);
+  transition:
+    opacity 220ms ease 140ms,
+    transform 440ms cubic-bezier(0.22, 1, 0.36, 1) 140ms;
 }
 
 .nav__dot-btn.active .nav__label-wrap {
-  width: auto;
+  grid-template-columns: 1fr;
+  padding: 0 12px;
+  min-width: 52px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav__dot-btn.active .nav__label-wrap::before {
+  transform: translateX(0);
 }
 
 .nav__dot-btn.active .nav__label {
   opacity: 1;
+  transform: translateX(0);
+  transition-delay: 140ms;
 }
 
 .nav__dot {
-  width: 8px;
-  height: 8px;
-  background: #9a9a9a;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   transition: all var(--duration-fast) ease;
   flex-shrink: 0;
 }
 
 .nav__dot-btn.active .nav__dot {
-  width: 0;
-  height: 0;
   opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 160ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav__dot-btn:hover .nav__dot {
