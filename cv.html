@@ -981,10 +981,24 @@
         }
         
         const container = section.querySelector('.scroll-container--future-outlook');
+        const circlesContainer = section.querySelector('.future-outlook__circles');
         const titleItems = Array.from(section.querySelectorAll('.future-outlook__title-item'));
         const circleSmall = section.querySelector('.future-circle--small');
         const circleMedium = section.querySelector('.future-circle--medium');
         const circleLarge = section.querySelector('.future-circle--large');
+        
+        // Debug: Check container position
+        if (circlesContainer) {
+          const rect = circlesContainer.getBoundingClientRect();
+          console.log('[FutureOutlook] Circles container position:', {
+            position: window.getComputedStyle(circlesContainer).position,
+            bottom: window.getComputedStyle(circlesContainer).bottom,
+            right: window.getComputedStyle(circlesContainer).right,
+            rect: rect,
+            windowHeight: window.innerHeight,
+            windowWidth: window.innerWidth
+          });
+        }
         
         console.log('[FutureOutlook] Initialized:', {
           section: !!section,
@@ -1043,51 +1057,6 @@
           if (!container) return;
           const p = calculateProgress(container);
           const isZoomStage = p >= config.zoomStart;
-          
-          // Debug log when in the range where circles should be visible (20-30%)
-          if (p >= 0.20 && p <= 0.30) {
-            const circlesContainer = document.querySelector('.future-outlook__circles');
-            const containerStyle = circlesContainer ? window.getComputedStyle(circlesContainer) : null;
-            const smallStyle = circleSmall ? window.getComputedStyle(circleSmall) : null;
-            const mediumStyle = circleMedium ? window.getComputedStyle(circleMedium) : null;
-            const largeStyle = circleLarge ? window.getComputedStyle(circleLarge) : null;
-            
-            console.log('[FutureOutlook] DEBUG Progress:', (p * 100).toFixed(1) + '%', {
-              isZoomStage,
-              // Circle elements exist
-              circleSmall: !!circleSmall,
-              circleMedium: !!circleMedium,
-              circleLarge: !!circleLarge,
-              // Visible classes
-              smallVisible: circleSmall?.classList.contains('visible'),
-              mediumVisible: circleMedium?.classList.contains('visible'),
-              largeVisible: circleLarge?.classList.contains('visible'),
-              // Small circle computed styles
-              smallOpacity: smallStyle?.opacity,
-              smallTransform: smallStyle?.transform,
-              smallZIndex: smallStyle?.zIndex,
-              smallPosition: smallStyle?.position,
-              smallDisplay: smallStyle?.display,
-              smallVisibility: smallStyle?.visibility,
-              smallWidth: smallStyle?.width,
-              smallHeight: smallStyle?.height,
-              // Container styles
-              containerExists: !!circlesContainer,
-              containerZIndex: containerStyle?.zIndex,
-              containerPosition: containerStyle?.position,
-              containerOpacity: containerStyle?.opacity,
-              containerWidth: containerStyle?.width,
-              containerHeight: containerStyle?.height,
-              containerBottom: containerStyle?.bottom,
-              containerRight: containerStyle?.right,
-              // Check parent sections
-              section: section ? {
-                className: section.className,
-                opacity: window.getComputedStyle(section).opacity,
-                filter: window.getComputedStyle(section).filter
-              } : null
-            });
-          }
           
           // ============================================
           // Titles: Sequential A → B → C (one at a time)
@@ -1165,6 +1134,7 @@
           
           // ============================================
           // Circles: Stack cumulatively (don't disappear)
+          // Reference: ProblemSectionEffect.js updateCircleNormal method
           // ============================================
           if (isZoomStage) {
             // ZOOM-OUT STAGE (75-100%): Staggered zoom from bottom-right
@@ -1227,100 +1197,90 @@
               }
             }
           } else {
-            // NORMAL STAGE (0-75%): Circles stack cumulatively (stop at end but remain visible)
-            // Circles sync with titles: fade in during first 0.08, then hold until end
+            // NORMAL STAGE (0-60%): Circles stack cumulatively
+            // 移除 isContainerInView 檢查，因為容器是 fixed，始終在視窗內
+            // 使用 setOpacityTransform 來強制覆蓋 CSS !important 規則
             
-            // Small circle: appears with Title A (0-25%), sync fade in timing
-            if (circleSmall) {
+            // Small circle: appears at 0% (with Title A)
+            // 與 Title A 同步：fade in 用 8%，到達定點後保持 hold time
+            if (circleSmall && p >= config.circleSmallStart) {
               circleSmall.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
-              if (p >= config.circleSmallEnd) {
-                // Past stop point: keep visible and fixed at final position
-                setOpacityTransform(circleSmall, 1, 'translate(50%, 50%)');
-                circleSmall.classList.add('visible');
-              } else if (p >= config.circleSmallStart) {
-                const fadeInEnd = config.circleSmallStart + 0.08; // Match title fade in timing
-                let opacity, translate;
-                
-                if (p < fadeInEnd) {
-                  // Fade in phase: sync with title fade in
-                  const fadeProgress = (p - config.circleSmallStart) / (fadeInEnd - config.circleSmallStart);
-                  opacity = fadeProgress;
-                  translate = lerp(150, 50, fadeProgress);
-                } else {
-                  // Hold phase: fully visible, stay at final position
-                  opacity = 1;
-                  translate = 50;
-                }
-                
-                setOpacityTransform(circleSmall, opacity, `translate(${translate}%, ${translate}%)`);
-                circleSmall.classList.toggle('visible', opacity > 0);
+              
+              // 與 Title A 同步：fade in 用 8% (0-8%)
+              const fadeInWindow = 0.08;
+              const fadeInEnd = config.circleSmallStart + fadeInWindow;
+              
+              let circleProgress = 0;
+              if (p < fadeInEnd) {
+                // Fade in: 0-8%
+                circleProgress = (p - config.circleSmallStart) / fadeInWindow;
               } else {
-                // Before start: hidden
-                setOpacityTransform(circleSmall, 0, 'translate(150%, 150%)');
-                circleSmall.classList.remove('visible');
+                // Hold: 8%-60% (保持可見直到 zoom-out)
+                circleProgress = 1;
               }
+              
+              // Move from off-screen (150%) to final position (50%) - matches zoom-out initial position
+              const translatePercent = 50 + (100 * (1 - circleProgress));
+              setOpacityTransform(circleSmall, circleProgress, `translate(${translatePercent}%, ${translatePercent}%)`);
+              circleSmall.classList.add('visible');
+            } else if (circleSmall && p < config.circleSmallStart) {
+              // Before start: hide circle
+              setOpacityTransform(circleSmall, 0, 'translate(150%, 150%)');
+              circleSmall.classList.remove('visible', 'future-circle--fade-out');
             }
             
-            // Medium circle: appears with Title B (25-50%), sync fade in timing
-            if (circleMedium) {
+            // Medium circle: appears at 20% (with Title B)
+            // 與 Title B 同步：fade in 用 8%，到達定點後保持 hold time
+            if (circleMedium && p >= config.circleMediumStart) {
               circleMedium.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
-              if (p >= config.circleMediumEnd) {
-                // Past stop point: keep visible and fixed at final position
-                setOpacityTransform(circleMedium, 1, 'translate(50%, 50%)');
-                circleMedium.classList.add('visible');
-              } else if (p >= config.circleMediumStart) {
-                const fadeInEnd = config.circleMediumStart + 0.08; // Match title fade in timing
-                let opacity, translate;
-                
-                if (p < fadeInEnd) {
-                  // Fade in phase: sync with title fade in
-                  const fadeProgress = (p - config.circleMediumStart) / (fadeInEnd - config.circleMediumStart);
-                  opacity = fadeProgress;
-                  translate = lerp(150, 50, fadeProgress);
+              
+              // 與 Title B 同步：fade in 用 8% (20-28%)
+              const fadeInWindow = 0.08;
+              const fadeInEnd = config.circleMediumStart + fadeInWindow;
+              
+              let circleProgress = 0;
+              if (p < fadeInEnd) {
+                // Fade in: 20-28%
+                circleProgress = (p - config.circleMediumStart) / fadeInWindow;
               } else {
-                  // Hold phase: fully visible, stay at final position
-                  opacity = 1;
-                  translate = 50;
-                }
-                
-                setOpacityTransform(circleMedium, opacity, `translate(${translate}%, ${translate}%)`);
-                circleMedium.classList.toggle('visible', opacity > 0);
-              } else {
-                // Before start: hidden
-                setOpacityTransform(circleMedium, 0, 'translate(150%, 150%)');
-                circleMedium.classList.remove('visible');
+                // Hold: 28%-60% (保持可見直到 zoom-out)
+                circleProgress = 1;
               }
+              
+              // Move from off-screen (150%) to final position (50%) - matches zoom-out initial position
+              const translatePercent = 50 + (100 * (1 - circleProgress));
+              setOpacityTransform(circleMedium, circleProgress, `translate(${translatePercent}%, ${translatePercent}%)`);
+              circleMedium.classList.add('visible');
+            } else if (circleMedium && p < config.circleMediumStart) {
+              setOpacityTransform(circleMedium, 0, 'translate(150%, 150%)');
+              circleMedium.classList.remove('visible', 'future-circle--fade-out');
             }
             
-            // Large circle: appears with Title C (50-75%), sync fade in timing
-            if (circleLarge) {
+            // Large circle: appears at 40% (with Title C)
+            // 與 Title C 同步：fade in 用 8%，到達定點後保持 hold time
+            if (circleLarge && p >= config.circleLargeStart) {
               circleLarge.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
-              if (p >= config.circleLargeEnd) {
-                // Past stop point: keep visible and fixed at final position
-                setOpacityTransform(circleLarge, 1, 'translate(50%, 50%)');
-                circleLarge.classList.add('visible');
-              } else if (p >= config.circleLargeStart) {
-                const fadeInEnd = config.circleLargeStart + 0.08; // Match title fade in timing
-                let opacity, translate;
-                
-                if (p < fadeInEnd) {
-                  // Fade in phase: sync with title fade in
-                  const fadeProgress = (p - config.circleLargeStart) / (fadeInEnd - config.circleLargeStart);
-                  opacity = fadeProgress;
-                  translate = lerp(150, 50, fadeProgress);
+              
+              // 與 Title C 同步：fade in 用 8% (40-48%)
+              const fadeInWindow = 0.08;
+              const fadeInEnd = config.circleLargeStart + fadeInWindow;
+              
+              let circleProgress = 0;
+              if (p < fadeInEnd) {
+                // Fade in: 40-48%
+                circleProgress = (p - config.circleLargeStart) / fadeInWindow;
               } else {
-                  // Hold phase: fully visible, stay at final position
-                  opacity = 1;
-                  translate = 50;
-                }
-                
-                setOpacityTransform(circleLarge, opacity, `translate(${translate}%, ${translate}%)`);
-                circleLarge.classList.toggle('visible', opacity > 0);
-              } else {
-                // Before start: hidden
-                setOpacityTransform(circleLarge, 0, 'translate(150%, 150%)');
-                circleLarge.classList.remove('visible');
+                // Hold: 48%-60% (保持可見直到 zoom-out)
+                circleProgress = 1;
               }
+              
+              // Move from off-screen (150%) to final position (50%) - matches zoom-out initial position
+              const translatePercent = 50 + (100 * (1 - circleProgress));
+              setOpacityTransform(circleLarge, circleProgress, `translate(${translatePercent}%, ${translatePercent}%)`);
+              circleLarge.classList.add('visible');
+            } else if (circleLarge && p < config.circleLargeStart) {
+              setOpacityTransform(circleLarge, 0, 'translate(150%, 150%)');
+              circleLarge.classList.remove('visible', 'future-circle--fade-out');
             }
             
             // Reset auto-advance flag when scrolling back
