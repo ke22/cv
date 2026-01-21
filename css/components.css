@@ -55,21 +55,32 @@
   border: none;
   cursor: pointer;
   min-height: 44px;
-  padding: 10px 12px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 10px; /* Keep dot/label spacing stable during reveal */
   transition: all var(--duration-fast) ease;
 }
 
 .nav__label-wrap {
-  display: inline-block;
+  /* "Scroll-unroll" reveal: clip + width with slight slide/scale for stronger expand feel */
+  display: inline-flex;
+  align-items: center;
   overflow: hidden;
   white-space: nowrap;
-  transform: scaleX(0);
+  max-width: 0;
+  padding-left: 6px; /* Maintain perceived balance when dot fades out */
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
+  transform: translateX(-6px) scaleX(0.85);
   transform-origin: left center;
   opacity: 0;
-  transition: transform 480ms cubic-bezier(0.4, 0, 0.2, 1), opacity 240ms ease;
+  will-change: clip-path, transform, max-width, opacity;
+  transition:
+    clip-path 420ms cubic-bezier(0.4, 0, 0.2, 1),
+    max-width 420ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 420ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 260ms ease;
 }
 
 .nav__label {
@@ -77,11 +88,14 @@
   font-size: 16px;
   font-weight: 500;
   opacity: 0;
-  transition: opacity 240ms ease;
+  transition: opacity 200ms ease 120ms;
 }
 
 .nav__dot-btn.active .nav__label-wrap {
-  transform: scaleX(1);
+  max-width: 140px; /* Adjust if labels change length */
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
+  transform: translateX(0) scaleX(1);
   opacity: 1;
 }
 
@@ -99,11 +113,9 @@
 }
 
 .nav__dot-btn.active .nav__dot {
-  /* Hide dots when active (text shown instead) */
-  width: 0;
-  height: 0;
+  /* Keep layout stable: fade/scale only (do NOT collapse width/height) */
   opacity: 0;
-  transform: none;
+  transform: scale(0.6);
 }
 
 .nav__dot-btn:hover .nav__dot {
