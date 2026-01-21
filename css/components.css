@@ -101,9 +101,11 @@
 }
 
 .nav__dot-btn.active .nav__dot {
-  width: 0;
-  height: 0;
-  opacity: 0;
+  /* Keep dots visible even when active (matching reference pill) */
+  width: 8px;
+  height: 8px;
+  opacity: 1;
+  background: #bcbcbc;
 }
 
 .nav__dot-btn:hover .nav__dot {
