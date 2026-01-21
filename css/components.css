@@ -63,9 +63,13 @@
 }
 
 .nav__label-wrap {
+  display: inline-block; /* required for max-width reveal animation */
   overflow: hidden;
-  width: 0;
-  transition: width var(--duration-fast) ease;
+  /* Use max-width (animatable) for "scroll-like" label reveal */
+  width: auto;
+  max-width: 0;
+  opacity: 0;
+  transition: max-width 480ms cubic-bezier(0.4, 0, 0.2, 1), opacity 240ms ease;
   white-space: nowrap;
 }
 
@@ -74,11 +78,13 @@
   font-size: 16px;
   font-weight: 500;
   opacity: 0;
-  transition: opacity var(--duration-fast) ease;
+  transition: opacity 240ms ease;
 }
 
 .nav__dot-btn.active .nav__label-wrap {
-  width: auto;
+  /* Only active item expands */
+  max-width: 220px; /* enough for current labels; increase if labels get longer */
+  opacity: 1;
 }
 
 .nav__dot-btn.active .nav__label {
