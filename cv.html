@@ -553,6 +553,25 @@
       'use strict';
 
       // ============================================
+      // Debug Mode Configuration
+      // ============================================
+      // Set to false in production to disable console logs
+      const DEBUG_MODE = window.location.search.includes('debug=1') || false;
+      
+      // Debug logging helper
+      function debugLog(...args) {
+        if (DEBUG_MODE) {
+          console.log(...args);
+        }
+      }
+      
+      function debugWarn(...args) {
+        if (DEBUG_MODE) {
+          console.warn(...args);
+        }
+      }
+
+      // ============================================
       // Utility Functions
       // ============================================
       function clamp(value, min, max) {
@@ -582,6 +601,75 @@
         setStyleImportant(element, 'opacity', String(opacity));
         setStyleImportant(element, 'transform', transform);
         setStyleImportant(element, '-webkit-transform', transform);
+      }
+
+      // ============================================
+      // Animation Helper Functions
+      // ============================================
+      /**
+       * Update title animation (fade in/out with slide)
+       * @param {HTMLElement} item - Title element
+       * @param {number} p - Current progress (0-1)
+       * @param {number} start - Animation start progress
+       * @param {number} end - Animation end progress
+       * @param {number} slideDistance - Slide distance in pixels (default: 80)
+       */
+      function updateTitleAnimation(item, p, start, end, slideDistance = 80) {
+        let opacity = 0;
+        let y = slideDistance;
+        
+        if (p >= start && p < end) {
+          const fadeInEnd = start + 0.08;
+          const fadeOutStart = end - 0.08;
+          
+          if (p < fadeInEnd) {
+            // Fade in
+            const progress = (p - start) / (fadeInEnd - start);
+            opacity = progress;
+            y = lerp(slideDistance, 0, progress);
+          } else if (p >= fadeOutStart) {
+            // Fade out
+            const progress = (p - fadeOutStart) / (end - fadeOutStart);
+            opacity = 1 - progress;
+            y = lerp(0, -slideDistance, progress);
+          } else {
+            // Hold
+            opacity = 1;
+            y = 0;
+          }
+        }
+        
+        setOpacityTransform(item, opacity, `translateY(${y}px)`);
+        item.classList.toggle('active', opacity > 0.5);
+      }
+
+      /**
+       * Update circle animation (fade in and hold, cumulative stacking)
+       * @param {HTMLElement} circle - Circle element
+       * @param {number} p - Current progress (0-1)
+       * @param {number} start - Animation start progress
+       * @param {number} fadeInWindow - Fade in window (default: 0.08)
+       */
+      function updateCircleAnimation(circle, p, start, fadeInWindow = 0.08) {
+        if (!circle) return;
+        
+        if (p >= start) {
+          circle.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
+          
+          const fadeInEnd = start + fadeInWindow;
+          const circleProgress = p < fadeInEnd 
+            ? (p - start) / fadeInWindow 
+            : 1; // Hold after fade in
+          
+          // Move from off-screen (150%) to final position (50%) - matches zoom-out initial position
+          const translatePercent = 50 + (100 * (1 - circleProgress));
+          setOpacityTransform(circle, circleProgress, `translate(${translatePercent}%, ${translatePercent}%)`);
+          circle.classList.add('visible');
+        } else {
+          // Before start: hide circle
+          setOpacityTransform(circle, 0, 'translate(150%, 150%)');
+          circle.classList.remove('visible', 'future-circle--fade-out');
+        }
       }
 
       // Calculate scroll progress for a container (0 to 1)
@@ -653,7 +741,7 @@
       function initHero() {
         const section = document.querySelector('#intro');
         if (!section) {
-          console.warn('[Scrollytelling] Hero section not found');
+          debugWarn('[Scrollytelling] Hero section not found');
           return;
         }
         
@@ -663,11 +751,11 @@
         const desc = section.querySelector('.hero__desc');
         
         if (!container) {
-          console.warn('[Scrollytelling] Hero container not found');
+          debugWarn('[Scrollytelling] Hero container not found');
           return;
         }
         
-        console.log('[Scrollytelling] Hero initialized', { container, title, desc, titleChars: titleChars.length });
+        debugLog('[Scrollytelling] Hero initialized', { container, title, desc, titleChars: titleChars.length });
         const cta = section.querySelector('.hero__cta');
         
         return function update() {
@@ -676,7 +764,7 @@
           
           // Debug: Log progress occasionally (throttled)
           if (Math.random() < 0.01) { // 1% chance per frame
-            console.log('[Hero] Progress:', p.toFixed(3), 'Title opacity:', title ? mapRange(p, 0, 0.15, 0, 1).toFixed(3) : 'N/A');
+            debugLog('[Hero] Progress:', p.toFixed(3), 'Title opacity:', title ? mapRange(p, 0, 0.15, 0, 1).toFixed(3) : 'N/A');
           }
           
           // KineticTypography: ENHANCED dramatic effect for entire title
@@ -723,13 +811,13 @@
               
               // Debug: Log all characters to ensure they're being animated
               if (Math.random() < 0.02) { // 2% chance per frame
-                console.log(`[Hero Kinetic] Char ${i}/${totalChars} (${char.textContent}): progress=${(clampedCharProgress * 100).toFixed(1)}%, opacity=${charOpacity.toFixed(2)}, scale=${charScale.toFixed(2)}, rotate=${charRotate.toFixed(1)}deg, p=${(p * 100).toFixed(1)}%`);
+                debugLog(`[Hero Kinetic] Char ${i}/${totalChars} (${char.textContent}): progress=${(clampedCharProgress * 100).toFixed(1)}%, opacity=${charOpacity.toFixed(2)}, scale=${charScale.toFixed(2)}, rotate=${charRotate.toFixed(1)}deg, p=${(p * 100).toFixed(1)}%`);
               }
             });
             
             // Debug: Log total characters found
             if (Math.random() < 0.001) { // Very rare log
-              console.log(`[Hero Kinetic] Total characters: ${totalChars}, Total animation range: ${(totalRange * 100).toFixed(1)}%`);
+              debugLog(`[Hero Kinetic] Total characters: ${totalChars}, Total animation range: ${(totalRange * 100).toFixed(1)}%`);
             }
           } else {
             // Fallback: If no characters found, animate the whole title
@@ -766,15 +854,15 @@
       // ============================================
       function initFlipCards() {
         const section = document.querySelector('#cards');
-        if (!section) { console.log('[FlipCards] Section not found'); return; }
+        if (!section) { debugLog('[FlipCards] Section not found'); return; }
         
         const container = section.querySelector('.scroll-container--cards');
-        if (!container) { console.log('[FlipCards] Container not found'); return; }
+        if (!container) { debugLog('[FlipCards] Container not found'); return; }
         
         const wrappers = Array.from(section.querySelectorAll('.flip-card-wrapper'));
         const cards = wrappers.map(w => w.querySelector('.flip-card'));
         
-        console.log('[FlipCards] Initialized:', {
+        debugLog('[FlipCards] Initialized:', {
           section: !!section,
           container: !!container,
           wrappers: wrappers.length,
@@ -811,14 +899,14 @@
         ];
         
         // Log timing configuration for debugging
-        console.log('[FlipCards] ONE SLIDE FORCED - Timing config:', cardTimings.map((t, i) => ({
+        debugLog('[FlipCards] ONE SLIDE FORCED - Timing config:', cardTimings.map((t, i) => ({
           card: i + 1,
           appear: `${(t.appearStart * 100).toFixed(1)}%-${(t.appearEnd * 100).toFixed(1)}%`,
           flip: `${(t.flipStart * 100).toFixed(1)}%-${(t.flipEnd * 100).toFixed(1)}%`,
           hold: `to ${(t.holdEnd * 100).toFixed(1)}%`,
           range: `${(t.appearStart * 100).toFixed(1)}%-${(t.holdEnd * 100).toFixed(1)}%`
         })));
-        console.log('[FlipCards] Card 1: 0-33.33%, Card 2: 33.33-66.66%, Card 3: 66.66-100%');
+        debugLog('[FlipCards] Card 1: 0-33.33%, Card 2: 33.33-66.66%, Card 3: 66.66-100%');
         
         return function update() {
           if (!container) return;
@@ -847,7 +935,7 @@
           
           // Debug: Log progress and card states (more frequent for troubleshooting)
           if (clampedP > 0 && clampedP < 1 && Math.random() < 0.05) { // 5% chance when in range
-            console.log('[FlipCards] Progress:', (clampedP * 100).toFixed(1) + '%');
+            debugLog('[FlipCards] Progress:', (clampedP * 100).toFixed(1) + '%');
             wrappers.forEach((wrapper, i) => {
               const cardNum = wrapper.getAttribute('data-card');
               const timing = cardTimings[i];
@@ -855,7 +943,7 @@
               const isFlipping = clampedP >= timing.flipStart && clampedP <= timing.flipEnd;
               const actualOpacity = window.getComputedStyle(wrapper).opacity;
               const expectedRange = `${(timing.appearStart * 100).toFixed(1)}%-${(timing.holdEnd * 100).toFixed(1)}%`;
-              console.log(`  Card ${cardNum}: p=${(clampedP * 100).toFixed(1)}%, range=${expectedRange}, visible=${isVisible}, flipping=${isFlipping}, opacity=${actualOpacity}`);
+              debugLog(`  Card ${cardNum}: p=${(clampedP * 100).toFixed(1)}%, range=${expectedRange}, visible=${isVisible}, flipping=${isFlipping}, opacity=${actualOpacity}`);
             });
           }
           
@@ -976,7 +1064,7 @@
       function initFutureOutlook() {
         const section = document.querySelector('#future-outlook');
         if (!section) {
-          console.warn('[FutureOutlook] Section not found');
+          debugWarn('[FutureOutlook] Section not found');
           return;
         }
         
@@ -990,7 +1078,7 @@
         // Debug: Check container position
         if (circlesContainer) {
           const rect = circlesContainer.getBoundingClientRect();
-          console.log('[FutureOutlook] Circles container position:', {
+          debugLog('[FutureOutlook] Circles container position:', {
             position: window.getComputedStyle(circlesContainer).position,
             bottom: window.getComputedStyle(circlesContainer).bottom,
             right: window.getComputedStyle(circlesContainer).right,
@@ -1000,7 +1088,7 @@
           });
         }
         
-        console.log('[FutureOutlook] Initialized:', {
+        debugLog('[FutureOutlook] Initialized:', {
           section: !!section,
           container: !!container,
           titleItems: titleItems.length,
@@ -1061,76 +1149,14 @@
           // ============================================
           // Titles: Sequential A → B → C (one at a time)
           // ============================================
-          titleItems.forEach((item, i) => {
-            let opacity = 0;
-            const slideDistance = 80; // Increased slide distance
-            let y = slideDistance;
-            
-            if (i === 0) {
-              // Title A: 0% - 25%
-              if (p >= config.titleAStart && p < config.titleAEnd) {
-                const fadeInEnd = config.titleAStart + 0.08;
-                const fadeOutStart = config.titleAEnd - 0.08;
-                
-                if (p < fadeInEnd) {
-                  // Fade in
-                  const progress = (p - config.titleAStart) / (fadeInEnd - config.titleAStart);
-                  opacity = progress;
-                  y = lerp(slideDistance, 0, progress);
-                } else if (p >= fadeOutStart) {
-                  // Fade out
-                  const progress = (p - fadeOutStart) / (config.titleAEnd - fadeOutStart);
-                  opacity = 1 - progress;
-                  y = lerp(0, -slideDistance, progress);
-                } else {
-                  // Hold
-                  opacity = 1;
-                  y = 0;
-                }
-              }
-            } else if (i === 1) {
-              // Title B: 25% - 50%
-              if (p >= config.titleBStart && p < config.titleBEnd) {
-                const fadeInEnd = config.titleBStart + 0.08;
-                const fadeOutStart = config.titleBEnd - 0.08;
-                
-                if (p < fadeInEnd) {
-                  const progress = (p - config.titleBStart) / (fadeInEnd - config.titleBStart);
-                  opacity = progress;
-                  y = lerp(slideDistance, 0, progress);
-                } else if (p >= fadeOutStart) {
-                  const progress = (p - fadeOutStart) / (config.titleBEnd - fadeOutStart);
-                  opacity = 1 - progress;
-                  y = lerp(0, -slideDistance, progress);
-                } else {
-                  opacity = 1;
-                  y = 0;
-                }
-              }
-            } else if (i === 2) {
-              // Title C: 50% - 75%
-              if (p >= config.titleCStart && p < config.titleCEnd) {
-                const fadeInEnd = config.titleCStart + 0.08;
-                const fadeOutStart = config.titleCEnd - 0.08;
-                
-                if (p < fadeInEnd) {
-                  const progress = (p - config.titleCStart) / (fadeInEnd - config.titleCStart);
-                  opacity = progress;
-                  y = lerp(slideDistance, 0, progress);
-                } else if (p >= fadeOutStart) {
-                  const progress = (p - fadeOutStart) / (config.titleCEnd - fadeOutStart);
-                  opacity = 1 - progress;
-                  y = lerp(0, -slideDistance, progress);
-                } else {
-                  opacity = 1;
-                  y = 0;
-                }
-              }
-            }
-            
-            setOpacityTransform(item, opacity, `translateY(${y}px)`);
-            item.classList.toggle('active', opacity > 0.5);
-          });
+          // Title A: 0% - 20%
+          updateTitleAnimation(titleItems[0], p, config.titleAStart, config.titleAEnd);
+          
+          // Title B: 20% - 40%
+          updateTitleAnimation(titleItems[1], p, config.titleBStart, config.titleBEnd);
+          
+          // Title C: 40% - 60%
+          updateTitleAnimation(titleItems[2], p, config.titleCStart, config.titleCEnd);
           
           // ============================================
           // Circles: Stack cumulatively (don't disappear)
@@ -1199,89 +1225,19 @@
           } else {
             // NORMAL STAGE (0-60%): Circles stack cumulatively
             // 移除 isContainerInView 檢查，因為容器是 fixed，始終在視窗內
-            // 使用 setOpacityTransform 來強制覆蓋 CSS !important 規則
+            // 使用統一的 updateCircleAnimation 函數，與 Title 同步 (fade in 8%)
             
             // Small circle: appears at 0% (with Title A)
             // 與 Title A 同步：fade in 用 8%，到達定點後保持 hold time
-            if (circleSmall && p >= config.circleSmallStart) {
-              circleSmall.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
-              
-              // 與 Title A 同步：fade in 用 8% (0-8%)
-              const fadeInWindow = 0.08;
-              const fadeInEnd = config.circleSmallStart + fadeInWindow;
-              
-              let circleProgress = 0;
-              if (p < fadeInEnd) {
-                // Fade in: 0-8%
-                circleProgress = (p - config.circleSmallStart) / fadeInWindow;
-              } else {
-                // Hold: 8%-60% (保持可見直到 zoom-out)
-                circleProgress = 1;
-              }
-              
-              // Move from off-screen (150%) to final position (50%) - matches zoom-out initial position
-              const translatePercent = 50 + (100 * (1 - circleProgress));
-              setOpacityTransform(circleSmall, circleProgress, `translate(${translatePercent}%, ${translatePercent}%)`);
-              circleSmall.classList.add('visible');
-            } else if (circleSmall && p < config.circleSmallStart) {
-              // Before start: hide circle
-              setOpacityTransform(circleSmall, 0, 'translate(150%, 150%)');
-              circleSmall.classList.remove('visible', 'future-circle--fade-out');
-            }
+            updateCircleAnimation(circleSmall, p, config.circleSmallStart, 0.08);
             
             // Medium circle: appears at 20% (with Title B)
             // 與 Title B 同步：fade in 用 8%，到達定點後保持 hold time
-            if (circleMedium && p >= config.circleMediumStart) {
-              circleMedium.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
-              
-              // 與 Title B 同步：fade in 用 8% (20-28%)
-              const fadeInWindow = 0.08;
-              const fadeInEnd = config.circleMediumStart + fadeInWindow;
-              
-              let circleProgress = 0;
-              if (p < fadeInEnd) {
-                // Fade in: 20-28%
-                circleProgress = (p - config.circleMediumStart) / fadeInWindow;
-              } else {
-                // Hold: 28%-60% (保持可見直到 zoom-out)
-                circleProgress = 1;
-              }
-              
-              // Move from off-screen (150%) to final position (50%) - matches zoom-out initial position
-              const translatePercent = 50 + (100 * (1 - circleProgress));
-              setOpacityTransform(circleMedium, circleProgress, `translate(${translatePercent}%, ${translatePercent}%)`);
-              circleMedium.classList.add('visible');
-            } else if (circleMedium && p < config.circleMediumStart) {
-              setOpacityTransform(circleMedium, 0, 'translate(150%, 150%)');
-              circleMedium.classList.remove('visible', 'future-circle--fade-out');
-            }
+            updateCircleAnimation(circleMedium, p, config.circleMediumStart, 0.08);
             
             // Large circle: appears at 40% (with Title C)
             // 與 Title C 同步：fade in 用 8%，到達定點後保持 hold time
-            if (circleLarge && p >= config.circleLargeStart) {
-              circleLarge.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
-              
-              // 與 Title C 同步：fade in 用 8% (40-48%)
-              const fadeInWindow = 0.08;
-              const fadeInEnd = config.circleLargeStart + fadeInWindow;
-              
-              let circleProgress = 0;
-              if (p < fadeInEnd) {
-                // Fade in: 40-48%
-                circleProgress = (p - config.circleLargeStart) / fadeInWindow;
-              } else {
-                // Hold: 48%-60% (保持可見直到 zoom-out)
-                circleProgress = 1;
-              }
-              
-              // Move from off-screen (150%) to final position (50%) - matches zoom-out initial position
-              const translatePercent = 50 + (100 * (1 - circleProgress));
-              setOpacityTransform(circleLarge, circleProgress, `translate(${translatePercent}%, ${translatePercent}%)`);
-              circleLarge.classList.add('visible');
-            } else if (circleLarge && p < config.circleLargeStart) {
-              setOpacityTransform(circleLarge, 0, 'translate(150%, 150%)');
-              circleLarge.classList.remove('visible', 'future-circle--fade-out');
-            }
+            updateCircleAnimation(circleLarge, p, config.circleLargeStart, 0.08);
             
             // Reset auto-advance flag when scrolling back
             hasAutoAdvanced = false;
@@ -1303,7 +1259,7 @@
         const allChars = Array.from(section.querySelectorAll('.solution-text__title--disintegrate .char'));
         const chars = allChars.filter(char => !char.classList.contains('char--space'));
         
-        console.log('[Solution Text] DisintegratingText initialized:', {
+        debugLog('[Solution Text] DisintegratingText initialized:', {
           allChars: allChars.length,
           chars: chars.length,
           textContainer: !!textContainer,
@@ -1403,13 +1359,13 @@
                 
                 // Debug: Log first few and last few characters (more frequent)
                 if ((i < 5 || i >= chars.length - 5) && Math.random() < 0.15) {
-                  console.log(`[DisintegratingText] Char ${i}/${chars.length} (${char.textContent.trim() || 'space'}): progress=${(clampedProgress * 100).toFixed(1)}%, opacity=${charOpacity.toFixed(2)}, scale=${charScale.toFixed(2)}, p=${(p * 100).toFixed(1)}%`);
+                  debugLog(`[DisintegratingText] Char ${i}/${chars.length} (${char.textContent.trim() || 'space'}): progress=${(clampedProgress * 100).toFixed(1)}%, opacity=${charOpacity.toFixed(2)}, scale=${charScale.toFixed(2)}, p=${(p * 100).toFixed(1)}%`);
                 }
               });
             } else {
               // Debug: Log if no chars found
               if (Math.random() < 0.01) {
-                console.warn('[DisintegratingText] No characters found!', {
+                debugWarn('[DisintegratingText] No characters found!', {
                   textContainer: !!textContainer,
                   textItem: !!textItem,
                   title: textItem ? textItem.querySelector('.solution-text__title--disintegrate') : null
@@ -2002,16 +1958,17 @@
       // ============================================
       // Main Initialization
       // ============================================
-      console.log('[Scrollytelling] SCRUB mode loaded!');
-      console.log('[Version] CV Portfolio v2.0.3 - Last Updated: 2024-12 (One Slide Forced - Fixed)');
-      console.log('[Tip] Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows) to clear cache');
+      debugLog('[Scrollytelling] SCRUB mode loaded!');
+      debugLog('[Version] CV Portfolio v2.0.3 - Last Updated: 2024-12 (One Slide Forced - Fixed)');
+      debugLog('[Tip] Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows) to clear cache');
+      debugLog('[Tip] Add ?debug=1 to URL to enable debug logs');
       
       // System Check: Verify JavaScript is loaded and executing
-      console.log('[System Check] JavaScript file loaded successfully');
-      console.log('[System Check] Card timings should be: Card 1 (0-33.33%), Card 2 (33.33-66.66%), Card 3 (66.66-100%)');
+      debugLog('[System Check] JavaScript file loaded successfully');
+      debugLog('[System Check] Card timings should be: Card 1 (0-33.33%), Card 2 (33.33-66.66%), Card 3 (66.66-100%)');
       
       document.addEventListener('DOMContentLoaded', function() {
-        console.log('[Scrollytelling] Initializing scrub animations...');
+        debugLog('[Scrollytelling] Initializing scrub animations...');
         
         const updates = [
           initHero(),
@@ -2025,7 +1982,7 @@
           initNavigation()
         ].filter(Boolean);
         
-        console.log('[Scrollytelling] Initialized', updates.length, 'animation handlers');
+        debugLog('[Scrollytelling] Initialized', updates.length, 'animation handlers');
         
         initMobileNav();
         
@@ -2209,9 +2166,9 @@
         // Test: Force update after a short delay to ensure elements are ready
         setTimeout(() => {
           handleScroll();
-        console.log('[Scrollytelling] SCRUB Ready! All animations tied to scroll.');
-          console.log('[Scrollytelling] Test: Current scroll position:', window.scrollY);
-          console.log('[Scrollytelling] Debug Monitor:', DEBUG_MONITOR_ENABLED ? 'Enabled (Press D to toggle)' : 'Disabled (Add ?debug=1 to URL or press D)');
+        debugLog('[Scrollytelling] SCRUB Ready! All animations tied to scroll.');
+          debugLog('[Scrollytelling] Test: Current scroll position:', window.scrollY);
+          debugLog('[Scrollytelling] Debug Monitor:', DEBUG_MONITOR_ENABLED ? 'Enabled (Press D to toggle)' : 'Disabled (Add ?debug=1 to URL or press D)');
           
           // Debug: Check initial progress for hero section
           const heroContainer = document.querySelector('.scroll-container--intro');
@@ -2219,7 +2176,7 @@
             const rect = heroContainer.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             const containerHeight = heroContainer.offsetHeight;
-            console.log('[Scrollytelling] Hero container debug:', {
+            debugLog('[Scrollytelling] Hero container debug:', {
               rectTop: rect.top,
               rectBottom: rect.bottom,
               windowHeight,
@@ -2261,7 +2218,7 @@
       if (indicator) {
         indicator.textContent = 'Loaded: ' + loadTime;
       }
-      console.log('[Load Time]', loadTime);
+      // Debug log removed - load time already displayed in DOM
     })();
   </script>
 </body>
