@@ -99,11 +99,11 @@
 }
 
 .nav__dot-btn.active .nav__dot {
-  /* Keep dots visible even when active (matching reference pill) */
-  width: 8px;
-  height: 8px;
-  opacity: 1;
-  background: #bcbcbc;
+  /* Hide dots when active (text shown instead) */
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transform: none;
 }
 
 .nav__dot-btn:hover .nav__dot {
