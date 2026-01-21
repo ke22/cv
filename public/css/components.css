@@ -40,10 +40,10 @@
 .nav__pill {
   background: var(--nav-pill);
   border-radius: var(--radius-pill);
-  padding: 8px 12px; /* Smaller pill for better visual balance */
+  padding: 6px 10px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   box-shadow: var(--shadow-1);
   border: 1px solid rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(18px);
@@ -54,16 +54,17 @@
   background: none;
   border: none;
   cursor: pointer;
-  min-height: 36px;
-  padding: 8px 10px;
+  min-height: 32px;
+  padding: 6px 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   transition: all var(--duration-fast) ease;
 }
 
 .nav__label-wrap {
-  /* Grid 0fr → 1fr 捲簾效果容器 */
+  /* Grid 0fr → 1fr 捲簾效果容器 + 背景滑開（更順） */
+  position: relative;
   display: grid;
   grid-template-columns: 0fr;
   overflow: hidden;
@@ -71,48 +72,65 @@
   border-radius: 999px;
   background-color: transparent;
   padding: 0;
-  margin-left: 0;
   opacity: 0;
-  transform: translateX(-6px);
-  will-change: grid-template-columns, padding, background-color, opacity, transform;
+  transform: translateX(-5px);
+  will-change: grid-template-columns, padding, opacity, transform;
   transition:
-    grid-template-columns 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 320ms ease,
-    opacity 220ms ease,
-    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    grid-template-columns 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease,
+    transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav__label-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 28, 30, 0.78);
+  border-radius: inherit;
+  transform: translateX(-110%);
+  transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  z-index: 0;
 }
 
 .nav__label {
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   white-space: nowrap;
   color: var(--text-white);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
   letter-spacing: 0.2px;
   opacity: 0;
-  transform: translateX(-8px);
-  transition: opacity 220ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(-6px);
+  transition:
+    opacity 200ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav__dot-btn.active .nav__label-wrap {
   grid-template-columns: 1fr;
-  background-color: rgba(28, 28, 30, 0.78);
-  padding: 0 12px;
+  padding: 0 10px;
   opacity: 1;
+  transform: translateX(0);
+}
+
+.nav__dot-btn.active .nav__label-wrap::before {
   transform: translateX(0);
 }
 
 .nav__dot-btn.active .nav__label {
   opacity: 1;
   transform: translateX(0);
-  transition-delay: 120ms;
+  transition-delay: 140ms;
 }
 
 .nav__dot {
-  width: 7px;
-  height: 7px;
-  background: rgba(255, 255, 255, 0.55);
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   transition: all var(--duration-fast) ease;
   flex-shrink: 0;
@@ -121,7 +139,7 @@
 .nav__dot-btn.active .nav__dot {
   opacity: 0;
   transform: scale(0.75);
-  transition: opacity 180ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 160ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav__dot-btn:hover .nav__dot {
