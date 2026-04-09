@@ -700,6 +700,49 @@
   min-height: 1050px !important;
 }
 
+/* Curved stat labels on stacked circles (along inner arc, top-left quadrant of each disk) */
+.future-circle .curve-text-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.future-circle .curve-text {
+  fill: rgba(255, 255, 255, 0.95);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.future-circle--small .curve-text {
+  font-size: 26px;
+}
+
+.future-circle--medium .curve-text {
+  font-size: 18px;
+}
+
+.future-circle--large .curve-text {
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .future-circle--small .curve-text {
+    font-size: 18px;
+  }
+
+  .future-circle--medium .curve-text {
+    font-size: 13px;
+  }
+
+  .future-circle--large .curve-text {
+    font-size: 10px;
+  }
+}
+
 /* Zoom-out mode - circles become fixed, center point at viewport bottom-right */
 .future-circle--zoom-out {
   position: fixed !important;
