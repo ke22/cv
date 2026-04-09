@@ -1,0 +1,35 @@
+---
+description: Project operating system (read docs, execute Tasks, update memory)
+alwaysApply: true
+---
+
+# Operating Rules
+
+## 優先閱讀
+- **先讀** `docs/AI_INDEX.md`
+- 再依 index 指向的 canonical 檔案讀取（MasterPlan、ImplementationPlan、Tasks、Decisions；若 task 牽涉設計則加 DesignGuidelines、UserJourney）
+
+## 執行原則
+- 一次只做 Tasks.md 的「Next」第一項；不新增新 scope
+- 動工前先回覆：你要做的任務、會改哪些檔案、如何驗收/測試
+
+## 護欄（Guardrails）
+- **禁止改動**：`dist/**`、`public/**`、`archive/**`
+- **避免 churn**：不做純格式化、不重排未涉及的 CSS 變數、不改 task 未指到的檔案
+- **改動上限**：單次 task 若超過 6 個檔案，須先停下來說明原因
+
+## 完成後必做
+1) 更新 Tasks.md（Next/Doing/Done）
+2) 若有重要取捨，追加到 docs/Decisions.md（含日期與原因）
+3) 若規格變了，更新對應 docs（MasterPlan/Implementation/Design/UserJourney）
+
+## Writeback Protocol（每次任務完成必須產出）
+
+必須實際更新 Tasks.md、Decisions.md 到 repo，不可只輸出文字。結尾須產出：
+1. **變更摘要**（3–6 點 bullet）
+2. **Tasks.md 更新**：Next/Doing/Done 移動紀錄
+3. **Decisions.md**：若有取捨則新增一筆（含日期與原因）
+4. **Testing Steps**：要跑的指令或手動測試路徑
+
+## 若缺關鍵資訊
+先提出最小問題清單（不超過 3 點），或提出可行假設並標記為「假設」

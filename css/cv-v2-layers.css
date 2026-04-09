@@ -1,0 +1,847 @@
+:root {
+  /* 補回圓圈顏色變數 */
+  --circle-small: #D65D5D;
+  --circle-medium: #C44646;
+  --circle-large: #9F3030;
+  
+  /* 確保其他依賴變數也存在 */
+  --bg-problem: #232323;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --red-primary: #d32f2f;
+  --bg-beige: #F9F7F0;
+  /* Scene 10 L-shaped matrix */
+  --color-h1: #4A2323;
+  --color-h2: #8B4A4A;
+  --color-h3: #D68C8C;
+}
+
+/* ============================================
+   CV v2 - Sequential Sticky Sections Layout
+   ============================================ */
+
+/* 1. Core Layout Structure */
+.cvv2-main {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.scene {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.scroll-container {
+  position: relative;
+  width: 100%;
+  /* Height is set inline or via specific classes */
+}
+
+.sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh; /* [CRITICAL] iOS Safari bottom bar fix (spec 1.2) */
+  width: 100%;
+  /* [CRITICAL] 防止 Scene 8 大圓圈溢出蓋住後面內容 */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* 2. Scene Backgrounds */
+.scene--intro { background-color: var(--bg-cream); color: var(--text-dark); }
+.scene--cards { background-color: var(--bg-dark); color: var(--text-white); }
+.scene--problem { background-color: var(--bg-problem); color: var(--text-white); }
+.scene--outlook { background-color: var(--bg-problem); color: var(--text-white); }
+.scene--solution { background-color: var(--bg-cream); color: var(--text-dark); }
+/* --- 1. Growth Scene Background Update --- */
+.scene--growth { 
+  background-color: #631515; /* 更新為深紅色 */
+  color: var(--text-white); 
+}
+.scene--strategy { background-color: var(--bg-cream); color: var(--text-dark); }
+.scene--resources { background-color: var(--bg-cream); color: var(--text-dark); }
+.scene--footer { background-color: var(--bg-dark); color: var(--text-white); }
+
+/* 3. Scene Specific Layouts */
+
+/* --- Intro --- */
+.hero {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+.hero__title {
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 1;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.hero__title .char {
+  display: inline-block;
+}
+.hero__desc {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  opacity: 0.8;
+}
+.hero__cta {
+  margin-top: var(--space-md);
+  padding: 12px 32px;
+  background: var(--red-primary);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+.hero__cta:hover {
+  transform: scale(1.05);
+}
+
+/* --- Cards (Goals) --- */
+.flip-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  width: min(1200px, 90vw);
+  perspective: 1000px;
+  align-items: center;
+}
+.flip-card-wrapper {
+  position: relative;
+  aspect-ratio: 3/4;
+  width: 100%;
+  opacity: 0; /* JS handles reveal */
+  transform: translateY(50px);
+}
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  /* transition removed, controlled by JS scrub */
+}
+.flip-card__front, .flip-card__back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+.flip-card__front {
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  border: 1px solid rgba(255,255,255,0.1);
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+.flip-card__back {
+  background: var(--bg-cream);
+  color: var(--text-dark);
+  transform: rotateY(180deg);
+  align-items: flex-start;
+  text-align: left;
+  z-index: 1;
+}
+.flip-card__number {
+  font-size: 4rem;
+  font-weight: 800;
+  opacity: 0.2;
+  margin-bottom: var(--space-sm);
+}
+.flip-card__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.flip-card__description ul {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-sm);
+}
+.flip-card__description li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  padding-left: 12px;
+  position: relative;
+}
+.flip-card__description li::before {
+  content: "•";
+  color: var(--red-primary);
+  position: absolute;
+  left: 0;
+}
+.flip-card-wrapper.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Panic --- */
+.problem-content {
+  width: min(1200px, 90vw);
+  text-align: left;
+}
+.problem__title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800;
+  margin-bottom: var(--space-sm);
+  color: rgba(255, 255, 255, 0.4);
+}
+.problem__title-char {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.25s ease;
+}
+.problem__title-char.highlight {
+  color: #fff;
+}
+.problem__subtitle {
+  font-size: 2rem;
+  color: var(--text-muted);
+}
+
+/* --- Outlook --- */
+.outlook-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  width: min(1200px, 90vw);
+  align-items: end;
+  position: relative;
+  height: 100%;
+  min-height: 100vh;
+}
+.outlook-text-col {
+  position: relative;
+  height: 100%;
+  z-index: 50; /* Added: Ensure text is above circles */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Added: Vertical center */
+  /* 右邊保持距離，不碰圓圈 */
+  padding-right: 40px;
+  /* 左邊補白，讓文字不貼左側螢幕邊緣；在超過 1200px 時模擬置中區塊的起始位置 */
+  padding-left: max(5vw, calc((100vw - 1200px) / 2));
+}
+/* --- 1. 啟動容器查詢 --- */
+.outlook-visual-col {
+  position: relative;
+}
+.outlook-circles-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  container-type: size; /* circles scale with viewport (sticky-stage) */
+}
+.outlook-text-item {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 100%;
+  opacity: 0; /* Controlled by JS */
+  text-align: left;
+}
+.future-outlook__title {
+  font-size: 2rem;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+.future-outlook__stat {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-sm);
+}
+.future-outlook__value {
+  color: var(--red-primary); /* Or bright red for dark mode */
+}
+.scene--outlook .future-outlook__value {
+  color: #ff4d4d; /* Brighter red on dark bg */
+}
+.future-outlook__sub {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+/* --- 2. 圓圈通用設定 --- */
+.future-circle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  /* 形狀：1/4 圓 */
+  border-radius: 100% 0 0 0;
+
+  /* 確保永遠是正方形 */
+  aspect-ratio: 1 / 1;
+
+  transform-origin: bottom right;
+  transform: scale(0);
+  will-change: transform;
+  opacity: 1 !important;
+  max-width: none;
+  max-height: none;
+}
+
+/* --- 3. 同心圓尺寸 (30%, 60%, 90%) --- */
+.future-circle--small {
+  width: 30cqmin;
+  height: 30cqmin;
+  z-index: 30;
+  background: var(--circle-small, #D65D5D);
+}
+.future-circle--medium {
+  width: 60cqmin;
+  height: 60cqmin;
+  z-index: 20;
+  background: var(--circle-medium, #C44646);
+}
+.future-circle--large {
+  width: 90cqmin;
+  height: 90cqmin;
+  z-index: 10;
+  background: var(--circle-large, #9F3030);
+}
+
+/* --- SVG 彎曲文字樣式 --- */
+.curve-text-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.curve-text {
+  fill: rgba(255, 255, 255, 0.95);
+  font-family: var(--font-primary, sans-serif);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+/* --- 4. 文字大小反向補償 (基準 28px) --- */
+.future-circle--small .curve-text {
+  font-size: 28px;
+}
+.future-circle--medium .curve-text {
+  font-size: 14px; /* 28 / 2 */
+}
+.future-circle--large .curve-text {
+  font-size: 9.33px; /* 28 / 3 */
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .outlook-layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+    height: auto;
+    gap: 40px;
+  }
+  .outlook-text-col {
+    height: 300px;
+  }
+  .outlook-visual-col {
+    width: 100vw;
+    height: 100vw;
+  }
+  .scene--outlook.outlook-pinned .outlook-visual-col {
+    width: 100vw;
+    height: 60vh;
+  }
+}
+
+/* =========================================
+   Scene 9: Solution Intro (Pop-in Reveal, 層級與轉場)
+   ========================================= */
+#solution {
+  position: relative;
+  z-index: 100; /* [CRITICAL] 淡入時蓋住 Scene 8 紅色圓圈 */
+  background-color: var(--bg-beige);
+  margin-top: -1px;
+}
+.solution-text {
+  text-align: center;
+  z-index: 10;
+  overflow: hidden;
+}
+.solution-text__title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+.solution-text__title--disintegrate {
+  font-family: var(--font-primary, serif);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  color: #333;
+  line-height: 1.2;
+}
+.solution-text__title--disintegrate .char {
+  display: inline-block;
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+.char--space {
+  width: 0.3em;
+  display: inline-block;
+}
+.solution-text__sub {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #666;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* --- Scene 10: L-shaped Matrix --- */
+.solution-matrix {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: var(--bg-beige);
+  border-radius: 20px;
+}
+.solution-matrix__visual {
+  flex: 1.5;
+  display: flex;
+  justify-content: center;
+}
+.solution-matrix__svg {
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  overflow: visible;
+  font-family: var(--font-primary, sans-serif);
+}
+.solution-matrix__items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.solution-matrix__item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  opacity: 0.3;
+  transition: all 0.5s ease;
+}
+.solution-matrix__item.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+.legend-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.legend-circle--h1 { background-color: var(--color-h1); }
+.legend-circle--h2 { background-color: var(--color-h2); }
+.legend-circle--h3 { background-color: var(--color-h3); }
+.legend-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.05em;
+}
+.axis-title-v,
+.axis-title-h {
+  font-family: var(--font-primary, sans-serif);
+}
+
+/* =========================================
+   Scenes 11 & 12: Matrix Layouts
+   ========================================= */
+.matrix-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5%;
+  width: 90%;
+  max-width: 1200px;
+  height: 100vh;
+  margin: 0 auto;
+}
+.matrix-layout--text-left { flex-direction: row; }
+.matrix-layout--visual-left { flex-direction: row-reverse; }
+.matrix-col-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.matrix-col-visual {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.matrix-svg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  max-height: 80vh;
+  overflow: visible;
+}
+.matrix-title {
+  color: #631515;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.matrix-subtitle {
+  color: #232323;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: 400;
+}
+@media (max-width: 768px) {
+  .matrix-layout {
+    flex-direction: column !important;
+    gap: 2rem;
+    text-align: center;
+    width: 90%;
+  }
+  .matrix-col-text {
+    align-items: center;
+    flex: 0 0 auto;
+  }
+  .matrix-col-visual {
+    width: 100%;
+    flex: 0 0 auto;
+  }
+}
+
+/* --- Growth & Strategy --- */
+.growth-content, .strategy-content {
+  text-align: center;
+  width: min(1000px, 90vw);
+}
+.growth__title, .strategy__heading {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: var(--space-lg);
+}
+.growth__svg, .strategy__svg {
+  width: 100%;
+  height: auto;
+}
+
+/* =========================================
+   Scene 14: Strategy Tree (Final Polish)
+   gap 60px for stem visibility; space-around for col-path/action/indicator
+   ========================================= */
+
+.strategy-container {
+  width: 90%;
+  max-width: 1400px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* 1. Grid 設定 */
+.strategy-headers,
+.tree-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr 1.2fr;
+  gap: 60px;
+}
+
+.strategy-headers {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  opacity: 0;
+}
+
+.header-col h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+.header-col span {
+  font-size: 0.9rem;
+  color: #666;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.tree-wrapper {
+  height: 600px;
+  position: relative;
+}
+
+/* 2. 欄位對齊 */
+.tree-col {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-path,
+.col-action,
+.col-indicator {
+  justify-content: space-around;
+}
+
+.action-group,
+.indicator-group {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  align-items: center;
+}
+
+/* 3. 卡片樣式 (Robust Settings) */
+.tree-card,
+.indicator-text {
+  width: 100%;
+  max-width: 282px;
+  min-height: 94px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem;
+  box-sizing: border-box;
+
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  text-align: center;
+
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* 顏色定義 */
+.card-root {
+  background-color: #631515;
+  color: #fff;
+}
+
+.card-path {
+  background-color: #923F3F;
+  color: #fff;
+}
+
+.card-action {
+  background-color: #D9D9D9;
+  color: #232323;
+}
+
+.card-action-sub {
+  background-color: #C8C8C8;
+  color: #232323;
+}
+
+.indicator-text {
+  color: #232323;
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: 10px;
+}
+
+/* Connector lines (stroke set by JS) */
+.line-path {
+  fill: none;
+}
+
+/* 手機版設定 */
+@media (max-width: 1024px) {
+  .strategy-headers,
+  .tree-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
+  }
+
+  .tree-lines {
+    display: none;
+  }
+
+  .tree-col {
+    margin-bottom: 2rem;
+  }
+
+  .tree-card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* --- Resources --- */
+.resources-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-xl);
+  width: min(1200px, 90vw);
+  align-items: center;
+}
+.resources__title {
+  grid-column: 1 / -1;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin: 0 0 var(--space-md);
+}
+.resources__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.resources__link-block {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.resources__link-block:hover {
+  transform: translateX(10px);
+  box-shadow: var(--shadow-1);
+}
+.resources__books {
+  position: relative;
+  height: 520px;
+  width: 300px;
+  margin: 0 auto;
+}
+.resources__book {
+  position: absolute;
+  width: 200px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-2);
+  left: 50px;
+}
+.resources__book:nth-child(1) { top: 0; transform: rotate(-5deg); z-index: 1; }
+.resources__book:nth-child(2) { top: 120px; transform: rotate(2deg); z-index: 2; }
+.resources__book:nth-child(3) { top: 240px; transform: rotate(-2deg); z-index: 3; }
+
+/* --- Footer --- */
+.footer-content {
+  text-align: center;
+  color: var(--text-white);
+}
+.footer__title {
+  font-size: 3rem;
+  margin-bottom: var(--space-sm);
+}
+.footer__text {
+  opacity: 0.6;
+  margin-bottom: var(--space-lg);
+}
+.footer__social {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+.footer__social-link {
+  color: #fff;
+  font-weight: 600;
+  opacity: 0.8;
+}
+.footer__social-link:hover {
+  opacity: 1;
+}
+
+/* Focus ring (a11y, spec 2) */
+.nav__dot-btn:focus-visible,
+.mobile-nav__header:focus-visible,
+.hero__cta:focus-visible,
+.footer__social-link:focus-visible,
+.resources__link-block:focus-visible,
+.mobile-modal__close:focus-visible {
+  outline: 2px solid var(--red-primary, #631515);
+  outline-offset: 2px;
+}
+
+/* Reduced motion (spec 3) */
+@media (prefers-reduced-motion: reduce) {
+  .sticky-stage,
+  .scroll-container { scroll-behavior: auto; }
+  .hero__title .char,
+  .flip-card,
+  .problem__title,
+  .solution-text__title .char,
+  .tree-card,
+  .resources__book { animation: none !important; transition: none !important; }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero__title { font-size: 15vw; white-space: normal; }
+  .flip-cards-grid { grid-template-columns: 1fr; }
+  .flip-card-wrapper { aspect-ratio: auto; height: 400px; }
+  .outlook-layout, .solution-resource-fit, .solution-opportunity, .resources-layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .solution-matrix {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .solution-matrix__visual { flex: none; width: 100%; }
+  .solution-matrix__svg { max-width: 300px; }
+  .solution-matrix__items { flex: none; width: 100%; align-items: center; }
+  .outlook-text, .problem-content { text-align: center; }
+  .resources__books { margin-top: 40px; }
+  
+  .outlook-layout {
+    height: auto;
+    gap: 40px;
+  }
+  .outlook-text-col {
+    height: 300px; /* Space for text items */
+  }
+  .outlook-visual-col {
+    height: 300px; /* Space for circles */
+  }
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scrollstory Practice – Digital Story Page</title>
+    <meta
+      name="description"
+      content="A simple practice project to learn digital storytelling and scroll-based interactions."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="story-header">
+      <nav class="story-header__nav">
+        <div class="story-header__logo">Scrollstory Lab</div>
+        <a href="#chapter-1" class="story-header__link">Start the story</a>
+      </nav>
+    </header>
+
+    <main class="story-main">
+      <!-- Hero / intro section -->
+      <section class="story-hero">
+        <div class="story-hero__inner">
+          <p class="story-hero__eyebrow">Practice project</p>
+          <h1 class="story-hero__title">Learn digital storytelling by scrolling</h1>
+          <p class="story-hero__subtitle">
+            This page is a safe playground. Scroll down and watch how the story
+            and visuals change together.
+          </p>
+          <a href="#chapter-1" class="story-hero__cta">Begin the scroll story</a>
+        </div>
+      </section>
+
+      <!-- Core scrollstory layout: text steps + sticky visual panel -->
+      <section class="story-layout" aria-label="Learning scrollstory steps">
+        <!-- Sticky visual panel that updates as you scroll -->
+        <aside class="story-graphic" aria-hidden="true">
+          <div class="story-graphic__card">
+            <p class="story-graphic__label">Now showing</p>
+            <h2 class="story-graphic__title" data-graphic-title>
+              Your first scroll chapter
+            </h2>
+            <p class="story-graphic__text" data-graphic-text>
+              As you scroll through each chapter on the right, this panel will
+              update. This is a common pattern in digital stories.
+            </p>
+            <div class="story-graphic__progress" aria-hidden="true">
+              <span class="story-graphic__dot story-graphic__dot--active"></span>
+              <span class="story-graphic__dot"></span>
+              <span class="story-graphic__dot"></span>
+              <span class="story-graphic__dot"></span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Scrolling text chapters -->
+        <section class="story-steps" aria-label="Story chapters">
+          <article
+            id="chapter-1"
+            class="story-step story-step--active"
+            data-step="1"
+          >
+            <h2 class="story-step__title">Chapter 1 – Set the scene</h2>
+            <p class="story-step__body">
+              Great scrollstories always begin with context. In this chapter,
+              you explain where we are, who is involved, and why the reader
+              should care. Keep it short and visual.
+            </p>
+          </article>
+
+          <article id="chapter-2" class="story-step" data-step="2">
+            <h2 class="story-step__title">Chapter 2 – Introduce the change</h2>
+            <p class="story-step__body">
+              As the reader scrolls, introduce the main change or tension in
+              your story. This could be a shift in data, a new strategy, or a
+              surprising insight you discovered.
+            </p>
+          </article>
+
+          <article id="chapter-3" class="story-step" data-step="3">
+            <h2 class="story-step__title">Chapter 3 – Show the impact</h2>
+            <p class="story-step__body">
+              Use visuals to show how things evolve. In real projects, this
+              could be charts, before/after comparisons, or animated diagrams
+              that update as the reader continues scrolling.
+            </p>
+          </article>
+
+          <article id="chapter-4" class="story-step" data-step="4">
+            <h2 class="story-step__title">Chapter 4 – Land the takeaway</h2>
+            <p class="story-step__body">
+              Close with one clear message. What should the reader remember?
+              What decision should be made? A strong ending makes your
+              scrollstory feel intentional, not just decorative.
+            </p>
+          </article>
+        </section>
+      </section>
+
+      <!-- Closing section -->
+      <section class="story-outro">
+        <div class="story-outro__inner">
+          <h2 class="story-outro__title">Your next steps</h2>
+          <p class="story-outro__body">
+            This page is intentionally simple. Try editing the text, colors, and
+            animations in the code. Then, experiment with adding your own data,
+            images, and extra chapters to turn it into a real digital story.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <button class="back-to-top" type="button">
+      <span class="back-to-top__label">Back to top</span>
+    </button>
+
+    <footer class="story-footer">
+      <p class="story-footer__text">
+        Built as a learning sandbox inside your <code>cv_01</code> project.
+        Open <code>learn-scrollstory/index.html</code> in the browser to play
+        with it.
+      </p>
+    </footer>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>

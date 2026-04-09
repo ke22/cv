@@ -1,0 +1,119 @@
+:root {
+  --dash-bg: rgba(0, 0, 0, 0.78);
+  --dash-border: rgba(255, 255, 255, 0.12);
+  --dash-text: rgba(255, 255, 255, 0.92);
+  --dash-muted: rgba(255, 255, 255, 0.62);
+  --dash-accent: #38bdf8;
+}
+
+.debug-monitor {
+  display: none;
+}
+
+.debug-monitor.is-visible {
+  display: block !important;
+}
+
+.debug-monitor {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  z-index: 99998;
+  background: var(--dash-bg);
+  border: 1px solid var(--dash-border);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  color: var(--dash-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+}
+
+.debug-monitor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.debug-monitor__header h3 {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--dash-muted);
+}
+
+.debug-monitor__close {
+  background: transparent;
+  color: var(--dash-text);
+  border: 1px solid var(--dash-border);
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.debug-monitor__content {
+  padding: 12px;
+}
+
+.debug-monitor__section + .debug-monitor__section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--dash-border);
+}
+
+.debug-monitor__section h4 {
+  margin: 0 0 10px;
+  font-size: 11px;
+  color: var(--dash-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.debug-monitor__item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 12px;
+}
+
+.debug-monitor__item strong {
+  color: var(--dash-text);
+}
+
+.debug-trigger--active strong {
+  color: var(--dash-accent);
+}
+
+.debug-trigger--pending {
+  opacity: 0.75;
+}
+
+.debug-trigger--exited {
+  opacity: 0.55;
+}
+
+.debug-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 99999;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.65);
+  color: var(--dash-text);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.debug-toggle:active {
+  transform: translateY(1px);
+}

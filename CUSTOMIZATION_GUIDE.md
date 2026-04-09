@@ -38,6 +38,12 @@
 - **內容**: Mission/Strategy/IDP + 資源連結
 - **修改**: 編輯 `.metric-block` 和 `.resource-card`
 
+### 7. Strategy Tree (cv-v2, Scene 14)
+- **位置**: `#strategy` in [cv-v2.html](cv-v2.html)
+- **內容**: 策略 / 路徑 / 行動 / 指標 四欄決策樹，動態連線與滾動動畫
+- **修改**: 結構與文案改 [cv-v2.html](cv-v2.html) Scene 14；樣式改 [css/cv-v2-layers.css](css/cv-v2-layers.css)「Scene 14: Strategy Tree」區塊；動畫與連線邏輯在 [js/cv-v2-layers.js](js/cv-v2-layers.js) `initStrategyTree`
+- **設計依據**: Figma 設計稿 node-id=388-142（[cv] file）。視覺規格已對齊：根節點 #631515、路徑 #923f3f、行動 #d9d9d9、文字 #232323/#fbf7ec、標題 37px/26px、卡片與指標 28px
+
 ## 🎨 設計自訂
 
 ### 顏色變更

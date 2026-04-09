@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Design dashboard / styleguide for CV scrollytelling">
+  <title>Design Dashboard – CV Styleguide</title>
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/sections.css">
+  <style>
+    .dash {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .dash__title { font-size: 28px; margin-bottom: 8px; }
+    .dash__sub { color: var(--text-muted); margin-bottom: 28px; }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--separator);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-1);
+    }
+    .card h2 { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+    .swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .swatch { border: 1px solid var(--separator); border-radius: 12px; padding: 10px; background: rgba(255,255,255,0.03); }
+    .swatch__chip { height: 42px; border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.08); }
+    .swatch__meta { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; color: var(--text-muted); }
+    .type-samples h3 { margin: 12px 0 6px; }
+    .type-samples p { color: var(--text-muted); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .pill {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--separator);
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.35);
+    }
+    .hint { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+    .link { color: #fff; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main class="dash">
+    <h1 class="dash__title">Design Dashboard</h1>
+    <p class="dash__sub">
+      這是一個用來「設計與對齊風格」的 styleguide。改完 token / component 後，回到
+      <a class="link" href="./cv-gsap.html">cv-gsap.html</a> 驗證整體效果。
+    </p>
+
+    <div class="dash-grid">
+      <section class="card">
+        <h2>Color tokens</h2>
+        <div class="swatches">
+          <div class="swatch">
+            <div class="swatch__chip" style="background: var(--bg-dark);"></div>
+            <div class="swatch__meta">--bg-dark</div>
+          </div>
+          <div class="swatch">
+            <div class="swatch__chip" style="background: var(--bg-solution);"></div>
+            <div class="swatch__meta">--bg-solution</div>
+          </div>
+          <div class="swatch">
+            <div class="swatch__chip" style="background: var(--red-primary);"></div>
+            <div class="swatch__meta">--red-primary</div>
+          </div>
+          <div class="swatch">
+            <div class="swatch__chip" style="background: var(--circle-large);"></div>
+            <div class="swatch__meta">--circle-large</div>
+          </div>
+        </div>
+        <p class="hint">Tokens 來源：<code>css/base.css</code> 的 <code>:root</code></p>
+      </section>
+
+      <section class="card type-samples">
+        <h2>Typography</h2>
+        <h3 style="font-size: 40px; letter-spacing: -0.02em;">Hero Title AaBbCc</h3>
+        <p>Body text sample. 說明文字建議使用 <code>--text-muted</code> 並維持 1.6–1.8 行高。</p>
+        <h3 style="font-size: 24px;">Section Heading</h3>
+        <p>如果想要更「Apple-ish」，優先調整字距、行高、以及卡片內邊距。</p>
+      </section>
+
+      <section class="card">
+        <h2>Components</h2>
+        <div class="row">
+          <div class="pill">Pill</div>
+          <button class="pill" type="button">Button</button>
+          <a class="pill" href="./cv-gsap.html">Link</a>
+        </div>
+        <p class="hint">你可以在這裡快速試 hover / focus / spacing，確認一致性。</p>
+      </section>
+
+      <section class="card">
+        <h2>Layout checks</h2>
+        <ul class="hint" style="margin-left: 16px;">
+          <li>Section 的 sticky 是否會被 nav 擋住？</li>
+          <li>卡片 padding 是否一致（用 <code>--space-*</code>）？</li>
+          <li>對比與可讀性（WCAG AA）？</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
+

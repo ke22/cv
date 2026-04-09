@@ -14,7 +14,7 @@ export interface MCPResponse {
   error?: string
 }
 
-// 會話管理
+// 會話管理（Figma MCP 使用 response header mcp-session-id 關聯後續請求）
 let sessionId: string | null = null
 let requestId = 0
 
@@ -56,8 +56,15 @@ async function initializeSession(): Promise<string | null> {
         jsonrpc: '2.0',
         method: 'initialize',
         params: {
-          clientCapabilities: {
+          protocolVersion: '2024-11-05',
+          capabilities: {
+            roots: { listChanged: true },
+            sampling: {},
             tools: {},
+          },
+          clientInfo: {
+            name: 'cv-figma-client',
+            version: '1.0.0',
           },
         },
         id: ++requestId,
@@ -77,9 +84,25 @@ async function initializeSession(): Promise<string | null> {
       return null
     }
     
-    // 有些 MCP 伺服器會在響應中返回 sessionId
-    // 有些則需要從 headers 或其他地方獲取
-    sessionId = data.result?.sessionId || data.sessionId || 'default'
+    // Figma MCP: 從 response header 取得 session，後續請求需帶上
+    const mcpSessionHeader = response.headers.get?.('mcp-session-id')
+    if (mcpSessionHeader) sessionId = mcpSessionHeader
+    else sessionId = data.result?.sessionId || data.sessionId || 'default'
+    
+    // MCP spec: after successful initialize, client MUST send notifications/initialized
+    const initHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json, text/event-stream',
+    }
+    if (sessionId) initHeaders['mcp-session-id'] = sessionId
+    await fetch(MCP_SERVER_URL, {
+      method: 'POST',
+      headers: initHeaders,
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        method: 'notifications/initialized',
+      }),
+    }).catch(() => {})
     
     return sessionId
   } catch (error: any) {
@@ -108,8 +131,15 @@ export async function testMCPConnection(): Promise<MCPResponse> {
           jsonrpc: '2.0',
           method: 'initialize',
           params: {
-            clientCapabilities: {
+            protocolVersion: '2024-11-05',
+            capabilities: {
+              roots: { listChanged: true },
+              sampling: {},
               tools: {},
+            },
+            clientInfo: {
+              name: 'cv-figma-client',
+              version: '1.0.0',
             },
           },
           id: ++requestId,
@@ -181,20 +211,19 @@ export async function sendMCPRequest(request: MCPRequest): Promise<MCPResponse> 
     const mcpRequest: any = {
       jsonrpc: '2.0',
       method: request.method,
-      params: {
-        ...(request.params || {}),
-        // 如果伺服器需要 sessionId，加入它
-        ...(sessionId ? { sessionId } : {}),
-      },
+      params: request.params || {},
       id: ++requestId,
     }
 
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json, text/event-stream',
+    }
+    if (sessionId) headers['mcp-session-id'] = sessionId
+
     const response = await fetch(MCP_SERVER_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json, text/event-stream',
-      },
+      headers,
       body: JSON.stringify(mcpRequest),
     })
 
@@ -244,80 +273,33 @@ export async function sendMCPRequest(request: MCPRequest): Promise<MCPResponse> 
 }
 
 /**
- * 從 Figma 提取框架設計
+ * 從 Figma 提取框架設計（使用已建立的 MCP 會話）
  */
 export async function extractFigmaFrame(frameId: string) {
   const fileKey = 'aF2rorNQMJ67rCHFbq6XCk'
-  
-  // 嘗試多種可能的調用方式，完全繞過 initialize
-  const methods = [
-    {
-      method: 'tools/call',
-      params: {
-        name: 'mcp_Figma_get_design_context',
-        arguments: {
-          nodeId: frameId,
-          fileKey,
-        },
-      },
-    },
-    {
-      method: 'mcp_Figma_get_design_context',
-      params: {
-        nodeId: frameId,
-        fileKey,
-      },
-    },
-    {
-      method: 'figma_get_frame',
-      params: {
-        frameId,
-        fileKey,
-      },
-    },
+  // Figma MCP 工具名稱: get_design_context；參數為 nodeId + fileKey（或 file_key）
+  const toolCalls: Array<{ name: string; args: Record<string, string> }> = [
+    { name: 'get_design_context', args: { nodeId: frameId, fileKey } },
+    { name: 'get_design_context', args: { node_id: frameId, file_key: fileKey } },
   ]
 
-  for (const methodConfig of methods) {
-    try {
-      const response = await fetch(MCP_SERVER_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json, text/event-stream',
-        },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          ...methodConfig,
-          id: ++requestId,
-        }),
-      })
-
-      if (!response.ok) {
-        continue
-      }
-
-      const text = await response.text()
-      const data = parseSSEResponse(text)
-      
-      if (data?.error) {
-        console.log(`方法 ${methodConfig.method} 失敗:`, data.error)
-        continue
-      }
-      
-      // 成功！
-      return {
-        success: true,
-        data: data?.result || data,
-      }
-    } catch (error: any) {
-      console.log(`方法 ${methodConfig.method} 異常:`, error.message)
-      continue
+  for (const { name, args } of toolCalls) {
+    const result = await sendMCPRequest({
+      method: 'tools/call',
+      params: {
+        name,
+        arguments: args,
+      },
+    })
+    if (result.success && result.data) {
+      const content = result.data.content ?? result.data
+      return { success: true, data: content }
     }
   }
-  
+
   return {
     success: false,
-    error: '所有調用方式都失敗了，請檢查 MCP 伺服器配置',
+    error: '所有調用方式都失敗了，請檢查 MCP 伺服器配置與工具名稱',
   }
 }
 

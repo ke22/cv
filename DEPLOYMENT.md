@@ -81,6 +81,45 @@
    - **Build Command**: (留空)
    - **Output Directory**: `.`
 
+### Microsoft Azure（Static Web Apps — CV v2）
+
+此流程部署 **`cv-v2.html` 靜態站**（`css/`、`js/`、`img/`、`assets/`），與 Next.js `npm run build` 無關。
+
+#### 一次性設定
+
+1. [Azure Portal](https://portal.azure.com) → **建立資源** → **靜態 Web應用程式**（Static Web App）。
+2. **訂用帳戶 / 資源群組 / 名稱 / 區域**：依需求填寫；**SKU** 可選 Free。
+3. **部署詳細資料**：**GitHub**，授權並選取此倉庫與分支（例如 `main`）。
+   - 若精靈會自動建立 workflow，可與本倉庫的 `.github/workflows/azure-static-web-apps.yml` **合併或擇一使用**（建議保留本倉庫版本，因含 `prepare-azure-static.sh`）。
+4. 在 Azure 靜態 Web 應用程式 → **管理部署權杖**（或建立精靈結尾）複製 **部署權杖**。
+5. GitHub 倉庫 → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+   - 名稱：`AZURE_STATIC_WEB_APPS_API_TOKEN`
+   - 值：貼上部署權杖
+
+#### 觸發部署
+
+- 推送至 `main` 會執行 `.github/workflows/azure-static-web-apps.yml`：
+  - 執行 `scripts/prepare-azure-static.sh` 產生 `swa-output/`（含 `index.html` = `cv-v2.html` 副本）。
+  - 上傳至 Azure Static Web Apps。
+- 或在 **Actions** 手動執行 **Azure Static Web Apps — CV v2**（`workflow_dispatch`）。
+
+#### 本機預覽套件
+
+```bash
+bash scripts/prepare-azure-static.sh
+# 用靜態伺服器預覽 swa-output/，例如：
+# npx --yes serve swa-output
+```
+
+#### 自訂網域與 HTTPS
+
+在 Azure 靜態 Web 應用程式 → **自訂網域** 依精靈設定 DNS（CNAME）。
+
+#### 注意
+
+- `swa-output/` 由腳本生成，已列入 `.gitignore`，請勿手動提交。
+- 若尚未設定 `AZURE_STATIC_WEB_APPS_API_TOKEN`，部署步驟會失敗；補上 secret 後重新執行 workflow 即可。
+
 ### 傳統 Web 服務器
 
 1. **上傳文件**

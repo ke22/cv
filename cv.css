@@ -159,7 +159,7 @@ body {
 .nav__pill {
   background: var(--nav-pill);
   border-radius: var(--radius-pill);
-  padding: 6px 10px;
+  padding: 6px 40px;
   display: flex;
   align-items: center;
   gap: 4px;

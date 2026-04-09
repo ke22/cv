@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV v2 Content Structure Dashboard</title>
+  <link rel="stylesheet" href="./css/base.css">
+  <style>
+    :root {
+      --dash-bg: #1a1a1a;
+      --dash-card: #252525;
+      --dash-border: #333;
+      --dash-text: #e0e0e0;
+      --dash-muted: #888;
+      --dash-accent: #D65D5D;
+    }
+    body {
+      background: var(--dash-bg);
+      color: var(--dash-text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 40px;
+    }
+    .header {
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--dash-border);
+      padding-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 24px;
+      margin: 0 0 10px 0;
+    }
+    .header p {
+      color: var(--dash-muted);
+      margin: 0;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .step-card {
+      background: var(--dash-card);
+      border: 1px solid var(--dash-border);
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .step-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-color: #555;
+    }
+
+    .step-card.is-chapter-start {
+      border-top: 4px solid var(--dash-accent);
+    }
+
+    .step-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 12px;
+      color: var(--dash-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .step-badge {
+      background: #333;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    .step-content h3 {
+      font-size: 18px;
+      margin: 0 0 10px 0;
+      color: #fff;
+    }
+
+    .step-content p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #ccc;
+      margin: 0;
+    }
+
+    .step-config {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--dash-border);
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--dash-muted);
+    }
+
+    .step-config div {
+      margin-bottom: 4px;
+    }
+    
+    .config-key { color: #888; }
+    .config-val { color: #4ec9b0; }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--dash-muted);
+      grid-column: 1 / -1;
+    }
+
+    /* Hidden iframe for data loading */
+    #source-frame {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 0;
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>CV v2 Content Structure</h1>
+    <p>Overview of the 16-step narrative flow, content, and stage configuration.</p>
+  </div>
+
+  <div id="app" class="grid">
+    <div class="loading">Loading content from cv-v2.html...</div>
+  </div>
+
+  <!-- Hidden iframe to load the source page (works better with file:// protocol than fetch) -->
+  <iframe id="source-frame" src="cv-v2.html"></iframe>
+
+  <script>
+    const app = document.getElementById('app');
+    const iframe = document.getElementById('source-frame');
+
+    iframe.onload = function() {
+      try {
+        const sourceWin = iframe.contentWindow;
+        const sourceDoc = iframe.contentDocument;
+        
+        // 1. Get Config
+        // Try global exposed config first, then fallback to internal object
+        const config = sourceWin.CV_STEP_CONFIG || (sourceWin.__CVV2__ ? sourceWin.__CVV2__.config : null);
+        
+        if (!config) {
+          app.innerHTML = '<div class="loading">Error: Could not load configuration from js/cv-v2-layers.js</div>';
+          return;
+        }
+
+        // 2. Get DOM Elements
+        const steps = Array.from(sourceDoc.querySelectorAll('.cvv2-step'));
+        
+        if (steps.length === 0) {
+           app.innerHTML = '<div class="loading">Error: No .cvv2-step elements found in cv-v2.html</div>';
+           return;
+        }
+
+        app.innerHTML = ''; // Clear loading
+
+        steps.forEach((step, idx) => {
+          const stepNum = idx + 1;
+          const stepConfig = config[stepNum] || {};
+          
+          // Extract content
+          const eyebrow = step.querySelector('.cvv2-step__eyebrow')?.textContent.trim() || '';
+          const title = step.querySelector('.cvv2-step__title')?.textContent.trim() || 'Untitled';
+          const lead = step.querySelector('.cvv2-step__lead')?.innerHTML.trim() || ''; 
+          
+          // Determine if this is a start of a new section/chapter
+          const prevConfig = config[stepNum - 1];
+          const isChapterStart = stepNum === 1 || (prevConfig && prevConfig.nav !== stepConfig.nav);
+          
+          // Create Card
+          const card = document.createElement('div');
+          card.className = `step-card ${isChapterStart ? 'is-chapter-start' : ''}`;
+          
+          card.innerHTML = `
+            <div class="step-meta">
+              <span>Step ${String(stepNum).padStart(2, '0')}</span>
+              <span class="step-badge">${stepConfig.nav || '—'}</span>
+            </div>
+            <div class="step-content">
+              <div style="font-size: 10px; color: #D65D5D; margin-bottom: 4px;">${eyebrow}</div>
+              <h3>${title}</h3>
+              <p>${lead}</p>
+            </div>
+            <div class="step-config">
+              <div><span class="config-key">Stage:</span> <span class="config-val">${stepConfig.stage}</span></div>
+              ${stepConfig.variant ? `<div><span class="config-key">Variant:</span> <span class="config-val">${stepConfig.variant}</span></div>` : ''}
+            </div>
+          `;
+          
+          app.appendChild(card);
+        });
+
+      } catch (e) {
+        console.error(e);
+        app.innerHTML = `<div class="loading">Error loading content: ${e.message}<br><br>Note: If you are opening this file directly (file://), browser security might block access to the iframe content. Please use a local server (e.g. VS Code Live Server).</div>`;
+      }
+    };
+  </script>
+</body>
+</html>

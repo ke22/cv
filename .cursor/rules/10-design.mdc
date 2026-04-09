@@ -1,0 +1,27 @@
+---
+description: Design & style rules for CSS/TSX (tokens, components, accessibility)
+globs: ["**/*.css", "**/*.tsx", "**/*.scss"]
+alwaysApply: false
+---
+
+# Design & Style Rules
+
+## 必讀
+- `docs/DesignGuidelines.md`
+- `.cursor/context/design-system.md`（若存在）
+- 依 task 範圍選擇 token 來源：`css/base.css`（HTML 版）或 `tailwind.config.js`（Next.js 版）
+
+## Design Token Single Source of Truth
+- **HTML/CSS/JS 版**（cv-v2.html、cv-gsap.html 等）：tokens 以 `css/base.css` 為準
+- **Next.js 版**（app/）：tokens 以 `tailwind.config.js` 為準
+- **規範文件**：`docs/DesignGuidelines.md` 為人類可讀規格；若與實際 tokens 衝突，以 DesignGuidelines 為準，並在 Decisions 記錄更新
+
+## 規範要點
+- 使用 CSS 變數（colors、spacing、typography），勿硬編碼
+- BEM 或語意化 class 命名
+- Mobile-first、8px spacing base
+- WCAG AA contrast、focus visible、aria
+- `prefers-reduced-motion` 需尊重
+
+## 與 .cursorrules 一致
+遵循專案根目錄 `.cursorrules` 的 Code Style、CSS Guidelines、Component Structure。
