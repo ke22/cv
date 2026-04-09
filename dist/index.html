@@ -267,31 +267,36 @@
                 <div class="future-outlook__sub"><span class="future-outlook__value">60.5%</span> 會繼續目前工作</div>
                 </div>
               </div>
-            <!-- Right: Circle Stack (zoom-out effect) -->
+            <!-- Right: Circle Stack (zoom-out effect). Labels live in __curve-labels so they sit above all disks. -->
               <div class="future-outlook__circles" aria-hidden="true">
-              <div class="future-circle future-circle--small" data-item="1">
-                <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
-                  <path id="curve-outlook-s" d="M 25,100 A 75,75 0 0,1 100,25" fill="none" />
-                  <text class="curve-text">
-                    <textPath href="#curve-outlook-s" startOffset="50%" text-anchor="middle" dominant-baseline="middle" dy="0.35em">36.5%</textPath>
-                  </text>
-                </svg>
-              </div>
-              <div class="future-circle future-circle--medium" data-item="2">
-                <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
-                  <path id="curve-outlook-m" d="M 25,100 A 75,75 0 0,1 100,25" fill="none" />
-                  <text class="curve-text">
-                    <textPath href="#curve-outlook-m" startOffset="50%" text-anchor="middle" dominant-baseline="middle" dy="0.35em">2.99</textPath>
-                  </text>
-                </svg>
-              </div>
-              <div class="future-circle future-circle--large" data-item="3">
-                <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
-                  <path id="curve-outlook-l" d="M 25,100 A 75,75 0 0,1 100,25" fill="none" />
-                  <text class="curve-text">
-                    <textPath href="#curve-outlook-l" startOffset="50%" text-anchor="middle" dominant-baseline="middle" dy="0.35em">60.5%</textPath>
-                  </text>
-                </svg>
+              <div class="future-circle future-circle--small" data-item="1"></div>
+              <div class="future-circle future-circle--medium" data-item="2"></div>
+              <div class="future-circle future-circle--large" data-item="3"></div>
+              <div class="future-outlook__curve-labels">
+                <div class="future-outlook__curve-label future-outlook__curve-label--small" data-item="1">
+                  <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
+                    <path id="curve-label-s" d="M 24,100 A 76,76 0 0,1 100,24" fill="none" />
+                    <text class="curve-text">
+                      <textPath href="#curve-label-s" startOffset="38%" text-anchor="middle">36.5%</textPath>
+                    </text>
+                  </svg>
+                </div>
+                <div class="future-outlook__curve-label future-outlook__curve-label--medium" data-item="2">
+                  <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
+                    <path id="curve-label-m" d="M 24,100 A 76,76 0 0,1 100,24" fill="none" />
+                    <text class="curve-text">
+                      <textPath href="#curve-label-m" startOffset="38%" text-anchor="middle">2.99</textPath>
+                    </text>
+                  </svg>
+                </div>
+                <div class="future-outlook__curve-label future-outlook__curve-label--large" data-item="3">
+                  <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
+                    <path id="curve-label-l" d="M 24,100 A 76,76 0 0,1 100,24" fill="none" />
+                    <text class="curve-text">
+                      <textPath href="#curve-label-l" startOffset="38%" text-anchor="middle">60.5%</textPath>
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -622,6 +627,24 @@
         setStyleImportant(element, 'opacity', String(opacity));
         setStyleImportant(element, 'transform', transform);
         setStyleImportant(element, '-webkit-transform', transform);
+      }
+
+      /** Keep curve labels aligned with circle motion and above disk stacking (same transform/opacity/classes). */
+      function syncOutlookCurveLabel(circle, label) {
+        if (!circle || !label) return;
+        label.classList.toggle('visible', circle.classList.contains('visible'));
+        label.classList.toggle('future-circle--zoom-out', circle.classList.contains('future-circle--zoom-out'));
+        label.classList.toggle('future-circle--fade-out', circle.classList.contains('future-circle--fade-out'));
+        const op = circle.style.opacity;
+        const tr = circle.style.getPropertyValue('transform');
+        const wtr = circle.style.getPropertyValue('-webkit-transform');
+        if (op !== '') {
+          setStyleImportant(label, 'opacity', op);
+        }
+        if (tr !== '') {
+          setStyleImportant(label, 'transform', tr);
+          setStyleImportant(label, '-webkit-transform', wtr && wtr !== '' ? wtr : tr);
+        }
       }
 
       // ============================================
@@ -1095,6 +1118,9 @@
         const circleSmall = section.querySelector('.future-circle--small');
         const circleMedium = section.querySelector('.future-circle--medium');
         const circleLarge = section.querySelector('.future-circle--large');
+        const labelSmall = section.querySelector('.future-outlook__curve-label--small');
+        const labelMedium = section.querySelector('.future-outlook__curve-label--medium');
+        const labelLarge = section.querySelector('.future-outlook__curve-label--large');
         
         // Debug: Check container position
         if (circlesContainer) {
@@ -1263,6 +1289,10 @@
             // Reset auto-advance flag when scrolling back
             hasAutoAdvanced = false;
           }
+
+          syncOutlookCurveLabel(circleSmall, labelSmall);
+          syncOutlookCurveLabel(circleMedium, labelMedium);
+          syncOutlookCurveLabel(circleLarge, labelLarge);
         };
       }
 

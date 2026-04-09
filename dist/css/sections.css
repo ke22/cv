@@ -700,8 +700,65 @@
   min-height: 1050px !important;
 }
 
-/* Curved stat labels on stacked circles (along inner arc, top-left quadrant of each disk) */
-.future-circle .curve-text-container {
+/* Curved stat labels: separate layer above all circle fills so text is never covered */
+.future-outlook__curve-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10050;
+  overflow: visible;
+}
+
+.future-outlook__curve-label {
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  opacity: 0;
+  transform: translate(150%, 150%);
+  transform-origin: center;
+  will-change: transform, opacity;
+  pointer-events: none;
+  display: block !important;
+  visibility: visible !important;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Paint order: large → medium → small so inner ring’s text stays on top when arcs overlap */
+.future-outlook__curve-label--large {
+  width: 1050px !important;
+  height: 1050px !important;
+  min-width: 1050px !important;
+  min-height: 1050px !important;
+  z-index: 10051 !important;
+}
+
+.future-outlook__curve-label--medium {
+  width: 800px !important;
+  height: 800px !important;
+  min-width: 800px !important;
+  min-height: 800px !important;
+  z-index: 10052 !important;
+}
+
+.future-outlook__curve-label--small {
+  width: 550px !important;
+  height: 550px !important;
+  min-width: 550px !important;
+  min-height: 550px !important;
+  z-index: 10053 !important;
+}
+
+.future-outlook__curve-label.visible {
+  /* Match .future-circle.visible: JS sets opacity; this holds final translate when visible */
+  visibility: visible !important;
+  display: block !important;
+}
+
+.future-outlook__curve-label .curve-text-container {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -710,36 +767,60 @@
   overflow: visible;
 }
 
-.future-circle .curve-text {
-  fill: rgba(255, 255, 255, 0.95);
+.future-outlook__curve-label .curve-text {
+  fill: rgba(255, 255, 255, 0.97);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 800;
   letter-spacing: 0.02em;
+  paint-order: stroke fill;
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 0.35px;
 }
 
-.future-circle--small .curve-text {
+.future-outlook__curve-label--small .curve-text {
   font-size: 26px;
 }
 
-.future-circle--medium .curve-text {
+.future-outlook__curve-label--medium .curve-text {
   font-size: 18px;
 }
 
-.future-circle--large .curve-text {
+.future-outlook__curve-label--large .curve-text {
   font-size: 14px;
 }
 
 @media (max-width: 768px) {
-  .future-circle--small .curve-text {
+  .future-outlook__curve-label--small .curve-text {
     font-size: 18px;
   }
 
-  .future-circle--medium .curve-text {
+  .future-outlook__curve-label--medium .curve-text {
     font-size: 13px;
   }
 
-  .future-circle--large .curve-text {
+  .future-outlook__curve-label--large .curve-text {
     font-size: 10px;
+  }
+
+  .future-outlook__curve-label--small {
+    width: 280px !important;
+    height: 280px !important;
+    min-width: 280px !important;
+    min-height: 280px !important;
+  }
+
+  .future-outlook__curve-label--medium {
+    width: 360px !important;
+    height: 360px !important;
+    min-width: 360px !important;
+    min-height: 360px !important;
+  }
+
+  .future-outlook__curve-label--large {
+    width: 420px !important;
+    height: 420px !important;
+    min-width: 420px !important;
+    min-height: 420px !important;
   }
 }
 
