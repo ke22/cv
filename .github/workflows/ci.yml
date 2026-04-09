@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - feat/**
   pull_request:
     branches:
       - main
@@ -12,29 +13,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-test:
+  verify-static-bundle:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+      - name: Build Azure-style static bundle
+        run: bash scripts/prepare-azure-static.sh
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Build
-        run: npm run build
-
-      - name: Run MCP test script
-        if: ${{ always() }}
-        run: npm run test-mcp
-
+      - name: Assert bundle artifacts
+        run: |
+          test -f swa-output/index.html
+          test -f swa-output/cv-v2.html
+          test -f swa-output/js/cv-v2-layers.js

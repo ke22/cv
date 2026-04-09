@@ -19,6 +19,7 @@
 
 ## Done
 
+- [x] 2026-04-09：倉庫修剪 — 保留 cv-v2 靜態主線，Next/舊 HTML/dist 等移至 `legacy/`，CI 改驗證靜態 bundle（README、DEPLOYMENT.md、PAGES_OVERVIEW、AI_INDEX、DesignGuidelines、00-global）
 - [x] 2026-04-09：Azure Static Web Apps 部署（prepare-azure-static.sh、GitHub workflow、DEPLOYMENT.md）
 - [x] 2025-02-13：建立 docs/ 結構與 Tasks.md 工作流
 - [x] 2025-02-13：導入 AI_INDEX、Writeback Protocol、Tasks 可驗收格式、護欄、設計來源唯一化

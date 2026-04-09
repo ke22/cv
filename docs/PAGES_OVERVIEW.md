@@ -1,18 +1,10 @@
 # Pages Overview: Structure, Layout, Content, Effects
 
-## Next.js App (`/`)
-
-| Route | Layout | Content | Effects |
-|-------|--------|---------|---------|////////p[[m.c.c.,c   []]
-| **`/`** (app/page.tsx) | `main` + Navbar/Footer | Hero, '///GapSection, PortfolioSection, ExecutionSection, LeadershipSection, MetricsSection, FixedCTA | Tailwind, standard React layout |
-| **`/story`** (app/story/page.tsx) | `AtmosphericContainer` (fog, grain, flare) | StoryHero, DisintegratingTextSection, MissionChapter, GapChapter, PortfolioChapter, ExecutionChapter, LeadershipChapter, MetricsChapter | Scrollytelling, atmospheric overlays, disintegrating text |
-| **`/test-mcp`** | Simple centered form | MCP/Figma connection test UI | Buttons, inputs, JSON output |
+> **Scope:** The canonical live page is **`cv-v2.html`** at the repository root. The former Next.js app, `cv.html`, GSAP-only duplicate, dashboards, `learn-scrollstory/`, and build output **`dist/`** are archived under **`legacy/`** (see `legacy/README.md`).
 
 ---
 
-## HTML Pages (Root)
-
-### 1. `cv-v2.html` (Scrollytelling v2 – GSAP)
+## `cv-v2.html` (Scrollytelling v2 – GSAP)
 
 | Section | ID | Scroll height | Content | Effects |
 |---------|-----|---------------|---------|---------|
@@ -29,78 +21,24 @@
 | Resources | `#resources` | 150vh | 3 links + 3 books | Sequential reveal |
 | Contact | `#contact` | 100vh | Footer, social links | Basic |
 
-**Global:** Progress bar, dot nav (Intro→Goals→Reality→Strategy→Growth→Contact), mobile nav + modal, GSAP ScrollTrigger, `cv-v2-layers.js`, `StrategyTree.js`
+**Global:** Progress bar, dot nav (Intro→Goals→Reality→Strategy→Growth→Contact), mobile nav + modal, GSAP ScrollTrigger, `cv-v2-layers.js`, `StrategyTree.js`, optional `?pacing=1` → `pacing-panel.js`.
+
+**Assets:** `./css/*.css` (base, sections, components, animations, cv-v2-layers, gsap-dashboard); `./js/` modules listed in `cv-v2.html`; `./img/` (e.g. `Group%2029.svg`); `prepare-azure-static.sh` also copies `./assets/` for hosting parity.
 
 ---
 
-### 2. `cv-gsap.html` (GSAP Portfolio)
+## Archived routes & files (under `legacy/`)
 
-Same section structure as cv-v2; uses `js/cv-gsap-dashboard.js` and debug monitor (press D).
-
----
-
-### 3. `cv.html` (Original Scrollytelling v2.0.3)
-
-Same overall structure; no GSAP, vanilla scroll scrub; includes debug monitor. ~2200+ lines.
-
----
-
-### 4. `content-dashboard.html`
-
-| Section | Content |
-|---------|---------|
-| Header | CV v2 content structure dashboard |
-| Grid | Step cards from `content/steps.json` (chapter, scene, step, content) |
-
-**Layout:** Dark theme, card grid, hover states, `is-chapter-start` border accent.
+| Item | Note |
+|------|------|
+| Next.js `app/`, `components/`, `package.json`, etc. | Full stack in `legacy/` |
+| `cv.html`, `cv-gsap.html`, `content-dashboard.html`, `design-dashboard.html` | Older or tooling HTML |
+| `learn-scrollstory/` | Scroll lab |
+| `dist/` | Previous static build tree |
+| `github-pages-deploy.yml` | Old GitHub Pages workflow |
 
 ---
 
-### 5. `design-dashboard.html`
+## Effects reference
 
-| Section | Content |
-|---------|---------|
-| Colors | Swatches (--bg-dark, --bg-solution, --red-primary, --circle-large) |
-| Typography | Samples |
-| Pills / hints | Link to `cv-gsap.html` for validation |
-
-**Layout:** Card grid, `css/base.css` tokens, styleguide.
-
----
-
-### 6. `learn-scrollstory/index.html`
-
-| Section | Content |
-|---------|---------|
-| Header | Scrollstory Lab, nav |
-| Hero | "Learn digital storytelling by scrolling" |
-| Scrollstory | Sticky visual panel (updates per chapter) + 4 scrolling chapters |
-| Chapters | 1–4: Set the scene, Introduce change, Show impact, Land takeaway |
-| Outro | "Your next steps" |
-| Footer | Back-to-top, sandbox note |
-
-**Layout:** Text steps on one side, sticky graphic on the other. Updates via `data-step` and `script.js`.
-
----
-
-## `dist/cv.html`
-
-Build output; mirrors `cv.html` for deployment.
-
----
-
-## Effects Reference (from EFFECTS_LIST.md)
-
-| Block | Effects |
-|-------|---------|
-| Hero | Title/desc/CTA fade-in + parallax |
-| Flip Cards | Appear, 3D flip, cumulative display |
-| Problem | Title + subtitle fade-in |
-| Future Outlook | Title switch, circle stack, concentric zoom, auto-advance |
-| Solution Text | Fade-in, character-by-character reveal |
-| Solution Matrix | Slide-in, H1/H2/H3 highlight |
-| Resource Fit | Title/visual slide-in |
-| Opportunity Matrix | Slide-in, highlight scale |
-| Growth / Strategy | Title fade, SVG fade + scale |
-| Resources | Books/links sequential reveal |
-| Global | Progress bar, nav highlight, debug monitor |
+For historical effect notes see **`legacy/EFFECTS_LIST.md`**.

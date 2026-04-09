@@ -5,7 +5,7 @@
 ## What We're Building
 
 - [ ] 填寫：專案目標、核心產品/網站描述
-- [ ] 填寫：兩個版本（HTML/CSS/JS vs Next.js）的定位
+- [x] 主線：`cv-v2.html` 靜態站；Next.js 舊版封存於 `legacy/`
 
 ## Who It's For
 

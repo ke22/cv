@@ -8,12 +8,12 @@
 
 ## CSS Tokens（摘要）
 
-### HTML/CSS/JS 版（cv-v2.html、cv-gsap.html 等）
+### cv-v2 靜態版（根目錄 `cv-v2.html`）
 - **來源**：`css/base.css` 的 `:root`
 - **變數**：`--space-*`、`--bg-*`、`--text-*`、`--radius-*`、`--shadow-*`、`--duration-*`、`--z-*` 等
 
-### Next.js 版（app/、components/）
-- **來源**：`tailwind.config.js` 的 `theme.extend`
+### Next.js 版（已移至 `legacy/`：`legacy/app/`、`legacy/components/`）
+- **來源**：`legacy/tailwind.config.js` 的 `theme.extend`（維護舊版時查）
 - **變數**：`colors.primary`、`colors.accent`、`colors.base`、`colors.text`、`spacing` 等
 
 ### 共通規範
@@ -29,7 +29,7 @@
 
 ## 新增/變更元件時
 
-1. 先查對應 token 來源（`css/base.css` 或 `tailwind.config.js`）是否有可重用 token
+1. 先查對應 token 來源（**cv-v2：`css/base.css`**；舊 Next：`legacy/tailwind.config.js`）是否有可重用 token
 2. 遵守 spacing / color / typography 變數
 3. 加上 hover / focus 狀態
 4. 驗證 contrast 與 reduced-motion

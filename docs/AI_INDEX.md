@@ -13,8 +13,8 @@
 
 ## Reference（僅參考，不可當規格）
 
-- 根目錄：`*_GUIDE.md`、`QUICK_START.md`、`README*.md`、`cursor.md`、`CUSTOMIZATION_GUIDE.md`、`SCROLLYTELLING_*`、`EFFECTS_LIST.md`、`DASHBOARDS.md` 等
-- 目錄：`archive/`、`dist/`、`public/`、`learn-scrollstory/`
+- **封存樹**：`legacy/`（舊 Next.js、`cv.html`、dashboards、`dist/`、多數根目錄 `*_GUIDE.md` / `README_NEXTJS.md` 等）；詳見 `legacy/README.md`
+- **其他**：根目錄若尚有零碎說明檔，一律視為參考，非規格
 
 ## Skills（task 涉及時必讀）
 
