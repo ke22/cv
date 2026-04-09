@@ -133,7 +133,7 @@ export const futureOutlook = {
 
   init(el) {
     this.element = el;
-    this.titleItems = Array.from(el.querySelectorAll('.future-outlook__title-item'));
+    this.titleItems = Array.from(el.querySelectorAll('.outlook-text-item, .future-outlook__title-item'));
     this.circles = Array.from(el.querySelectorAll('.future-circle'));
   },
 

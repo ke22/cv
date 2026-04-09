@@ -245,59 +245,54 @@
          Section 3b: Future Outlook (未來展望)
          Reference: ProblemSectionEffect Frame 20
          ============================================ -->
-    <section id="future-outlook" class="section section--future-outlook" data-scroll-section="futureOutlook" aria-label="未來展望">
+    <!-- Future Outlook: markup aligned with cv-v2.html (quarter circles + curve text) -->
+    <section id="future-outlook" class="section section--future-outlook scene scene--outlook" data-scroll-section="futureOutlook" aria-label="未來展望">
       <div class="scroll-container scroll-container--future-outlook">
         <div class="sticky-stage sticky-stage--future-outlook">
-          <div class="future-outlook">
-            <!-- Left: Title Items (switch sequentially) -->
-              <div class="future-outlook__titles">
-                <div class="future-outlook__title-item" data-title="1">
+          <div class="outlook-layout">
+            <div class="outlook-text-col">
+              <div class="outlook-text-item" data-item="1">
                 <div class="future-outlook__title">Low Salary Levels</div>
                 <div class="future-outlook__stat"><span class="future-outlook__value">36.5%</span> with an annual salary of less than 600,000.</div>
                 <div class="future-outlook__sub">薪資偏低：<span class="future-outlook__value">36.5%</span> 年薪 &lt; 60萬</div>
-                </div>
-                <div class="future-outlook__title-item" data-title="2">
+              </div>
+              <div class="outlook-text-item" data-item="2">
                 <div class="future-outlook__title">Insufficient</div>
                 <div class="future-outlook__stat">Career satisfaction rating of <span class="future-outlook__value">2.99</span>/ 5</div>
                 <div class="future-outlook__sub">職涯發展不足</div>
-                </div>
-                <div class="future-outlook__title-item" data-title="3">
+              </div>
+              <div class="outlook-text-item" data-item="3">
                 <div class="future-outlook__title">Future Outlook</div>
                 <div class="future-outlook__stat"><span class="future-outlook__value">60.5%</span> intend to remain in their current roles.</div>
                 <div class="future-outlook__sub"><span class="future-outlook__value">60.5%</span> 會繼續目前工作</div>
-                </div>
               </div>
-            <!-- Right: Circle Stack (zoom-out effect). Labels live in __curve-labels so they sit above all disks. -->
-              <div class="future-outlook__circles" aria-hidden="true">
-              <div class="future-circle future-circle--small" data-item="1"></div>
-              <div class="future-circle future-circle--medium" data-item="2"></div>
-              <div class="future-circle future-circle--large" data-item="3"></div>
-              <div class="future-outlook__curve-labels">
-                <div class="future-outlook__curve-label future-outlook__curve-label--small" data-item="1">
-                  <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
-                    <path id="curve-label-s" d="M 24,100 A 76,76 0 0,1 100,24" fill="none" />
-                    <text class="curve-text">
-                      <textPath href="#curve-label-s" startOffset="38%" text-anchor="middle">36.5%</textPath>
-                    </text>
-                  </svg>
-                </div>
-                <div class="future-outlook__curve-label future-outlook__curve-label--medium" data-item="2">
-                  <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
-                    <path id="curve-label-m" d="M 24,100 A 76,76 0 0,1 100,24" fill="none" />
-                    <text class="curve-text">
-                      <textPath href="#curve-label-m" startOffset="38%" text-anchor="middle">2.99</textPath>
-                    </text>
-                  </svg>
-                </div>
-                <div class="future-outlook__curve-label future-outlook__curve-label--large" data-item="3">
-                  <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
-                    <path id="curve-label-l" d="M 24,100 A 76,76 0 0,1 100,24" fill="none" />
-                    <text class="curve-text">
-                      <textPath href="#curve-label-l" startOffset="38%" text-anchor="middle">60.5%</textPath>
-                    </text>
-                  </svg>
-                </div>
-              </div>
+            </div>
+            <div class="outlook-visual-col"></div>
+          </div>
+          <div class="outlook-circles-layer" aria-hidden="true">
+            <div class="future-circle future-circle--small" data-item="1">
+              <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
+                <path id="curve-s" d="M 25,100 A 75,75 0 0,1 100,25" fill="none" />
+                <text class="curve-text">
+                  <textPath href="#curve-s" startOffset="50%" text-anchor="middle" dy="8">36.5%</textPath>
+                </text>
+              </svg>
+            </div>
+            <div class="future-circle future-circle--medium" data-item="2">
+              <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
+                <path id="curve-m" d="M 25,100 A 75,75 0 0,1 100,25" fill="none" />
+                <text class="curve-text">
+                  <textPath href="#curve-m" startOffset="50%" text-anchor="middle" dy="4">2.99</textPath>
+                </text>
+              </svg>
+            </div>
+            <div class="future-circle future-circle--large" data-item="3">
+              <svg class="curve-text-container" viewBox="0 0 100 100" aria-hidden="true">
+                <path id="curve-l" d="M 25,100 A 75,75 0 0,1 100,25" fill="none" />
+                <text class="curve-text">
+                  <textPath href="#curve-l" startOffset="50%" text-anchor="middle" dy="3">60.5%</textPath>
+                </text>
+              </svg>
             </div>
           </div>
         </div>
@@ -629,24 +624,6 @@
         setStyleImportant(element, '-webkit-transform', transform);
       }
 
-      /** Keep curve labels aligned with circle motion and above disk stacking (same transform/opacity/classes). */
-      function syncOutlookCurveLabel(circle, label) {
-        if (!circle || !label) return;
-        label.classList.toggle('visible', circle.classList.contains('visible'));
-        label.classList.toggle('future-circle--zoom-out', circle.classList.contains('future-circle--zoom-out'));
-        label.classList.toggle('future-circle--fade-out', circle.classList.contains('future-circle--fade-out'));
-        const op = circle.style.opacity;
-        const tr = circle.style.getPropertyValue('transform');
-        const wtr = circle.style.getPropertyValue('-webkit-transform');
-        if (op !== '') {
-          setStyleImportant(label, 'opacity', op);
-        }
-        if (tr !== '') {
-          setStyleImportant(label, 'transform', tr);
-          setStyleImportant(label, '-webkit-transform', wtr && wtr !== '' ? wtr : tr);
-        }
-      }
-
       // ============================================
       // Animation Helper Functions
       // ============================================
@@ -658,7 +635,7 @@
        * @param {number} end - Animation end progress
        * @param {number} slideDistance - Slide distance in pixels (default: 80)
        */
-      function updateTitleAnimation(item, p, start, end, slideDistance = 80) {
+      function updateTitleAnimation(item, p, start, end, slideDistance = 80, verticalCenter = false) {
         let opacity = 0;
         let y = slideDistance;
         
@@ -683,7 +660,8 @@
           }
         }
         
-        setOpacityTransform(item, opacity, `translateY(${y}px)`);
+        const ty = verticalCenter ? `calc(-50% + ${y}px)` : `${y}px`;
+        setOpacityTransform(item, opacity, `translateY(${ty})`);
         item.classList.toggle('active', opacity > 0.5);
       }
 
@@ -712,6 +690,21 @@
         } else {
           // Before start: hide circle
           setOpacityTransform(circle, 0, 'translate(150%, 150%)');
+          circle.classList.remove('visible', 'future-circle--fade-out');
+        }
+      }
+
+      /** cv-v2 style: quarter circles grow from bottom-right via scale (see cv-v2.html / outlook-circles-layer). */
+      function updateOutlookQuarterCircle(circle, p, start, fadeInWindow = 0.08) {
+        if (!circle) return;
+        if (p >= start) {
+          circle.classList.remove('future-circle--zoom-out', 'future-circle--fade-out');
+          const fadeInEnd = start + fadeInWindow;
+          const t = p < fadeInEnd ? (p - start) / fadeInWindow : 1;
+          setOpacityTransform(circle, 1, `scale(${t})`);
+          circle.classList.add('visible');
+        } else {
+          setOpacityTransform(circle, 0, 'scale(0)');
           circle.classList.remove('visible', 'future-circle--fade-out');
         }
       }
@@ -1114,13 +1107,10 @@
         
         const container = section.querySelector('.scroll-container--future-outlook');
         const circlesContainer = section.querySelector('.future-outlook__circles');
-        const titleItems = Array.from(section.querySelectorAll('.future-outlook__title-item'));
+        const titleItems = Array.from(section.querySelectorAll('.outlook-text-item'));
         const circleSmall = section.querySelector('.future-circle--small');
         const circleMedium = section.querySelector('.future-circle--medium');
         const circleLarge = section.querySelector('.future-circle--large');
-        const labelSmall = section.querySelector('.future-outlook__curve-label--small');
-        const labelMedium = section.querySelector('.future-outlook__curve-label--medium');
-        const labelLarge = section.querySelector('.future-outlook__curve-label--large');
         
         // Debug: Check container position
         if (circlesContainer) {
@@ -1147,10 +1137,9 @@
         // Track auto-advance state
         let hasAutoAdvanced = false;
         
-        // Circle sizes (for zoom calculation)
-        // Keep original different sizes for small / medium / large circles
-        const circleSizes = [350, 500, 650]; // small, medium, large
-        
+        // Zoom stage: match cv-v2 dramatic scale (small / medium / large)
+        const zoomMaxScales = [40, 25, 15];
+
         // Timeline: 0-70% content, 70-100% zoom-out (動畫提前完成，保留更多靜止時間)
         // Each title and circle pair share the same start/end times
         const config = {
@@ -1197,13 +1186,13 @@
           // Titles: Sequential A → B → C (one at a time)
           // ============================================
           // Title A: 0% - 20%
-          updateTitleAnimation(titleItems[0], p, config.titleAStart, config.titleAEnd);
+          updateTitleAnimation(titleItems[0], p, config.titleAStart, config.titleAEnd, 80, true);
           
           // Title B: 20% - 40%
-          updateTitleAnimation(titleItems[1], p, config.titleBStart, config.titleBEnd);
+          updateTitleAnimation(titleItems[1], p, config.titleBStart, config.titleBEnd, 80, true);
           
           // Title C: 40% - 60%
-          updateTitleAnimation(titleItems[2], p, config.titleCStart, config.titleCEnd);
+          updateTitleAnimation(titleItems[2], p, config.titleCStart, config.titleCEnd, 80, true);
           
           // ============================================
           // Circles: Stack cumulatively (don't disappear)
@@ -1212,52 +1201,42 @@
           if (isZoomStage) {
             // ZOOM-OUT STAGE (75-100%): Staggered zoom from bottom-right
             const zoomProgress = (p - config.zoomStart) / (1 - config.zoomStart);
-            const viewportW = window.innerWidth;
-            const viewportH = window.innerHeight;
-            const maxDimension = Math.max(viewportW, viewportH) * 2.5;
-            
+
             // All circles visible, zoom from bottom-right (staggered)
             [circleSmall, circleMedium, circleLarge].forEach((circle, i) => {
               if (!circle) return;
-              
-              circle.classList.add('future-circle--zoom-out');
-              
-              // Stagger timing (large first, small last)
+
+              // Stagger timing (large first, small last) — same as before
               let start, end;
-              if (i === 0) { // Small (top z-index, zooms last)
+              if (i === 0) {
                 start = zoomStagger.smallStart;
                 end = zoomStagger.smallEnd;
-              } else if (i === 1) { // Medium
+              } else if (i === 1) {
                 start = zoomStagger.mediumStart;
                 end = zoomStagger.mediumEnd;
-              } else { // Large (bottom z-index, zooms first)
+              } else {
                 start = zoomStagger.largeStart;
                 end = zoomStagger.largeEnd;
               }
-              
+
               let circleZoomProgress = 0;
               if (zoomProgress >= start && zoomProgress <= end) {
                 circleZoomProgress = (zoomProgress - start) / (end - start);
               } else if (zoomProgress > end) {
                 circleZoomProgress = 1;
               }
-              
-              // Scale from center, but center point stays at viewport bottom-right
-              // Use each circle's own original size
-              const originalSize = circleSizes[i];
-              const maxScale = maxDimension / originalSize;
+
+              const maxScale = zoomMaxScales[i];
               const scale = 1 + (circleZoomProgress * (maxScale - 1));
-              
-              // Fade out at the end
+
               let opacity = 1;
               if (zoomProgress >= zoomStagger.fadeStart) {
                 const fadeProgress = (zoomProgress - zoomStagger.fadeStart) / (zoomStagger.fadeEnd - zoomStagger.fadeStart);
                 opacity = Math.max(0, 1 - fadeProgress);
               }
-              
-              // Translate 50% to move center point to bottom-right, then scale from center
-              // This keeps the circle's center point at the viewport's bottom-right corner
-              setOpacityTransform(circle, opacity, `translate(50%, 50%) scale(${scale})`);
+
+              setOpacityTransform(circle, opacity, `scale(${scale})`);
+              circle.classList.add('visible');
               circle.classList.toggle('future-circle--fade-out', opacity <= 0);
             });
             
@@ -1276,23 +1255,16 @@
             
             // Small circle: appears at 0% (with Title A)
             // 與 Title A 同步：fade in 用 8%，到達定點後保持 hold time
-            updateCircleAnimation(circleSmall, p, config.circleSmallStart, 0.08);
-            
-            // Medium circle: appears at 20% (with Title B)
-            // 與 Title B 同步：fade in 用 8%，到達定點後保持 hold time
-            updateCircleAnimation(circleMedium, p, config.circleMediumStart, 0.08);
-            
-            // Large circle: appears at 40% (with Title C)
-            // 與 Title C 同步：fade in 用 8%，到達定點後保持 hold time
-            updateCircleAnimation(circleLarge, p, config.circleLargeStart, 0.08);
+            updateOutlookQuarterCircle(circleSmall, p, config.circleSmallStart, 0.08);
+
+            updateOutlookQuarterCircle(circleMedium, p, config.circleMediumStart, 0.08);
+
+            updateOutlookQuarterCircle(circleLarge, p, config.circleLargeStart, 0.08);
             
             // Reset auto-advance flag when scrolling back
             hasAutoAdvanced = false;
           }
 
-          syncOutlookCurveLabel(circleSmall, labelSmall);
-          syncOutlookCurveLabel(circleMedium, labelMedium);
-          syncOutlookCurveLabel(circleLarge, labelLarge);
         };
       }
 
