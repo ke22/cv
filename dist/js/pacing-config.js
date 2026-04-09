@@ -23,8 +23,8 @@ globalThis.PACING = {
 
   outlook: {
     pin: true,
-    endOffset: "+=320%",  // ScrollTrigger end, matches current tuning
-    itemHold: 2           // delay between items before fade-out
+    endOffset: "+=420%",  // Longer scroll rail so each outlook item holds on screen
+    itemHold: 3.5         // More dwell time between items before fade-out
   },
 
   solutionIntro: {
