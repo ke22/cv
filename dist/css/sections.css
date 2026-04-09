@@ -23,7 +23,8 @@
   filter: none;
 }
 
-/* CRITICAL: Future Outlook — no section blur (matches cv-v2 outlook treatment) */
+/* CRITICAL: Future Outlook section must NEVER have filter/blur
+   because it breaks position: fixed for .future-outlook__circles */
 .section--future-outlook {
   filter: none !important; /* 無論是否有 section--focused，都強制移除 filter */
 }
@@ -35,8 +36,9 @@
 
 /* Future Outlook section - circles should not be affected by fade/blur */
 /* 移除強制 opacity，讓 JavaScript 可以控制顯示/隱藏 */
-.section--future-outlook .outlook-circles-layer {
+.section--future-outlook .future-outlook__circles {
   filter: none !important;
+  /* 移除 opacity: 1 !important，讓 JS 控制 */
 }
 
 .section--future-outlook .future-circle {
@@ -515,7 +517,7 @@
 }
 
 .scroll-container--future-outlook {
-  height: 400vh;
+  height: 600vh; /* 6x viewport - optimized to reduce overlap with other sections */
   position: relative;
   width: 100%;
 }
@@ -528,192 +530,202 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  z-index: var(--z-sticky);
+  overflow: visible !important; /* Allow fixed circles to be visible */
+  z-index: var(--z-sticky); /* 使用標準 sticky z-index: 10 */
 }
 
-.scene--outlook {
-  background-color: #232323;
-}
-
-#future-outlook .outlook-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-xl);
-  width: min(1200px, 90vw);
-  align-items: end;
+.future-outlook {
   position: relative;
-  height: 100%;
-  min-height: 100vh;
-}
-
-#future-outlook .outlook-text-col {
-  position: relative;
-  height: 100%;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 40px;
-  padding-left: max(5vw, calc((100vw - 1200px) / 2));
-}
-
-#future-outlook .outlook-visual-col {
-  position: relative;
-}
-
-#future-outlook .outlook-circles-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  container-type: size;
-}
-
-#future-outlook .outlook-text-item {
-  position: absolute;
-  top: 50%;
-  left: 0;
   width: 100%;
-  opacity: 0;
-  text-align: left;
-  transform: translateY(-50%);
-  pointer-events: none;
-  will-change: transform, opacity;
+  max-width: 1400px;
+  padding: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  overflow: visible; /* Allow circles to overflow for zoom-out */
 }
 
-#future-outlook .outlook-text-item.active {
-  pointer-events: auto;
+/* Titles container - matches reference */
+/* Titles container - matches reference, but keep it narrower so right side feels wider */
+.future-outlook__titles {
+  flex: 0 0 40%;       /* fixed ~40% width for left column */
+  position: relative;
+  min-height: 400px;
+  max-width: 40%;
+  padding-right: 40px; /* a bit less padding to compensate narrower width */
+  z-index: 1; /* 確保 titles 在 circles 下方（circles 是 fixed，z-index: 999） */
 }
 
-#future-outlook .future-outlook__title {
-  color: #848484;
-  font-family: "Helvetica Neue", sans-serif;
-  font-size: clamp(1.25rem, 2vw, 2rem);
-  font-weight: 700;
-  line-height: normal;
-  margin-bottom: var(--space-sm);
-}
-
-#future-outlook .future-outlook__stat {
-  color: #ffffff;
-  font-family: "Helvetica Neue", sans-serif;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
-  line-height: 1.25;
-  margin-bottom: var(--space-sm);
-}
-
-#future-outlook .future-outlook__value {
-  color: #ff4d4d;
-}
-
-#future-outlook .future-outlook__sub {
-  color: #C7C7C7;
-  font-family: var(--font-cjk);
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 500;
-  line-height: normal;
-}
-
-#future-outlook .outlook-circles-layer .future-circle {
-  position: absolute !important;
-  bottom: 0 !important;
-  right: 0 !important;
-  left: auto !important;
-  top: auto !important;
-  border-radius: 100% 0 0 0 !important;
-  aspect-ratio: 1 / 1 !important;
-  transform-origin: bottom right !important;
-  will-change: transform, opacity !important;
-  max-width: none !important;
-  max-height: none !important;
-  margin: 0 !important;
-  filter: none !important;
-  display: block !important;
-  visibility: visible !important;
-}
-
-#future-outlook .outlook-circles-layer .future-circle.visible {
-  visibility: visible !important;
-  display: block !important;
-}
-
-#future-outlook .outlook-circles-layer .future-circle--small {
-  width: 30cqmin !important;
-  height: 30cqmin !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  z-index: 30 !important;
-  background: var(--circle-small, #D65D5D) !important;
-}
-
-#future-outlook .outlook-circles-layer .future-circle--medium {
-  width: 60cqmin !important;
-  height: 60cqmin !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  z-index: 20 !important;
-  background: var(--circle-medium, #C44646) !important;
-}
-
-#future-outlook .outlook-circles-layer .future-circle--large {
-  width: 90cqmin !important;
-  height: 90cqmin !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  z-index: 10 !important;
-  background: var(--circle-large, #9F3030) !important;
-}
-
-#future-outlook .outlook-circles-layer .curve-text-container {
+/* Title items - absolutely positioned, stacked */
+.future-outlook__title-item {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  opacity: 0;
+  transform: translateY(30px);
   pointer-events: none;
-  overflow: visible;
+  will-change: transform, opacity;
 }
 
-#future-outlook .outlook-circles-layer .curve-text {
-  fill: rgba(255, 255, 255, 0.95);
-  font-family: var(--font-primary, sans-serif);
-  font-weight: 800;
+.future-outlook__title-item.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.future-outlook__title-item.exiting {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+/* Typography matches reference */
+.future-outlook__title {
+  color: #848484;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 24px;
+}
+
+.future-outlook__stat {
+  color: #ffffff;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 50px;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 16px;
+}
+
+.future-outlook__value {
+  color: #ff3b30;
+}
+
+.future-outlook__sub {
+  color: #C7C7C7;
+  font-family: var(--font-cjk);
   font-size: 28px;
-  letter-spacing: 1px;
+  font-weight: 500;
+  line-height: normal;
 }
 
-#future-outlook .outlook-circles-layer .future-circle--small .curve-text {
-  font-size: 28px;
-}
-
-#future-outlook .outlook-circles-layer .future-circle--medium .curve-text {
-  font-size: 14px;
-}
-
-#future-outlook .outlook-circles-layer .future-circle--large .curve-text {
-  font-size: 9.33px;
-}
-
-.future-circle--zoom-out {
-  transform-origin: 100% 100% !important;
+/* Circles stack - positioned absolute at bottom-right */
+.future-outlook__circles {
+  /* Anchor the circles group to the viewport bottom-right corner */
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  flex-shrink: 0;
   pointer-events: none;
+  z-index: 999 !important; /* 提高 z-index，確保在所有 section 內容之上，但低於 nav (1000) */
+  /* Override section fade/blur effect - circles should always be visible */
+  opacity: 1 !important;
+  filter: none !important;
+  /* Ensure container has enough space for circles */
+  width: 1200px !important;
+  height: 1200px !important;
+  min-width: 1200px !important;
+  min-height: 1200px !important;
+  display: block !important;
+  visibility: visible !important;
+  /* 確保不被任何父元素限制 */
+  overflow: visible !important;
+  clip: none !important;
+  clip-path: none !important;
 }
 
-.future-circle--zoom-out.future-circle--small {
-  z-index: 9999 !important;
+.section--future-outlook .future-circle {
+  position: absolute !important;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(150%, 150%); /* Center point starts outside bottom-right */
+  transform-origin: center;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  will-change: transform, opacity;
+  /* Ensure circles are not affected by section fade/blur */
+  filter: none !important;
+  display: block !important;
+  visibility: visible !important;
+  /* 確保背景色可見 */
+  background-color: inherit;
+  /* 確保圓形相對於容器定位 */
+  margin: 0 !important;
 }
 
-.future-circle--zoom-out.future-circle--medium {
-  z-index: 9998 !important;
+.section--future-outlook .future-circle.visible {
+  /* 移除 opacity: 1 !important，讓 JavaScript 動態控制 */
+  /* JavaScript 會根據 scroll progress 設定 opacity */
+  /* transform 最終位置為 translate(50%, 50%)，與 zoom-out 初始位置一致 */
+  transform: translate(50%, 50%) !important;
+  /* 強制顯示 */
+  visibility: visible !important;
+  display: block !important;
 }
 
-.future-circle--zoom-out.future-circle--large {
-  z-index: 9997 !important;
+.section--future-outlook .future-circle--small {
+  width: 550px !important;  /* was 450px */
+  height: 550px !important; /* was 450px */
+  background: #D65D5D !important;
+  background-color: #D65D5D !important;
+  z-index: 3 !important;
+  min-width: 550px !important;
+  min-height: 550px !important;
 }
 
-.future-circle--fade-out {
+.section--future-outlook .future-circle--medium {
+  width: 800px !important;  /* was 650px */
+  height: 800px !important; /* was 650px */
+  background: #C44646 !important;
+  background-color: #C44646 !important;
+  z-index: 2 !important;
+  min-width: 800px !important;
+  min-height: 800px !important;
+}
+
+.section--future-outlook .future-circle--large {
+  width: 1050px !important;  /* was 850px */
+  height: 1050px !important; /* was 850px */
+  background: #9F3030 !important;
+  background-color: #9F3030 !important;
+  z-index: 1 !important;
+  min-width: 1050px !important;
+  min-height: 1050px !important;
+}
+
+/* Zoom-out mode - circles become fixed, center point at viewport bottom-right */
+.section--future-outlook .future-circle--zoom-out {
+  position: fixed !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: auto !important;
+  top: auto !important;
+  transform-origin: 100% 100% !important; /* Scale from bottom-right corner (same as normal stage) */
+  pointer-events: none;
+  box-shadow: var(--shadow-2); /* Unified shadow level 2 for important overlays */
+}
+
+.section--future-outlook .future-circle--zoom-out.future-circle--small {
+  z-index: 9999 !important; /* Top */
+}
+
+.section--future-outlook .future-circle--zoom-out.future-circle--medium {
+  z-index: 9998 !important; /* Middle */
+}
+
+.section--future-outlook .future-circle--zoom-out.future-circle--large {
+  z-index: 9997 !important; /* Bottom */
+}
+
+/* Fade-out state */
+.section--future-outlook .future-circle--fade-out {
   opacity: 0 !important;
 }
 
@@ -1327,26 +1339,62 @@
     height: 350px;
   }
   
-  /* Future Outlook (cv-v2 layout) - Mobile */
-  #future-outlook .outlook-layout {
-    grid-template-columns: 1fr;
-    text-align: center;
-    height: auto;
+  /* Future Outlook - Mobile */
+  .section--future-outlook .future-outlook {
+    flex-direction: column;
     gap: 40px;
+    padding: 20px;
   }
 
-  #future-outlook .outlook-text-col {
-    height: 300px;
-    padding-left: 20px;
-    padding-right: 20px;
+  .section--future-outlook .future-outlook__titles {
+    max-width: 100%;
+    padding-right: 0;
+    min-height: 280px;
   }
 
-  #future-outlook .outlook-visual-col {
-    width: 100vw;
-    height: 100vw;
-    min-height: 200px;
+  .section--future-outlook .future-outlook__circles {
+    /* Keep circles fixed even on mobile; shrink size for small screens */
+    position: fixed !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    top: auto !important;
+    width: min(110vw, 900px);
+    height: min(110vw, 900px);
+    min-width: 320px;
+    min-height: 320px;
+    display: block !important;
+    overflow: visible !important;
   }
 
+  .section--future-outlook .future-circle {
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    top: auto !important;
+    transform: translate(150%, 150%);
+  }
+
+  .section--future-outlook .future-circle.visible {
+    transform: translate(0%, 0%) !important;
+  }
+
+  .section--future-outlook .future-circle--small {
+    width: 280px;  /* slightly larger on mobile as well */
+    height: 280px;
+  }
+
+  .section--future-outlook .future-circle--medium {
+    width: 360px;
+    height: 360px;
+  }
+
+  .section--future-outlook .future-circle--large {
+    width: 420px;
+    height: 420px;
+  }
+  
   .solution-matrix,
   .solution-resource-fit,
   .solution-opportunity {
